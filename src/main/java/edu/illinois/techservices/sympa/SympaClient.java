@@ -59,19 +59,14 @@ public class SympaClient {
 
       System.out.println("\n SoapConnection.call() : \n");
 
-      // Create a SOAP connection
-      SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
-      SOAPConnection soapConnection = soapConnectionFactory.createConnection();
-
-      // Send the SOAP message to the endpoint
-      SOAPMessage soapResponse = soapConnection.call(soapMessage, sympaSoapUrl);
+      SOAPMessage soapResponse = callSympaAPI(soapMessage);
 
       System.out.println("\n Login Response: \n");
       printSOAPMessage(soapResponse);
 
       sessionCookie = grabSessionCookie(soapResponse);
       // Close the connection
-      soapConnection.close();
+      //soapConnection.close();
     } catch(Exception e) {
         System.out.println("\n THE ERROR...\n");
         e.printStackTrace();
@@ -79,6 +74,10 @@ public class SympaClient {
     return sessionCookie;
   }
 
+  /**
+   * 
+   * @param cookie
+   */
   public static void getInfo(String cookie) {
     try {
 
@@ -100,12 +99,8 @@ public class SympaClient {
 
       soapMessage.saveChanges();
 
-      // Create a SOAP connection
-      SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
-      SOAPConnection soapConnection = soapConnectionFactory.createConnection();
-
       // Send the SOAP message to the endpoint
-      SOAPMessage info = soapConnection.call(soapMessage, sympaSoapUrl);
+      SOAPMessage info = callSympaAPI(soapMessage);
       printSOAPMessage(info);
 
     } catch(Exception e) {
@@ -148,12 +143,7 @@ public class SympaClient {
 
       System.out.println("\n  Soap Call for Lists ");
       
-      // Create a SOAP connection
-      SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
-      SOAPConnection soapConnection = soapConnectionFactory.createConnection();
-
-      // Send the SOAP message to the endpoint
-      SOAPMessage lists = soapConnection.call(soapMessage, sympaSoapUrl);
+      SOAPMessage lists = callSympaAPI(soapMessage);
 
       System.out.println("\n Lists Response : ");
       printSOAPMessage(lists);
@@ -203,12 +193,8 @@ public class SympaClient {
 
       soapMessage.saveChanges();
 
-      // Create a SOAP connection
-      SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
-      SOAPConnection soapConnection = soapConnectionFactory.createConnection();
-
       // Send the SOAP message to the endpoint
-      SOAPMessage createlist = soapConnection.call(soapMessage, sympaSoapUrl);
+      SOAPMessage createlist = callSympaAPI(soapMessage);
 
       System.out.println("\n createList Response : ");
       printSOAPMessage(createlist);
@@ -274,5 +260,26 @@ public class SympaClient {
     envelope.setEncodingStyle("http://schemas.xmlsoap.org/soap/encoding/");
 
     return envelope;
+  }
+
+  /**
+   * 
+   * @return
+   */
+  public static SOAPMessage callSympaAPI(SOAPMessage soapMessage) {
+    SOAPMessage response = null;
+    try {
+      // Create a SOAP connection
+      SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
+      SOAPConnection soapConnection = soapConnectionFactory.createConnection();
+
+      // Send the SOAP message to the endpoint
+      response = soapConnection.call(soapMessage, sympaSoapUrl);
+      
+      soapConnection.close();
+    } catch (Exception e) {
+      System.out.println("Something went wrong!!");
+    }
+    return response;
   }
 }
