@@ -5,13 +5,23 @@ import java.io.*;
 import java.util.*;
 
 import jakarta.xml.soap.*;
+import io.github.cdimascio.dotenv.Dotenv;
 
 public class SympaClient {
+  /**
+   * Dynamically load environment variable from either system env or .env file
+   * @param key env var key
+   * @return value
+   */
+  private static String loadEnvVar(String key) {
+    return System.getenv(key) != null ? System.getenv(key) : Dotenv.load().get(key);
+  }
+
   
   private static String sympaSoapUrl = "https://lists-dev.techservices.illinois.edu/sympasoap";
   private static String sessionCookie = null;
-  static String email = System.getenv("SYMPA_EMAIL");
-  static String password = System.getenv("SYMPA_PASSWORD");
+  static String email = loadEnvVar("SYMPA_EMAIL");
+  static String password = loadEnvVar("SYMPA_PASSWORD");
   
   
   /**
@@ -19,6 +29,10 @@ public class SympaClient {
    * @return
    */
   public static String loginSympa() {
+    if (email == null || email.isEmpty() || password == null || password.isEmpty()) {
+      System.out.println("[ERROR] Email or password is not set. Please configure environment variables for SYMPA_EMAIL and SYMPA_PASSWORD");
+      throw new IllegalArgumentException("Email or password is not set. Please configure environment variables for SYMPA_EMAIL and SYMPA_PASSWORD");
+    }
 
     try {
       MessageFactory messageFactory = MessageFactory.newInstance();
