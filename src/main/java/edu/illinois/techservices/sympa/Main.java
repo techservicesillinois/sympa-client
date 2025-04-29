@@ -25,6 +25,11 @@ public class Main {
             SympaClient.getInfo(sessionCookie);
             break;
           }
+          case "review":
+          {
+            Review.review(sessionCookie);
+            break;
+          }
           default:
             System.out.println("wrong input");
         }
