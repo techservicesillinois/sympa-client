@@ -48,12 +48,15 @@ public class SympaClient {
       // Encode password in Base64
       String encodedPassword = Base64.getEncoder().encodeToString(password.getBytes());
 
-      System.out.println("Base64 Encoded Password: " + encodedPassword);
-      SOAPElement param1 = soapElement.addChildElement("email").addTextNode(email);
-      param1.addAttribute(new QName("xsi:type"), "xsd:string");
-     
-      SOAPElement param2 = soapElement.addChildElement("password").addTextNode(password);
-      param2.addAttribute(new QName("xsi:type"), "xsd:string");
+      soapElement
+          .addChildElement("email")
+          .addTextNode(email)
+          .addAttribute(new QName("xsi:type"), "xsd:string");
+
+      soapElement
+          .addChildElement("password")
+          .addTextNode(password)
+          .addAttribute(new QName("xsi:type"), "xsd:string");
 
       //param2.addTextNode(Base64.getEncoder().encodeToString(password.getBytes()));
       String auth = email + ":" + password;
@@ -185,25 +188,30 @@ public class SympaClient {
       
       SOAPElement soapElement = soapBody.addChildElement("createList", "ns", "urn:sympasoap");
 
-      SOAPElement param1 = soapElement.addChildElement("list", "ns");
-      param1.addTextNode("pbalesamplelist");
-      param1.addAttribute(new QName("xsi:type"), "xsd:string");
+      soapElement
+        .addChildElement("list", "ns")
+        .addTextNode("pbalesamplelist")
+        .addAttribute(new QName("xsi:type"), "xsd:string");
 
-      SOAPElement param2 = soapElement.addChildElement("subject", "ns");
-      param2.addTextNode("pbalesamplelist");
-      param2.addAttribute(new QName("xsi:type"), "xsd:string");
+      soapElement
+        .addChildElement("subject", "ns")
+        .addTextNode("pbalesamplelist")
+        .addAttribute(new QName("xsi:type"), "xsd:string");
 
-      SOAPElement param3 = soapElement.addChildElement("template", "ns");
-      param3.addTextNode("discussion_list");
-      param3.addAttribute(new QName("xsi:type"), "xsd:string");
+      soapElement
+        .addChildElement("template", "ns")
+        .addTextNode("discussion_list")
+        .addAttribute(new QName("xsi:type"), "xsd:string");
 
-      SOAPElement param4 = soapElement.addChildElement("description", "ns");
-      param4.addTextNode("sample list created for testing.");
-      param4.addAttribute(new QName("xsi:type"), "xsd:string");
+      soapElement
+        .addChildElement("description", "ns")
+        .addTextNode("sample list created for testing.")
+        .addAttribute(new QName("xsi:type"), "xsd:string");
 
-      SOAPElement param5 = soapElement.addChildElement("topic", "ns");
-      param5.addTextNode("technology,computing,innovation");
-      param5.addAttribute(new QName("xsi:type"), "xsd:string");
+      soapElement
+        .addChildElement("topic", "ns")
+        .addTextNode("technology,computing,innovation")
+        .addAttribute(new QName("xsi:type"), "xsd:string");
 
       soapMessage.saveChanges();
 
