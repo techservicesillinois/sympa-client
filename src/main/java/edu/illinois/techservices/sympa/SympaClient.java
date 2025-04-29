@@ -69,7 +69,6 @@ public class SympaClient {
       printSOAPMessage(soapResponse);
 
       sessionCookie = grabSessionCookie(soapResponse);
-
     } catch (Exception e) {
       System.out.println("\n THE ERROR...\n");
       e.printStackTrace();
@@ -87,7 +86,6 @@ public class SympaClient {
 
       SOAPMessage soapMessage = createMessageFactoryInstance();
       SOAPPart soapPart = soapMessage.getSOAPPart();
-
       SOAPEnvelope envelope = addNamespaceDeclaration(soapPart);
 
       MimeHeaders headers = soapMessage.getMimeHeaders();
@@ -155,7 +153,6 @@ public class SympaClient {
     try {
       SOAPMessage soapMessage = createMessageFactoryInstance();
       SOAPPart soapPart = soapMessage.getSOAPPart();
-
       SOAPEnvelope envelope = addNamespaceDeclaration(soapPart);
 
       MimeHeaders headers = soapMessage.getMimeHeaders();
@@ -258,6 +255,8 @@ public class SympaClient {
     envelope.addNamespaceDeclaration("targetNamespace", "https://lists-dev.techservices.illinois.edu/lists/wsdl");
     envelope.addNamespaceDeclaration("SOAP-ENC", "http://schemas.xmlsoap.org/soap/encoding/");
     envelope.setEncodingStyle("http://schemas.xmlsoap.org/soap/encoding/");
+
+    envelope.addNamespaceDeclaration("SOAP-ENC", "http://schemas.xmlsoap.org/soap/encoding/");
 
     return envelope;
   }
