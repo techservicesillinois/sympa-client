@@ -19,3 +19,6 @@ buildNumber.properties
 .DS_Store
 src/.DS_Store
 src/main/java/edu/illinois/techservices/.DS_Store
+
+.env
+settings.json
