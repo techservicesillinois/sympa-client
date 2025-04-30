@@ -278,14 +278,13 @@ public class SympaClient {
     SOAPEnvelope envelope = soapPart.getEnvelope();
 
     envelope.addNamespaceDeclaration("ns", "urn:sympasoap");
-    envelope.addNamespaceDeclaration("soapenc", "http://schema.xmlsoap.org/soap/encoding/");
+    envelope.addNamespaceDeclaration("soapenc", "http://schemas.xmlsoap.org/soap/encoding/");
     envelope.addNamespaceDeclaration("soap", "http://schemas.xmlsoap.org/wsdl/soap/");
     envelope.addNamespaceDeclaration("xsd", "http://www.w3.org/2001/XMLSchema");
     envelope.addNamespaceDeclaration("xsi", "http://www.w3.org/2001/XMLSchema-instance");
     envelope.addNamespaceDeclaration("targetNamespace", "https://lists-dev.techservices.illinois.edu/lists/wsdl");
-    envelope.setEncodingStyle("http://schemas.xmlsoap.org/soap/encoding/");
-
     envelope.addNamespaceDeclaration("SOAP-ENC", "http://schemas.xmlsoap.org/soap/encoding/");
+    envelope.setEncodingStyle("http://schemas.xmlsoap.org/soap/encoding/");
 
     return envelope;
   }
