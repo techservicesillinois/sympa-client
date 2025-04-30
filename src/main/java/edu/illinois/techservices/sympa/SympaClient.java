@@ -257,6 +257,7 @@ public class SympaClient {
     envelope.setEncodingStyle("http://schemas.xmlsoap.org/soap/encoding/");
 
     envelope.addNamespaceDeclaration("SOAP-ENC", "http://schemas.xmlsoap.org/soap/encoding/");
+    envelope.setEncodingStyle("http://schemas.xmlsoap.org/soap/encoding/");
 
     return envelope;
   }
