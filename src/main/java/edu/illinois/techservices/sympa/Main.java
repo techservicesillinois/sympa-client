@@ -30,6 +30,11 @@ public class Main {
             Review.review(sessionCookie);
             break;
           }
+          case "subscribe":
+          {
+            Subscribe.subscribe(sessionCookie);
+            break;
+          }
           default:
             System.out.println("wrong input");
         }
