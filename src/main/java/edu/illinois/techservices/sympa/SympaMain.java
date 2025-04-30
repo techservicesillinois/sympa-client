@@ -35,11 +35,10 @@ public class SympaMain {
             break;
           }
           case "authenticateAndRun": {
-            // SympaLoginClient.authenticateAndRun(sessionCookie, "del");
             String service = null;
             List<String> serviceParameters = new ArrayList<>();
 
-            if (args.length == 3) {
+            if (args.length < 3) {
               String parameters = null;
               service = args[1];
               parameters = args[2];
@@ -51,9 +50,18 @@ public class SympaMain {
               SympaLoginClient.authenticateAndRun(sessionCookie, service, serviceParameters);
               break;
             } else {
-              System.out.println("Please Provide all the attributes");
+              System.out
+                  .println("Please Provide service(for example: add/del) and parameters required to perform add/del");
               System.exit(0);
             }
+          }
+          case "authenticateRemoteAppAndRun": {
+            SympaLoginClient.authenticateRemoteAppAndRun();
+            break;
+          }
+          case "getUserEmailByCookie": {
+            SympaLoginClient.getUserEmailByCookie(sessionCookie);
+            break;
           }
           default:
             System.out.println("wrong input");
