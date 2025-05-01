@@ -25,7 +25,9 @@ public static void subscribe(String cookie) {
 
         SOAPElement soapElement = soapBody.addChildElement("subscribe", "ns", "urn:sympasoap");
 
-        soapElement.addChildElement("list", "ns").addTextNode("testlist3").addAttribute(new QName("xsi:type"), "xsd:string");
+        soapElement.addChildElement("list", "ns")
+            .addTextNode("testlist3")
+            .addAttribute(new QName("xsi:type"), "xsd:string");
 
     
         soapMessage.saveChanges();

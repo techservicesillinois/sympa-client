@@ -25,10 +25,11 @@ public static void review(String cookie) {
 
         SOAPElement soapElement = soapBody.addChildElement("review", "ns", "urn:sympasoap");
 
-        soapElement.addChildElement("list", "ns").addTextNode("testlist3").addAttribute(new QName("xsi:type"), "xsd:string");
+        soapElement.addChildElement("list", "ns")
+          .addTextNode("testlist3")
+          .addAttribute(new QName("xsi:type"), "xsd:string");
 
         soapMessage.saveChanges();
-        SympaClient.printSOAPMessage(soapMessage);
         SympaClient.printSOAPMessage(soapMessage);
         // Create a SOAP connection
         SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
