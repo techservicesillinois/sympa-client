@@ -24,7 +24,7 @@ public class SympaMain {
           }
           case "createList": {
             String listName = null;
-            if (args.length > 0) {
+            if (args.length > 1) {
               listName = args[1];
             }
             SympaClient.createList(sessionCookie, listName);
@@ -38,7 +38,7 @@ public class SympaMain {
             String service = null;
             List<String> serviceParameters = new ArrayList<>();
 
-            if (args.length < 3) {
+            if (args.length == 3) {
               String parameters = null;
               service = args[1];
               parameters = args[2];
