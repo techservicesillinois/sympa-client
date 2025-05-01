@@ -32,6 +32,29 @@ public class Main {
             SympaClient.getInfo(sessionCookie);
             break;
           }
+          case "review":
+          {
+            String listName = null;
+            if (args.length > 0) {
+              listName = args[1];
+            }
+            Review.review(sessionCookie, listName);
+            break;
+          }
+          case "subscribe":
+          {
+            String listName = null;
+            if (args.length > 0) {
+              listName = args[1];
+            }
+            Subscribe.subscribe(sessionCookie, listName);
+            break;
+          }
+          case "fullreview":
+          {
+            FullReview.fullreview(sessionCookie);
+            break;
+          }
           default:
             System.out.println("Invalid API call. Please provide a valid function call.");
             System.out.println("Example args: getList, createList, getInfo");
