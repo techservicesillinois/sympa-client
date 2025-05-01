@@ -20,17 +20,20 @@ where createList - Name of the service
 scrumTeamB - Name of the list to create
 
 ### add with authenticateAndRun
-mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="authenticateAndRun add scrumTeamB,pbale@illinois.edu,true,true"
+mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="authenticateAndRun add scrumTeamB,pbalex@illinois.edu,true,true"
 where authenticateAndRun - Name of the service
 add -  Name of the service
 scrumTeamB,pbale@illinois.edu,true,true - Parameters passed to add a user to the list 
 
-### del with authenticateAndRun
-mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="authenticateAndRun del scrumTeamB,pbale@illinois.edu,true"
+### del with authenticateRemoteAppAndRun
+mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="authenticateRemoteAppAndRun del scrumTeamB,pbale@illinois.edu,true"
 where authenticateAndRun - Name of the service
 del - Name of the service
 scrumTeamB,pbale@illinois.edu,true,true - Parameters passed to delete a user to the list 
 
+### getUserEmailByCookie
+mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="getUserEmailByCookie "
+where getUserEmailByCookie - user who sent the request
 
 
 >>>>>>> f32ae30 (Document  passing attribute values to getList, createList, authenticateAndRun for add and del.)
