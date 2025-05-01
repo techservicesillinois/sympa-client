@@ -38,8 +38,8 @@ public class SympaLoginClient {
   public static void authenticateAndRun(String cookie, String service, List<String> parameters) {
     try {
 
-      MessageFactory messageFactory = MessageFactory.newInstance();
-      SOAPMessage soapMessage = messageFactory.createMessage();
+      SOAPMessage soapMessage = SympaClient.createMessageFactoryInstance();
+
       SOAPPart soapPart = soapMessage.getSOAPPart();
       SOAPEnvelope envelope = SympaClient.addNamespaceDeclaration(soapPart);
 
@@ -47,35 +47,31 @@ public class SympaLoginClient {
 
       SOAPElement soapElement = soapBody.addChildElement("authenticateAndRun", "ns", "urn:sympasoap");
 
-      // Encode password in Base64
-      String encodedPassword = Base64.getEncoder().encodeToString(password.getBytes());
+      soapElement.addChildElement("email")
+          .addTextNode(email)
+          .addAttribute(new QName("xsi:type"), "xsd:string");
 
-      System.out.println("Base64 Encoded Password: " + encodedPassword);
-      SOAPElement param1 = soapElement.addChildElement("email").addTextNode(email);
-      param1.addAttribute(new QName("xsi:type"), "xsd:string");
+      soapElement.addChildElement("cookie")
+          .addTextNode(cookie)
+          .addAttribute(new QName("xsi:type"), "xsd:string");
 
-      SOAPElement param2 = soapElement.addChildElement("cookie").addTextNode(cookie);
-      param2.addAttribute(new QName("xsi:type"), "xsd:string");
+      soapElement.addChildElement("service")
+          .addTextNode(service)
+          .addAttribute(new QName("xsi:type"), "xsd:string");
 
-      SOAPElement param3 = soapElement.addChildElement("service").addTextNode(service);
-      param3.addAttribute(new QName("xsi:type"), "xsd:string");
-
-      // ArrayOfString parameter
-      SOAPElement param4 = soapElement.addChildElement("parameters", "ns");
-      param4.addAttribute(new QName("xsi:type"), "SOAP-ENC:Array");
-      param4.addAttribute(new QName("SOAP-ENC:arrayType"), "xsd:string[" + parameters.size() + "]");
+      // Parameters to perform specific service like (add, del)
+      SOAPElement items = soapElement.addChildElement("parameters", "ns");
+      items.addAttribute(new QName("xsi:type"), "SOAP-ENC:Array");
+      items.addAttribute(new QName("SOAP-ENC:arrayType"), "xsd:string[" + parameters.size() + "]");
 
       for (String param : parameters) {
-        SOAPElement item = param4.addChildElement("item");
+        SOAPElement item = items.addChildElement("item");
         item.addTextNode(param);
         item.addAttribute(new QName("xsi:type"), "xsd:string");
       }
 
-      String auth = email + ":" + password;
-      String encodedAuth = Base64.getEncoder().encodeToString(auth.getBytes("UTF-8"));
       MimeHeaders headers = soapMessage.getMimeHeaders();
 
-      headers.addHeader("Authorization", encodedAuth);
       headers.addHeader("Content-Type", "text/xml"); // application/soap+xml
       headers.addHeader("SOAPAction", "urn:sympasoap#authenticateAndRun");
       headers.addHeader("RequestMethod", "POST");
@@ -94,7 +90,7 @@ public class SympaLoginClient {
       SympaClient.printSOAPMessage(soapResponse);
 
     } catch (Exception e) {
-      System.out.println("\n THE ERROR...\n");
+      System.out.println("\n Something is wrong...\n");
       e.printStackTrace();
     }
   }
@@ -110,9 +106,7 @@ public class SympaLoginClient {
    */
   public static void authenticateRemoteAppAndRun() {
     try {
-
-      MessageFactory messageFactory = MessageFactory.newInstance();
-      SOAPMessage soapMessage = messageFactory.createMessage();
+      SOAPMessage soapMessage = SympaClient.createMessageFactoryInstance();
       SOAPPart soapPart = soapMessage.getSOAPPart();
       SOAPEnvelope envelope = SympaClient.addNamespaceDeclaration(soapPart);
 
@@ -124,15 +118,21 @@ public class SympaLoginClient {
 
       System.out.println("Base64 Encoded Password: " + encodedPassword);
 
-      soapElement.addChildElement("appname").addTextNode("sampleremoteApp").addAttribute(new QName("xsi:type"),
-          "xsd:string");
-
-      soapElement.addChildElement("apppassword").addTextNode("12345").addAttribute(new QName("xsi:type"), "xsd:string");
-
-      soapElement.addChildElement("vars").addTextNode("USER_EMAIL=pbale@illinois.edu")
+      soapElement.addChildElement("appname")
+          .addTextNode("sampleremoteApp")
           .addAttribute(new QName("xsi:type"), "xsd:string");
 
-      soapElement.addChildElement("service").addTextNode("add").addAttribute(new QName("xsi:type"), "xsd:string");
+      soapElement.addChildElement("apppassword")
+          .addTextNode("12345")
+          .addAttribute(new QName("xsi:type"), "xsd:string");
+
+      soapElement.addChildElement("vars")
+          .addTextNode("USER_EMAIL=pbale@illinois.edu")
+          .addAttribute(new QName("xsi:type"), "xsd:string");
+
+      soapElement.addChildElement("service")
+          .addTextNode("add")
+          .addAttribute(new QName("xsi:type"), "xsd:string");
 
       // List<String> p = new ArrayList<>();
       String[] p = {
@@ -144,23 +144,20 @@ public class SympaLoginClient {
       System.out.println("parameters size: " + p);
       // ArrayOfString parameter
 
-      SOAPElement param5 = soapElement.addChildElement("parameters", "ns");
-      param5.addAttribute(new QName("SOAP-ENC:arrayType", "arrayType", "SOAP-ENC"), "xsd:string[" + p.length + "]");
-      param5.addAttribute(new QName("xsi:type"), "SOAP-ENC:Array");
+      SOAPElement element = soapElement.addChildElement("parameters", "ns");
+      element.addAttribute(new QName("SOAP-ENC:arrayType", "arrayType",
+          "SOAP-ENC"), "xsd:string[" + p.length + "]");
+      element.addAttribute(new QName("xsi:type"), "SOAP-ENC:Array");
 
       if (p != null && p.length > 0) {
         for (String param : p) {
-          SOAPElement item = param5.addChildElement("item");
+          SOAPElement item = element.addChildElement("item");
           item.addTextNode(param);
           item.addAttribute(new QName("xsi:type"), "xsd:string");
         }
       }
 
-      String auth = email + ":" + password;
-      String encodedAuth = Base64.getEncoder().encodeToString(auth.getBytes("UTF-8"));
       MimeHeaders headers = soapMessage.getMimeHeaders();
-
-      headers.addHeader("Authorization", encodedAuth);
       headers.addHeader("Content-Type", "text/xml"); // application/soap+xml
       headers.addHeader("SOAPAction", "urn:sympasoap#authenticateRemoteAppAndRun");
       headers.addHeader("RequestMethod", "POST");
@@ -195,8 +192,7 @@ public class SympaLoginClient {
   public static void getUserEmailByCookie(String cookie) {
     try {
 
-      MessageFactory messageFactory = MessageFactory.newInstance();
-      SOAPMessage soapMessage = messageFactory.createMessage();
+      SOAPMessage soapMessage = SympaClient.createMessageFactoryInstance();
       SOAPPart soapPart = soapMessage.getSOAPPart();
       SOAPEnvelope envelope = SympaClient.addNamespaceDeclaration(soapPart);
 
@@ -204,22 +200,15 @@ public class SympaLoginClient {
 
       SOAPElement soapElement = soapBody.addChildElement("getUserEmailByCookie", "ns", "urn:sympasoap");
 
-      // Encode password in Base64
-      String encodedPassword = Base64.getEncoder().encodeToString(password.getBytes());
+      soapElement.addChildElement("cookie")
+          .addTextNode(cookie)
+          .addAttribute(new QName("xsi:type"), "xsd:string");
 
-      System.out.println("Base64 Encoded Password: " + encodedPassword);
-
-      soapElement.addChildElement("cookie").addTextNode(cookie).addAttribute(new QName("xsi:type"),
-          "xsd:string");
-
-      String auth = email + ":" + password;
-      String encodedAuth = Base64.getEncoder().encodeToString(auth.getBytes("UTF-8"));
       MimeHeaders headers = soapMessage.getMimeHeaders();
-
-      headers.addHeader("Authorization", encodedAuth);
       headers.addHeader("Content-Type", "text/xml"); // application/soap+xml
       headers.addHeader("SOAPAction", "urn:sympasoap#getUserEmailByCookie");
       headers.addHeader("RequestMethod", "POST");
+
       soapMessage.saveChanges();
 
       SympaClient.printSOAPMessage(soapMessage);
