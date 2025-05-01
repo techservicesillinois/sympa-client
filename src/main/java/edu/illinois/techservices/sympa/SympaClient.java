@@ -209,7 +209,7 @@ public class SympaClient {
    * @param message
    * @throws Exception
    */
-  private static void printSOAPMessage(SOAPMessage message) throws Exception {
+  static void printSOAPMessage(SOAPMessage message) throws Exception {
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     message.writeTo(out);
     System.out.println(new String(out.toByteArray()));
