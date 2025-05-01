@@ -10,7 +10,7 @@ public class Subscribe {
 
 private static String sympaSoapUrl = "https://lists-dev.techservices.illinois.edu/sympasoap";
 
-public static void subscribe(String cookie) {
+public static void subscribe(String cookie, String listName) {
     try {
         MessageFactory messageFactory = MessageFactory.newInstance();
         SOAPMessage soapMessage = messageFactory.createMessage();
@@ -26,7 +26,7 @@ public static void subscribe(String cookie) {
         SOAPElement soapElement = soapBody.addChildElement("subscribe", "ns", "urn:sympasoap");
 
         soapElement.addChildElement("list", "ns")
-            .addTextNode("testlist3")
+            .addTextNode(listName)
             .addAttribute(new QName("xsi:type"), "xsd:string");
 
     

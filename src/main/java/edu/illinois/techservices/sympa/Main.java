@@ -27,12 +27,25 @@ public class Main {
           }
           case "review":
           {
-            Review.review(sessionCookie);
+            String listName = null;
+            if (args.length > 0) {
+              listName = args[1];
+            }
+            Review.review(sessionCookie, listName);
             break;
           }
           case "subscribe":
           {
-            Subscribe.subscribe(sessionCookie);
+            String listName = null;
+            if (args.length > 0) {
+              listName = args[1];
+            }
+            Subscribe.subscribe(sessionCookie, listName);
+            break;
+          }
+          case "fullreview":
+          {
+            FullReview.fullreview(sessionCookie);
             break;
           }
           default:
