@@ -22,44 +22,31 @@ public class SympaClient {
   public static String loginSympa() {
 
     try {
-      MessageFactory messageFactory = MessageFactory.newInstance();
-      SOAPMessage soapMessage = messageFactory.createMessage();
+
+      SOAPMessage soapMessage = createMessageFactoryInstance();
+
       SOAPPart soapPart = soapMessage.getSOAPPart();
-      // String myNamespaceURI =
-      // "https://lists-dev.techservices.illinois.edu/lists/wsdl";
       SOAPEnvelope envelope = addNamespaceDeclaration(soapPart);
 
       SOAPBody soapBody = envelope.getBody();
 
       SOAPElement soapElement = soapBody.addChildElement("login", "ns", "urn:sympasoap");
 
-      // Encode password in Base64
-      String encodedPassword = Base64.getEncoder().encodeToString(password.getBytes());
+      soapElement.addChildElement("email")
+          .addTextNode(email)
+          .addAttribute(new QName("xsi:type"), "xsd:string");
 
-      System.out.println("Base64 Encoded Password: " + encodedPassword);
-      SOAPElement param1 = soapElement.addChildElement("email").addTextNode(email);
-      param1.addAttribute(new QName("xsi:type"), "xsd:string");
+      soapElement.addChildElement("password")
+          .addTextNode(password)
+          .addAttribute(new QName("xsi:type"), "xsd:string");
 
-      SOAPElement param2 = soapElement.addChildElement("password").addTextNode(password);
-      param2.addAttribute(new QName("xsi:type"), "xsd:string");
-
-      // param2.addTextNode(Base64.getEncoder().encodeToString(password.getBytes()));
-      String auth = email + ":" + password;
-      String encodedAuth = Base64.getEncoder().encodeToString(auth.getBytes("UTF-8"));
       MimeHeaders headers = soapMessage.getMimeHeaders();
-
-      headers.addHeader("Authorization", encodedAuth);
       headers.addHeader("Content-Type", "text/xml"); // application/soap+xml
       headers.addHeader("SOAPAction", "urn:sympasoap#login");
       headers.addHeader("RequestMethod", "POST");
       soapMessage.saveChanges();
 
-      System.out.println("\n My First SOAP LOGIN Request: \n");
-      printSOAPMessage(soapMessage);
-      System.out.println("\n");
-      // response = sendSOAPRequest(soapMessage);
-
-      System.out.println("\n SoapConnection.call() : \n");
+      // printSOAPMessage(soapMessage);
 
       SOAPMessage soapResponse = callSympaAPI(soapMessage);
 
@@ -67,8 +54,7 @@ public class SympaClient {
       printSOAPMessage(soapResponse);
 
       sessionCookie = grabSessionCookie(soapResponse);
-      // Close the connection
-      // soapConnection.close();
+
     } catch (Exception e) {
       System.out.println("\n THE ERROR...\n");
       e.printStackTrace();
@@ -83,11 +69,9 @@ public class SympaClient {
   public static void getInfo(String cookie) {
     try {
 
-      MessageFactory messageFactory = MessageFactory.newInstance();
-      SOAPMessage soapMessage = messageFactory.createMessage();
+      SOAPMessage soapMessage = createMessageFactoryInstance();
       SOAPPart soapPart = soapMessage.getSOAPPart();
-      // String myNamespaceURI =
-      // "https://lists-dev.techservices.illinois.edu/lists/wsdl";
+
       SOAPEnvelope envelope = addNamespaceDeclaration(soapPart);
 
       MimeHeaders headers = soapMessage.getMimeHeaders();
@@ -118,32 +102,19 @@ public class SympaClient {
   public static void getLists(String cookie) {
     try {
 
-      MessageFactory messageFactory = MessageFactory.newInstance();
-      SOAPMessage soapMessage = messageFactory.createMessage();
+      SOAPMessage soapMessage = createMessageFactoryInstance();
       SOAPPart soapPart = soapMessage.getSOAPPart();
-      // String myNamespaceURI =
-      // "https://lists-dev.techservices.illinois.edu/lists/wsdl";
+
       SOAPEnvelope envelope = addNamespaceDeclaration(soapPart);
 
       MimeHeaders headers = soapMessage.getMimeHeaders();
 
-      // headers.addHeader("Authorization", encodedAuth);
       headers.addHeader("Content-Type", "text/xml"); // application/soap+xml
       headers.addHeader("SOAPAction", "urn:sympasoap#lists");
       headers.addHeader("Cookie", "sympa_session=" + cookie);
       SOAPBody soapBody = envelope.getBody();
 
       SOAPElement soapElement = soapBody.addChildElement("lists", "ns", "urn:sympasoap");
-
-      /*
-       * SOAPElement param1 = soapElement.addChildElement("topic", "ns");
-       * param1.addTextNode("science");
-       * param1.addAttribute(new QName("xsi:type"), "xsd:string");
-       * 
-       * SOAPElement param2 = soapElement.addChildElement("subtopic", "ns");
-       * param2.addTextNode("physics");
-       * param2.addAttribute(new QName("xsi:type"), "xsd:string");
-       */
 
       soapMessage.saveChanges();
 
@@ -161,11 +132,10 @@ public class SympaClient {
 
   public static void createList(String cookie, String listName) {
     try {
-      MessageFactory messageFactory = MessageFactory.newInstance();
-      SOAPMessage soapMessage = messageFactory.createMessage();
+
+      SOAPMessage soapMessage = createMessageFactoryInstance();
       SOAPPart soapPart = soapMessage.getSOAPPart();
-      // String myNamespaceURI =
-      // "https://lists-dev.techservices.illinois.edu/lists/wsdl";
+
       SOAPEnvelope envelope = addNamespaceDeclaration(soapPart);
 
       MimeHeaders headers = soapMessage.getMimeHeaders();
@@ -178,25 +148,25 @@ public class SympaClient {
 
       SOAPElement soapElement = soapBody.addChildElement("createList", "ns", "urn:sympasoap");
 
-      SOAPElement param1 = soapElement.addChildElement("list", "ns");
-      param1.addTextNode(listName);
-      param1.addAttribute(new QName("xsi:type"), "xsd:string");
+      soapElement.addChildElement("list", "ns")
+          .addTextNode(listName)
+          .addAttribute(new QName("xsi:type"), "xsd:string");
 
-      SOAPElement param2 = soapElement.addChildElement("subject", "ns");
-      param2.addTextNode("scrumTeamB");
-      param2.addAttribute(new QName("xsi:type"), "xsd:string");
+      soapElement.addChildElement("subject", "ns")
+          .addTextNode("scrumTeamB")
+          .addAttribute(new QName("xsi:type"), "xsd:string");
 
-      SOAPElement param3 = soapElement.addChildElement("template", "ns");
-      param3.addTextNode("discussion_list");
-      param3.addAttribute(new QName("xsi:type"), "xsd:string");
+      soapElement.addChildElement("template", "ns")
+          .addTextNode("discussion_list")
+          .addAttribute(new QName("xsi:type"), "xsd:string");
 
-      SOAPElement param4 = soapElement.addChildElement("description", "ns");
-      param4.addTextNode("sample list created for testing.");
-      param4.addAttribute(new QName("xsi:type"), "xsd:string");
+      soapElement.addChildElement("description", "ns")
+          .addTextNode("sample list created for testing.")
+          .addAttribute(new QName("xsi:type"), "xsd:string");
 
-      SOAPElement param5 = soapElement.addChildElement("topic", "ns");
-      param5.addTextNode("technology,computing,innovation");
-      param5.addAttribute(new QName("xsi:type"), "xsd:string");
+      soapElement.addChildElement("topic", "ns")
+          .addTextNode("technology,computing,innovation")
+          .addAttribute(new QName("xsi:type"), "xsd:string");
 
       soapMessage.saveChanges();
 
@@ -292,5 +262,18 @@ public class SympaClient {
       System.out.println("Something went wrong!!");
     }
     return response;
+  }
+
+  /**
+   * Separate SOAP MessageFactory Instance creation to its own method to avoid
+   * duplicacy of code.
+   * 
+   * @return
+   */
+  public static SOAPMessage createMessageFactoryInstance() throws Exception {
+
+    MessageFactory messageFactory = MessageFactory.newInstance();
+
+    return messageFactory.createMessage();
   }
 }
