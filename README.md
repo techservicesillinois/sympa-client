@@ -19,7 +19,7 @@ description - description of the list
 template - the name of a template found in the create_list_templates directory for this Sympa service
 
 ### add with authenticateAndRun
-mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="authenticateAndRun add scrumTeamB,pbale@illinois.edu,true,true"
+mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="authenticateAndRun add scrumTeamB,pbalex@illinois.edu,true,true"
 where authenticateAndRun - Name of the service
 add -  Name of the service
 scrumTeamB,xxx@illinois.edu,true,true - Parameters passed to add a user to the list 
@@ -34,5 +34,8 @@ vars (USER_EMAIL=xxx@illinois.edu) - A comma separated list of variables that ca
 del - Name of the service
 scrumTeamB,xxx@illinois.edu,true,true - Parameters passed to delete a user to the list 
 
+### getUserEmailByCookie
+mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="getUserEmailByCookie "
+where getUserEmailByCookie - user who sent the request
 
 
