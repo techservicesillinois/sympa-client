@@ -63,8 +63,6 @@ public class SympaClient {
       headers.addHeader("RequestMethod", "POST");
       soapMessage.saveChanges();
 
-      // printSOAPMessage(soapMessage);
-
       SOAPMessage soapResponse = callSympaAPI(soapMessage);
 
       System.out.println("\n Login Response: \n");
@@ -80,6 +78,7 @@ public class SympaClient {
   }
 
   /**
+   * Provides description informations about a given list.
    * 
    * @param cookie
    */
@@ -93,7 +92,6 @@ public class SympaClient {
 
       MimeHeaders headers = soapMessage.getMimeHeaders();
 
-      // headers.addHeader("Authorization", encodedAuth);
       headers.addHeader("Content-Type", "text/xml"); // application/soap+xml
       headers.addHeader("SOAPAction", "urn:sympasoap#info");
       headers.addHeader("cookie", "sympa_session=" + cookie);
@@ -113,6 +111,7 @@ public class SympaClient {
   }
 
   /**
+   * Get a list of available lists.
    * 
    * @param cookie
    */
@@ -147,9 +146,13 @@ public class SympaClient {
     }
   }
 
-  public static void createList(String cookie, String listName) {
+  /**
+   * 
+   * @param cookie
+   * @param listName
+   */
+  public static void createList(String cookie, String[] arguments) {
     try {
-
       SOAPMessage soapMessage = createMessageFactoryInstance();
       SOAPPart soapPart = soapMessage.getSOAPPart();
 
@@ -157,7 +160,6 @@ public class SympaClient {
 
       MimeHeaders headers = soapMessage.getMimeHeaders();
 
-      // headers.addHeader("Authorization", encodedAuth);
       headers.addHeader("Content-Type", "text/xml"); // application/soap+xml
       headers.addHeader("SOAPAction", "urn:sympasoap#createList");
       headers.addHeader("Cookie", "sympa_session=" + cookie);
@@ -166,23 +168,23 @@ public class SympaClient {
       SOAPElement soapElement = soapBody.addChildElement("createList", "ns", "urn:sympasoap");
 
       soapElement.addChildElement("list", "ns")
-          .addTextNode(listName)
+          .addTextNode(arguments[1])
           .addAttribute(new QName("xsi:type"), "xsd:string");
 
       soapElement.addChildElement("subject", "ns")
-          .addTextNode("scrumTeamB")
+          .addTextNode(arguments[2])
           .addAttribute(new QName("xsi:type"), "xsd:string");
 
       soapElement.addChildElement("template", "ns")
-          .addTextNode("discussion_list")
+          .addTextNode(arguments[3])
           .addAttribute(new QName("xsi:type"), "xsd:string");
 
       soapElement.addChildElement("description", "ns")
-          .addTextNode("sample list created for testing.")
+          .addTextNode(arguments[4])
           .addAttribute(new QName("xsi:type"), "xsd:string");
 
       soapElement.addChildElement("topic", "ns")
-          .addTextNode("technology,computing,innovation")
+          .addTextNode(arguments[5])
           .addAttribute(new QName("xsi:type"), "xsd:string");
 
       soapMessage.saveChanges();
@@ -262,6 +264,7 @@ public class SympaClient {
 
   /**
    * 
+   * @param soapMessage
    * @return
    */
   public static SOAPMessage callSympaAPI(SOAPMessage soapMessage) {
