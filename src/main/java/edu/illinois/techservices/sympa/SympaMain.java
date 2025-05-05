@@ -1,6 +1,12 @@
 package edu.illinois.techservices.sympa;
 
-public class Main {
+import edu.illinois.techservices.sympa.SympaLoginClient;
+import edu.illinois.techservices.sympa.Review;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+public class SympaMain {
 
   public static void main(String[] args) {
     String sessionCookie = null;
