@@ -88,7 +88,7 @@ public class SympaMain {
           break;
         }
         case "fullreview": {
-          FullReview.fullreview(sessionCookie);
+          // FullReview.fullreview(sessionCookie);
           break;
         }
         default:
