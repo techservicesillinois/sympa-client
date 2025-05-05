@@ -25,18 +25,20 @@ public class SympaMain {
 
     if (sessionCookie != null) {
       switch (input) {
-
         case "getList": {
           SympaClient.getLists(sessionCookie);
           break;
         }
         case "createList": {
-          String listName = null;
-          if (args.length > 1) {
-            listName = args[1];
+          if (args.length > 5) {
+            SympaClient.createList(sessionCookie, args);
+            break;
+          } else {
+            System.out
+                .println("Please Provide all parameters required to perform createList");
+            System.exit(0);
           }
-          SympaClient.createList(sessionCookie, listName);
-          break;
+
         }
         case "getInfo": {
           SympaClient.getInfo(sessionCookie);
@@ -64,8 +66,14 @@ public class SympaMain {
           }
         }
         case "authenticateRemoteAppAndRun": {
-          SympaLoginClient.authenticateRemoteAppAndRun();
-          break;
+          if (args.length > 5) {
+            SympaLoginClient.authenticateRemoteAppAndRun(args);
+            break;
+          } else {
+            System.out
+                .println("Please Provide all parameters required to perform authenticateRemoteAppAndRun");
+            System.exit(0);
+          }
         }
         case "getUserEmailByCookie": {
           SympaLoginClient.getUserEmailByCookie(sessionCookie);

@@ -104,7 +104,7 @@ public class SympaLoginClient {
    * 
    * @param cookie
    */
-  public static void authenticateRemoteAppAndRun() {
+  public static void authenticateRemoteAppAndRun(String[] arguments) {
     try {
       SOAPMessage soapMessage = SympaClient.createMessageFactoryInstance();
       SOAPPart soapPart = soapMessage.getSOAPPart();
@@ -119,27 +119,22 @@ public class SympaLoginClient {
       System.out.println("Base64 Encoded Password: " + encodedPassword);
 
       soapElement.addChildElement("appname")
-          .addTextNode("sampleremoteApp")
+          .addTextNode(arguments[1])
           .addAttribute(new QName("xsi:type"), "xsd:string");
 
       soapElement.addChildElement("apppassword")
-          .addTextNode("12345")
+          .addTextNode(arguments[2])
           .addAttribute(new QName("xsi:type"), "xsd:string");
 
       soapElement.addChildElement("vars")
-          .addTextNode("USER_EMAIL=pbale@illinois.edu")
+          .addTextNode(arguments[3])
           .addAttribute(new QName("xsi:type"), "xsd:string");
 
       soapElement.addChildElement("service")
-          .addTextNode("add")
+          .addTextNode(arguments[4])
           .addAttribute(new QName("xsi:type"), "xsd:string");
 
-      // List<String> p = new ArrayList<>();
-      String[] p = {
-          "scrumTeamB",
-          "pbale@xyz.edu",
-          "true",
-          "true" };
+      String[] p = arguments[5].split(",");
 
       System.out.println("parameters size: " + p);
       // ArrayOfString parameter
@@ -179,6 +174,11 @@ public class SympaLoginClient {
     }
   }
 
+  /**
+   * TODO
+   * 
+   * @param cookie
+   */
   public static void casLogin(String cookie) {
 
   }
