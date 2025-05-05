@@ -5,47 +5,44 @@ import java.io.*;
 
 import jakarta.xml.soap.*;
 
-
 public class Subscribe {
 
-private static String sympaSoapUrl = "https://lists-dev.techservices.illinois.edu/sympasoap";
+    private static String sympaSoapUrl = loadEnvVar("SYMPA_URL");
 
-public static void subscribe(String cookie, String listName) {
-    try {
-        MessageFactory messageFactory = MessageFactory.newInstance();
-        SOAPMessage soapMessage = messageFactory.createMessage();
-        SOAPPart soapPart = soapMessage.getSOAPPart();
-        SOAPEnvelope envelope = SympaClient.addNamespaceDeclaration(soapPart);
+    public static void subscribe(String cookie, String listName) {
+        try {
+            MessageFactory messageFactory = MessageFactory.newInstance();
+            SOAPMessage soapMessage = messageFactory.createMessage();
+            SOAPPart soapPart = soapMessage.getSOAPPart();
+            SOAPEnvelope envelope = SympaClient.addNamespaceDeclaration(soapPart);
 
-        MimeHeaders headers = soapMessage.getMimeHeaders();
-        headers.addHeader("Content-Type", "text/xml"); 
-        headers.addHeader("SOAPAction", "urn:sympasoap#subscribe"); 
-        headers.addHeader("Cookie", "sympa_session="+cookie);
-        SOAPBody soapBody = envelope.getBody();
+            MimeHeaders headers = soapMessage.getMimeHeaders();
+            headers.addHeader("Content-Type", "text/xml");
+            headers.addHeader("SOAPAction", "urn:sympasoap#subscribe");
+            headers.addHeader("Cookie", "sympa_session=" + cookie);
+            SOAPBody soapBody = envelope.getBody();
 
-        SOAPElement soapElement = soapBody.addChildElement("subscribe", "ns", "urn:sympasoap");
+            SOAPElement soapElement = soapBody.addChildElement("subscribe", "ns", "urn:sympasoap");
 
-        soapElement.addChildElement("list", "ns")
-            .addTextNode(listName)
-            .addAttribute(new QName("xsi:type"), "xsd:string");
+            soapElement.addChildElement("list", "ns")
+                    .addTextNode(listName)
+                    .addAttribute(new QName("xsi:type"), "xsd:string");
 
-    
-        soapMessage.saveChanges();
-        SympaClient.printSOAPMessage(soapMessage);
-        // Create a SOAP connection
-        SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
-        SOAPConnection soapConnection = soapConnectionFactory.createConnection();
+            soapMessage.saveChanges();
+            SympaClient.printSOAPMessage(soapMessage);
+            // Create a SOAP connection
+            SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
+            SOAPConnection soapConnection = soapConnectionFactory.createConnection();
 
-        // Send the SOAP message to the endpoint
-        SOAPMessage subscribe = soapConnection.call(soapMessage, sympaSoapUrl);
-        System.out.println("\n Subscribe Response : ");
-        SympaClient.printSOAPMessage(subscribe);
-    
-    
-    }catch(Exception e){
-        e.printStackTrace();
+            // Send the SOAP message to the endpoint
+            SOAPMessage subscribe = soapConnection.call(soapMessage, sympaSoapUrl);
+            System.out.println("\n Subscribe Response : ");
+            SympaClient.printSOAPMessage(subscribe);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
-
-}
 
 }

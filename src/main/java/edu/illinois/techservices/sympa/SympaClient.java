@@ -9,7 +9,7 @@ import io.github.cdimascio.dotenv.Dotenv;
 
 public class SympaClient {
 
-  private static String sympaSoapUrl = "https://lists-dev.techservices.illinois.edu/sympasoap";
+  private static String sympaSoapUrl = loadEnvVar("SYMPA_URL");
   private static String sessionCookie = null;
   static String email = loadEnvVar("SYMPA_EMAIL");
   static String password = loadEnvVar("SYMPA_PASSWORD");
