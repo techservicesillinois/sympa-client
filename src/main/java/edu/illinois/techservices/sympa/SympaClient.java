@@ -8,6 +8,12 @@ import jakarta.xml.soap.*;
 import io.github.cdimascio.dotenv.Dotenv;
 
 public class SympaClient {
+
+  private static String sympaSoapUrl = "https://lists-dev.techservices.illinois.edu/sympasoap";
+  private static String sessionCookie = null;
+  static String email = loadEnvVar("SYMPA_EMAIL");
+  static String password = loadEnvVar("SYMPA_PASSWORD");
+
   /**
    * Dynamically load environment variable from either system env or .env file
    * 
@@ -17,11 +23,6 @@ public class SympaClient {
   private static String loadEnvVar(String key) {
     return System.getenv(key) != null ? System.getenv(key) : Dotenv.load().get(key);
   }
-
-  private static String sympaSoapUrl = "https://lists-dev.techservices.illinois.edu/sympasoap";
-  private static String sessionCookie = null;
-  static String email = loadEnvVar("SYMPA_EMAIL");
-  static String password = loadEnvVar("SYMPA_PASSWORD");
 
   /**
    * Log in to sympa server and retrieve session cookie to pass it on to
