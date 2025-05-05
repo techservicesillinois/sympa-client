@@ -1,12 +1,17 @@
 package edu.illinois.techservices.sympa;
 
 import edu.illinois.techservices.sympa.SympaLoginClient;
+<<<<<<< HEAD
 import jakarta.xml.soap.MessageFactory;
 import jakarta.xml.soap.SOAPMessage;
 import edu.illinois.techservices.sympa.Review;
 import java.util.List;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+=======
+import edu.illinois.techservices.sympa.Review;
+import java.util.List;
+>>>>>>> 64b9d30 (Fix import issues.)
 import java.util.ArrayList;
 import java.util.Arrays;
 
