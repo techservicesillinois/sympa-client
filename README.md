@@ -147,5 +147,24 @@ mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.
 * service2-parameters for add - scrumTeamB,xxx@illinois.edu,true,true - Parameters passed to delete a user to the list 
 * service2-parameters for del - scrumTeamB,xxx@illinois.edu,true - Parameters passed to delete a user to the list 
 
+#### getUserEmailByCookie
+```bash
+mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="service"
+```
+example usage:
+```bash
+mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="getUserEmailByCookie"
+```
+* service - getUserEmailByCookie, Name of the service
 
+#### review
+```bash
+mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="service list"
+```
+example usage:
+```bash
+mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="review scrumTeamB"
+```
 
+* service - review, Name of the service
+* list - scrumTeamB, Name of the list
