@@ -4,15 +4,13 @@ import javax.xml.namespace.QName;
 import java.io.*;
 
 import jakarta.xml.soap.*;
+import edu.illinois.techservices.sympa.SympaClient;
 
 public class Subscribe {
 
-    private static String sympaSoapUrl = loadEnvVar("SYMPA_URL");
-
     public static void subscribe(String cookie, String listName) {
         try {
-            MessageFactory messageFactory = MessageFactory.newInstance();
-            SOAPMessage soapMessage = messageFactory.createMessage();
+            SOAPMessage soapMessage = SympaClient.createMessageFactoryInstance();
             SOAPPart soapPart = soapMessage.getSOAPPart();
             SOAPEnvelope envelope = SympaClient.addNamespaceDeclaration(soapPart);
 
@@ -30,12 +28,9 @@ public class Subscribe {
 
             soapMessage.saveChanges();
             SympaClient.printSOAPMessage(soapMessage);
-            // Create a SOAP connection
-            SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
-            SOAPConnection soapConnection = soapConnectionFactory.createConnection();
 
-            // Send the SOAP message to the endpoint
-            SOAPMessage subscribe = soapConnection.call(soapMessage, sympaSoapUrl);
+            SOAPMessage subscribe = SympaClient.callSympaAPI(soapMessage);
+
             System.out.println("\n Subscribe Response : ");
             SympaClient.printSOAPMessage(subscribe);
 

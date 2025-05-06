@@ -4,15 +4,13 @@ import javax.xml.namespace.QName;
 import java.io.*;
 
 import jakarta.xml.soap.*;
+import edu.illinois.techservices.sympa.SympaClient;
 
 public class Review {
 
-  private static String sympaSoapUrl = loadEnvVar("SYMPA_URL");
-
   public static void review(String cookie, String listName) {
     try {
-      MessageFactory messageFactory = MessageFactory.newInstance();
-      SOAPMessage soapMessage = messageFactory.createMessage();
+      SOAPMessage soapMessage = SympaClient.createMessageFactoryInstance();
       SOAPPart soapPart = soapMessage.getSOAPPart();
       SOAPEnvelope envelope = SympaClient.addNamespaceDeclaration(soapPart);
 
@@ -30,12 +28,8 @@ public class Review {
 
       soapMessage.saveChanges();
       SympaClient.printSOAPMessage(soapMessage);
-      // Create a SOAP connection
-      SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
-      SOAPConnection soapConnection = soapConnectionFactory.createConnection();
 
-      // Send the SOAP message to the endpoint
-      SOAPMessage review = soapConnection.call(soapMessage, sympaSoapUrl);
+      SOAPMessage review = SympaClient.callSympaAPI(soapMessage);
       System.out.println("\n Review Response : ");
       SympaClient.printSOAPMessage(review);
 
