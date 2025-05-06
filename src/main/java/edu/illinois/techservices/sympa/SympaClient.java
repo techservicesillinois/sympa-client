@@ -208,6 +208,10 @@ public class SympaClient {
    * @throws Exception
    */
   public static void printSOAPMessage(SOAPMessage message) throws Exception {
+    if (message == null) {
+      System.out.println("[WARN] SOAP message body is empty. Cannot print SOAP message.");
+      return;
+    }
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     message.writeTo(out);
     System.out.println(new String(out.toByteArray()));
@@ -220,6 +224,10 @@ public class SympaClient {
    * @param soapMessage
    */
   public static String grabSessionCookie(SOAPMessage soapMessage) throws Exception {
+    if (soapMessage == null) {
+      System.out.println("[ERROR] SOAP message body is empty. Cannot grab session cookie.");
+      return null;
+    }
     String sessionCookie = null;
     SOAPBody responseBody = soapMessage.getSOAPBody();
     Iterator<?> iterator = responseBody.getChildElements();
