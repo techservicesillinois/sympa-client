@@ -83,20 +83,20 @@ Or add these libraries to pom file.
 ### Using Maven:
 ```bash
 mvn clean install
-mvn exec:java -Dexec.mainClass="edu.illinois.techservices.sympa.SympaMain  -Dexec.args=parameters"
+mvn exec:java -Dexec.mainClass="edu.illinois.techservices.sympa.SympaMain -Dexec.args=parameters"
 ```
 
-#### mvn executable command with params for each sympa service API Calls:
+### mvn executable command with params for each sympa service API Calls:
 
-##### getList
+#### getList
 mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args=<service>
 
 mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="getList"
 
 * service - getList, name of the service
 
-##### createList (All parameters are mandatory)
-mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="<service> <list> <subject> <template> <description> <topics>"
+#### createList (All parameters are mandatory)
+mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args=<service> <list> <subject> <template> <description> <topics>
 
 for example: mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="createList scrumTeamB scrumTeamB discussion_list description template"
  
@@ -107,8 +107,8 @@ for example: mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.Symp
 * description - description of the list
 * topics - the name of a template found in the create_list_templates directory for this Sympa service
 
-##### add/del with authenticateAndRun
-mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="<service1> <service2> <service2-parameters>"
+#### add/del with authenticateAndRun
+mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args=<service1> <service2> <service2-parameters>
 
 mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="authenticateAndRun add scrumTeamB,pbale@illinois.edu,true,true"
 
@@ -117,8 +117,8 @@ mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.
 * service2-parameters for add - scrumTeamB,xxx@illinois.edu,true,true - Parameters passed to add a user to the list 
 * service2-parameters for del - scrumTeamB,xxx@illinois.edu,true - Parameters passed to del a user to the list 
 
-##### add/del with authenticateRemoreAppAndRun
-mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="<service1> <appName> <appPwd> <vars> <service2> <service2-parameters>"
+#### add/del with authenticateRemoteAppAndRun
+mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args=<service1> <appName> <appPwd> <vars> <service2> <service2-parameters>
 
 mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="authenticateAndRun appName appPwd USER_EMAIL=xxx@illinois.edu del scrumTeamB,pbale@illinois.edu,true"
 
