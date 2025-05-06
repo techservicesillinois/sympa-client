@@ -89,17 +89,26 @@ mvn exec:java -Dexec.mainClass="edu.illinois.techservices.sympa.SympaMain -Dexec
 ### mvn executable command with params for each sympa service API Calls:
 
 #### getList
+```bash
 mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="service"
-
+```
+example usage:
+```bash
 mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="getList"
+```
 
 * service - getList, name of the service
 
 #### createList (All parameters are mandatory)
+```bash
 mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="service list subject template description topics"
+```
+example usage:
+```bash
+mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="createList scrumTeamB scrumTeamB 
+discussion_list description template"
+```
 
-for example: mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="createList scrumTeamB scrumTeamB discussion_list description template"
- 
 * service - createList, Name of the service
 * list - scrumTeamB, Name of the mailing list to create
 * subject - scrumTeamB - subject name of the list
@@ -108,9 +117,13 @@ for example: mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.Symp
 * topics - the name of a template found in the create_list_templates directory for this Sympa service
 
 #### add/del with authenticateAndRun
+```bash
 mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="service1 service2 service2-parameters"
-
+```
+example usage:
+```bash
 mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="authenticateAndRun add scrumTeamB,pbale@illinois.edu,true,true"
+```
 
 * service1 - authenticateAndRun - Name of the service
 * service2 - add/del -  Name of the service 
@@ -118,9 +131,13 @@ mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.
 * service2-parameters for del - scrumTeamB,xxx@illinois.edu,true - Parameters passed to del a user to the list 
 
 #### add/del with authenticateRemoteAppAndRun
+```bash
 mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="service1 appName appPwd vars service2 service2-parameters"
-
+```
+example usage:
+```bash
 mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="authenticateAndRun appName appPwd USER_EMAIL=xxx@illinois.edu del scrumTeamB,pbale@illinois.edu,true"
+```
 
 * service1 - authenticateRemoteAppAndRun, Name of the service
 * appName - Name of the remote application from which user is authenticating
