@@ -110,6 +110,24 @@ public class SympaMain {
           FullReview.fullreview(sessionCookie, listName, type);
           break;
         }
+        case "add":
+        {
+          SympaClient.add(sessionCookie);
+          break;
+        }
+        case "del":
+        {
+          SympaClient.del(sessionCookie);
+          break;
+        }
+        case "getComplexLists": {
+          SympaClient.getComplexLists(sessionCookie);
+          break;
+        }
+        case "closeList": {
+          SympaClient.closeList(sessionCookie);
+          break;
+        }
         default:
           System.out.println("Invalid API call. Please provide a valid function call.");
           System.out.println("Example args: getList, createList, getInfo");
