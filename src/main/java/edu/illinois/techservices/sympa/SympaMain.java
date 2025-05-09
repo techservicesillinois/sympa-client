@@ -1,5 +1,6 @@
 package edu.illinois.techservices.sympa;
 
+import edu.illinois.techservices.sympa.SympaListOps;
 import edu.illinois.techservices.sympa.SympaLoginClient;
 import edu.illinois.techservices.sympa.Review;
 import java.util.List;
@@ -98,6 +99,45 @@ public class SympaMain {
         case "fullreview": {
           // FullReview.fullreview(sessionCookie);
           break;
+        }
+        case "add":
+        {
+          System.out.println("in add case");
+          if (args.length >= 5) {
+            SympaListOps.add(sessionCookie, args);
+            break;
+          } else {
+            System.out
+                .println("Please Provide all parameters required to perform add");
+            System.exit(0);
+          }
+        }
+        case "del":
+        {
+          if (args.length >= 4){
+            SympaListOps.del(sessionCookie, args);
+            break;
+          }
+          else {
+            System.out
+                .println("Please Provide all parameters required to perform del");
+            System.exit(0);
+          }
+        }
+        case "getComplexLists": {
+          SympaClient.getComplexLists(sessionCookie);
+          break;
+        }
+        case "closeList": {
+          if (args.length >= 1){
+            SympaListOps.closeList(sessionCookie, args);
+            break;
+          }
+          else {
+            System.out
+                .println("Please Provide all parameters required to perform closeList");
+            System.exit(0);
+          }
         }
         default:
           System.out.println("Invalid API call. Please provide a valid function call.");
