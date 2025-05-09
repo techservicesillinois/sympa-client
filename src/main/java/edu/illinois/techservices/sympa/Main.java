@@ -1,5 +1,12 @@
 package edu.illinois.techservices.sympa;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+
+import jakarta.xml.soap.MessageFactory;
+import jakarta.xml.soap.SOAPMessage;
+
+
 public class Main {
   
   public static void main(String[] args) {
@@ -45,7 +52,16 @@ public class Main {
           }
           case "fullreview":
           {
-            FullReview.fullreview(sessionCookie);
+            String listName = null;
+            if (args.length > 0) {
+              listName = args[1];
+              InputStream xmldoc = new ByteArrayInputStream(listName.getBytes());
+              SOAPMessage request = MessageFactory.newInstance().createMessage(null, xmldoc);
+              System.out.println(request);
+
+
+            }
+            FullReview.fullreview(sessionCookie, listName);
             break;
           }
           default:
