@@ -1,24 +1,18 @@
 package edu.illinois.techservices.sympa;
 
 import javax.xml.namespace.QName;
-import java.io.*;
 import jakarta.xml.soap.*;
-import edu.illinois.techservices.sympa.SympaClient;
 
 public class SympaListOps {
 
-    private static String sympaSoapUrl = "https://lists-dev.techservices.illinois.edu/sympasoap";
-
-    public static void add(String cookie) {
+    public static void add(String cookie, String[] args) {
         try {
-            MessageFactory messageFactory = MessageFactory.newInstance();
-            SOAPMessage soapMessage = messageFactory.createMessage();
+            SOAPMessage soapMessage = SympaClient.createMessageFactoryInstance();
             SOAPPart soapPart = soapMessage.getSOAPPart();
             SOAPEnvelope envelope = SympaClient.addNamespaceDeclaration(soapPart);
 
             MimeHeaders headers = soapMessage.getMimeHeaders();
 
-            //headers.addHeader("Authorization", encodedAuth);
             headers.addHeader("Content-Type", "text/xml"); //application/soap+xml
             headers.addHeader("SOAPAction", "urn:sympasoap#add"); 
             headers.addHeader("Cookie", "sympa_session="+cookie);
@@ -27,19 +21,19 @@ public class SympaListOps {
             SOAPElement soapElement = soapBody.addChildElement("add", "ns", "urn:sympasoap");
 
             soapElement.addChildElement("list", "ns")
-                .addTextNode("pbalesamplelist")
+                .addTextNode(args[1])
                 .addAttribute(new QName("xsi:type"), "xsd:string");
 
             soapElement.addChildElement("email", "ns")
-                .addTextNode("rstanton@test.com")
+                .addTextNode(args[2])
                 .addAttribute(new QName("xsi:type"), "xsd:string");
 
             soapElement.addChildElement("gecos", "ns")
-                .addTextNode("Test user")
+                .addTextNode(args[3])
                 .addAttribute(new QName("xsi:type"), "xsd:string");
 
             soapElement.addChildElement("quiet", "ns")
-                .addTextNode("0")
+                .addTextNode(args[4])
                 .addAttribute(new QName("xsi:type"), "xsd:boolean");
 
             soapMessage.saveChanges();
@@ -60,43 +54,38 @@ public class SympaListOps {
      * 
      * @param cookie
      */
-    public static void del(String cookie) {
+    public static void del(String cookie, String[] args) {
         try {
+            SOAPMessage soapMessage = SympaClient.createMessageFactoryInstance();
+            SOAPPart soapPart = soapMessage.getSOAPPart();
+            SOAPEnvelope envelope = SympaClient.addNamespaceDeclaration(soapPart);
 
-        MessageFactory messageFactory = MessageFactory.newInstance();
-        SOAPMessage soapMessage = messageFactory.createMessage();
-        SOAPPart soapPart = soapMessage.getSOAPPart();
-        //String myNamespaceURI = "https://lists-dev.techservices.illinois.edu/lists/wsdl";
-        SOAPEnvelope envelope = SympaClient.addNamespaceDeclaration(soapPart);
+            MimeHeaders headers = soapMessage.getMimeHeaders();
 
-        MimeHeaders headers = soapMessage.getMimeHeaders();
+            headers.addHeader("Content-Type", "text/xml"); //application/soap+xml
+            headers.addHeader("SOAPAction", "urn:sympasoap#del"); 
+            headers.addHeader("Cookie", "sympa_session="+cookie);
+            SOAPBody soapBody = envelope.getBody();
 
-        //headers.addHeader("Authorization", encodedAuth);
-        headers.addHeader("Content-Type", "text/xml"); //application/soap+xml
-        headers.addHeader("SOAPAction", "urn:sympasoap#del"); 
-        headers.addHeader("Cookie", "sympa_session="+cookie);
-        SOAPBody soapBody = envelope.getBody();
+            SOAPElement soapElement = soapBody.addChildElement("del", "ns", "urn:sympasoap");
+            soapElement.addChildElement("list", "ns")
+                .addTextNode(args[1])
+                .addAttribute(new QName("xsi:type"), "xsd:string");
 
-        SOAPElement soapElement = soapBody.addChildElement("del", "ns", "urn:sympasoap");
-        soapElement.addChildElement("list", "ns")
-            .addTextNode("pbalesamplelist")
-            .addAttribute(new QName("xsi:type"), "xsd:string");
+            soapElement.addChildElement("email", "ns")
+                .addTextNode(args[2])
+                .addAttribute(new QName("xsi:type"), "xsd:string");
 
-        soapElement.addChildElement("email", "ns")
-            .addTextNode("rstanton@test.com")
-            .addAttribute(new QName("xsi:type"), "xsd:string");
+            soapElement.addChildElement("quiet", "ns")
+                .addTextNode(args[3])
+                .addAttribute(new QName("xsi:type"), "xsd:boolean");
 
-        soapElement.addChildElement("quiet", "ns")
-            .addTextNode("0")
-            .addAttribute(new QName("xsi:type"), "xsd:boolean");
+            soapMessage.saveChanges();
 
-        soapMessage.saveChanges();
+            SOAPMessage del = SympaClient.callSympaAPI(soapMessage);
 
-        SOAPMessage del = SympaClient.callSympaAPI(soapMessage);
-
-        System.out.println("\n del Response : ");
-        SympaClient.printSOAPMessage(del);
-
+            System.out.println("\n del Response : ");
+            SympaClient.printSOAPMessage(del);
         }
         catch(Exception e) {
             e.printStackTrace();
@@ -110,32 +99,23 @@ public class SympaListOps {
      */
     public static void getComplexLists(String cookie) {
         try {
+            SOAPMessage soapMessage = SympaClient.createMessageFactoryInstance();
+            SOAPPart soapPart = soapMessage.getSOAPPart();
+            SOAPEnvelope envelope = SympaClient.addNamespaceDeclaration(soapPart);
 
-        MessageFactory messageFactory = MessageFactory.newInstance();
-        SOAPMessage soapMessage = messageFactory.createMessage();
-        SOAPPart soapPart = soapMessage.getSOAPPart();
-        //String myNamespaceURI = "https://lists-dev.techservices.illinois.edu/lists/wsdl";
-        SOAPEnvelope envelope = SympaClient.addNamespaceDeclaration(soapPart);
+            MimeHeaders headers = soapMessage.getMimeHeaders();
 
-        MimeHeaders headers = soapMessage.getMimeHeaders();
-
-        //headers.addHeader("Authorization", encodedAuth);
-        headers.addHeader("Content-Type", "text/xml"); //application/soap+xml
-        headers.addHeader("SOAPAction", "urn:sympasoap#complexLists"); 
-        headers.addHeader("Cookie", "sympa_session="+cookie);
-        SOAPBody soapBody = envelope.getBody();
+            headers.addHeader("Content-Type", "text/xml"); //application/soap+xml
+            headers.addHeader("SOAPAction", "urn:sympasoap#complexLists"); 
+            headers.addHeader("Cookie", "sympa_session="+cookie);
+            SOAPBody soapBody = envelope.getBody();
         
-        SOAPElement soapElement = soapBody.addChildElement("complexLists", "ns", "urn:sympasoap");
+            SOAPElement soapElement = soapBody.addChildElement("complexLists", "ns", "urn:sympasoap");
+            soapMessage.saveChanges();
 
-        soapMessage.saveChanges();
-
-        System.out.println("\n  Soap Call for complexLists ");
-        
-        SOAPMessage lists = SympaClient.callSympaAPI(soapMessage);
-
-        System.out.println("\n complexLists Response : ");
-        SympaClient.printSOAPMessage(lists);
-
+            SOAPMessage lists = SympaClient.callSympaAPI(soapMessage);
+            System.out.println("\n complexLists Response : ");
+            SympaClient.printSOAPMessage(lists);
         }
         catch(Exception e) {
             e.printStackTrace();
@@ -147,37 +127,30 @@ public class SympaListOps {
      * 
      * @param cookie
      */
-    public static void closeList(String cookie) {
+    public static void closeList(String cookie, String[] args) {
         try {
+            SOAPMessage soapMessage = SympaClient.createMessageFactoryInstance();
+            SOAPPart soapPart = soapMessage.getSOAPPart();
+            SOAPEnvelope envelope = SympaClient.addNamespaceDeclaration(soapPart);
 
-        MessageFactory messageFactory = MessageFactory.newInstance();
-        SOAPMessage soapMessage = messageFactory.createMessage();
-        SOAPPart soapPart = soapMessage.getSOAPPart();
-        //String myNamespaceURI = "https://lists-dev.techservices.illinois.edu/lists/wsdl";
-        SOAPEnvelope envelope = SympaClient.addNamespaceDeclaration(soapPart);
+            MimeHeaders headers = soapMessage.getMimeHeaders();
 
-        MimeHeaders headers = soapMessage.getMimeHeaders();
-
-        //headers.addHeader("Authorization", encodedAuth);
-        headers.addHeader("Content-Type", "text/xml"); //application/soap+xml
-        headers.addHeader("SOAPAction", "urn:sympasoap#closeList"); 
-        headers.addHeader("Cookie", "sympa_session="+cookie);
-        SOAPBody soapBody = envelope.getBody();
+            headers.addHeader("Content-Type", "text/xml"); //application/soap+xml
+            headers.addHeader("SOAPAction", "urn:sympasoap#closeList"); 
+            headers.addHeader("Cookie", "sympa_session="+cookie);
+            SOAPBody soapBody = envelope.getBody();
         
-        SOAPElement soapElement = soapBody.addChildElement("closeList", "ns", "urn:sympasoap");
-        soapElement.addChildElement("list", "ns")
-            .addTextNode("rstanton_samplelist_1")
-            .addAttribute(new QName("xsi:type"), "xsd:string");
+            SOAPElement soapElement = soapBody.addChildElement("closeList", "ns", "urn:sympasoap");
+            soapElement.addChildElement("list", "ns")
+                .addTextNode(args[1])
+                .addAttribute(new QName("xsi:type"), "xsd:string");
 
-        soapMessage.saveChanges();
+            soapMessage.saveChanges();
 
-        System.out.println("\n  Soap Call for closeList ");
-        
-        SOAPMessage closeList = SympaClient.callSympaAPI(soapMessage);
+            SOAPMessage closeList = SympaClient.callSympaAPI(soapMessage);
 
-        System.out.println("\n closeList Response : ");
-        SympaClient.printSOAPMessage(closeList);
-
+            System.out.println("\n closeList Response : ");
+            SympaClient.printSOAPMessage(closeList);
         }
         catch(Exception e) {
             e.printStackTrace();
