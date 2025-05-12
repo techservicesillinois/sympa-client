@@ -6,19 +6,18 @@ import java.io.InputStream;
 import jakarta.xml.soap.MessageFactory;
 import jakarta.xml.soap.SOAPMessage;
 
-
 public class Main {
-  
+
   public static void main(String[] args) {
     String sessionCookie = null;
     try {
       String input = args[0];
       System.out.println("input: " + input);
       sessionCookie = SympaClient.loginSympa();
-      
+
       if (sessionCookie != null) {
 
-        switch(input) {
+        switch (input) {
           case "getList": {
             SympaClient.getLists(sessionCookie);
             break;
@@ -27,13 +26,11 @@ public class Main {
             SympaClient.createList(sessionCookie);
             break;
           }
-          case "getInfo":
-          {
+          case "getInfo": {
             SympaClient.getInfo(sessionCookie);
             break;
           }
-          case "review":
-          {
+          case "review": {
             String listName = null;
             if (args.length > 0) {
               listName = args[1];
@@ -41,8 +38,7 @@ public class Main {
             Review.review(sessionCookie, listName);
             break;
           }
-          case "subscribe":
-          {
+          case "subscribe": {
             String listName = null;
             if (args.length > 0) {
               listName = args[1];
@@ -50,31 +46,29 @@ public class Main {
             Subscribe.subscribe(sessionCookie, listName);
             break;
           }
-          case "fullreview":
-          {
+          case "fullreview": {
             String listName = null;
+            String type = null;
             if (args.length > 0) {
               listName = args[1];
+              type = args[2];
               InputStream xmldoc = new ByteArrayInputStream(listName.getBytes());
               SOAPMessage request = MessageFactory.newInstance().createMessage(null, xmldoc);
               System.out.println(request);
 
-
             }
-            FullReview.fullreview(sessionCookie, listName);
+            FullReview.fullreview(sessionCookie, listName, type);
             break;
           }
           default:
             System.out.println("wrong input");
         }
-       
+
       }
-      
-    } catch(Exception e) {
+
+    } catch (Exception e) {
       e.printStackTrace();
     }
-    
-    
-     
+
   }
 }
