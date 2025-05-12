@@ -15,8 +15,7 @@ public class FullReview {
   public static void fullreview(String cookie, String listName, String type) {
     try {
       List<String> emailList = new ArrayList<>();
-      MessageFactory messageFactory = MessageFactory.newInstance();
-      SOAPMessage soapMessage = messageFactory.createMessage();
+      SOAPMessage soapMessage = SympaClient.createMessageFactoryInstance();
       SOAPPart soapPart = soapMessage.getSOAPPart();
       SOAPEnvelope envelope = SympaClient.addNamespaceDeclaration(soapPart);
 
