@@ -54,12 +54,36 @@ soapConnection.close();
 This should build a request that looks like this:
 
 ```xml
-<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:ns="urn:sympasoap" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:targetNamespace="https://lists-dev.techservices.illinois.edu/lists/wsdl" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"><SOAP-ENV:Header/><SOAP-ENV:Body><ns:subscribe><ns:list xsi:type="xsd:string">pbale@illinois.edu</ns:list></ns:subscribe></SOAP-ENV:Body></SOAP-ENV:Envelope>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+  xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+  xmlns:ns="urn:sympasoap" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+  xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+  xmlns:targetNamespace="https://lists-dev.techservices.illinois.edu/lists/wsdl"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+  <SOAP-ENV:Header/>
+  <SOAP-ENV:Body>
+    <ns:subscribe>
+      <ns:list xsi:type="xsd:string">pbale@illinois.edu</ns:list>
+    </ns:subscribe>
+  </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
 ```
-response payload looks like this:
+Successfull (200) response payload looks like this:
 
 ```xml
-<?xml version="1.0" encoding="UTF-8"?><soap:Envelope soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soap:Body><soap:Fault><faultcode>soap:Server</faultcode><faultstring>Unknown list</faultstring><detail xsi:type="xsd:string">List pbale@illinois.edu unknown</detail></soap:Fault></soap:Body></soap:Envelope>
+<?xml version="1.0" encoding="UTF-8"?>
+<soap:Envelope soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+  xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+  xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <soap:Body>
+    <subscribeResponse xmlns="urn:sympasoap">
+      <result xsi:type="xsd:boolean">true</result>
+    </subscribeResponse>
+  </soap:Body>
+</soap:Envelope>
 ```
 
 ## Service - REVIEW
@@ -111,13 +135,49 @@ soapConnection.close();
 This should build a request that looks like this:
 
 ```xml
-<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:ns="urn:sympasoap" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:targetNamespace="https://lists-dev.techservices.illinois.edu/lists/wsdl" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"><SOAP-ENV:Header/><SOAP-ENV:Body><ns:review><ns:list xsi:type="xsd:string">scrumTeamB</ns:list></ns:review></SOAP-ENV:Body></SOAP-ENV:Envelope>
+<SOAP-ENV:Envelope
+  xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+  xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+  xmlns:ns="urn:sympasoap"
+  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+  xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+  xmlns:targetNamespace="https://lists-dev.techservices.illinois.edu/lists/wsdl"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+  <SOAP-ENV:Header/>
+  <SOAP-ENV:Body>
+    <ns:review>
+      <ns:list xsi:type="xsd:string">scrumTeamB</ns:list>
+    </ns:review>
+  </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
 ```
 
 response payload looks like this:
 
 ```xml
-<?xml version="1.0" encoding="UTF-8"?><soap:Envelope soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soap:Body><reviewResponse xmlns="urn:sympasoap"><return soapenc:arrayType="xsd:string[7]" xsi:type="soapenc:Array"><item xsi:type="xsd:string">aosar@illinois.edu</item><item xsi:type="xsd:string">pbale4@illinois.edu</item><item xsi:type="xsd:string">pbalex@illinois.edu</item><item xsi:type="xsd:string">pbaleyx@illinois.edu</item><item xsi:type="xsd:string">rstanton@illinois.edu</item><item xsi:type="xsd:string">scrumteamb@illinois.edu</item><item xsi:type="xsd:string">xyz123@gmail.com</item></return></reviewResponse></soap:Body></soap:Envelope>
+<?xml version="1.0" encoding="UTF-8"?>
+  <soap:Envelope
+    soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+    xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+    xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <soap:Body>
+      <reviewResponse xmlns="urn:sympasoap">
+      <return soapenc:arrayType="xsd:string[7]" xsi:type="soapenc:Array">
+        <item xsi:type="xsd:string">aosar@illinois.edu</item>
+        <item xsi:type="xsd:string">pbale4@illinois.edu</item>
+        <item xsi:type="xsd:string">pbalex@illinois.edu</item>
+        <item xsi:type="xsd:string">pbaleyx@illinois.edu</item>
+        <item xsi:type="xsd:string">rstanton@illinois.edu</item>
+        <item xsi:type="xsd:string">scrumteamb@illinois.edu</item>
+        <item xsi:type="xsd:string">xyz123@gmail.com</item>
+      </return>
+    </reviewResponse>
+  </soap:Body>
+</soap:Envelope>
 ```
 
 ## Service - FULLREVIEW
@@ -169,12 +229,97 @@ soapConnection.close();
 This should build a request that looks like this:
 
 ```xml
-<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:ns="urn:sympasoap" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:targetNamespace="https://lists-dev.techservices.illinois.edu/lists/wsdl" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"><SOAP-ENV:Header/><SOAP-ENV:Body><ns:fullReview><ns:list xsi:type="xsd:string">scrumTeamB</ns:list></ns:fullReview></SOAP-ENV:Body></SOAP-ENV:Envelope>
+<SOAP-ENV:Envelope
+  xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+  xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+  xmlns:ns="urn:sympasoap" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+  xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+  xmlns:targetNamespace="https://lists-dev.techservices.illinois.edu/lists/wsdl"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+    <SOAP-ENV:Header/>
+    <SOAP-ENV:Body>
+    <ns:fullReview>
+      <ns:list xsi:type="xsd:string">scrumTeamB</ns:list>
+    </ns:fullReview>
+  </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
 ```
 
 response payload looks like this:
 
 ```xml
-<?xml version="1.0" encoding="UTF-8"?><soap:Envelope soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soap:Body><fullReviewResponse xmlns="urn:sympasoap"><return soapenc:arrayType="xsd:anyType[8]" xsi:type="soapenc:Array"><item><email xsi:type="xsd:string">pbalex@illinois.edu</email><isSubscriber xsi:type="xsd:boolean">true</isSubscriber><isOwner xsi:type="xsd:boolean">false</isOwner><gecos xsi:type="xsd:string">true</gecos><isEditor xsi:type="xsd:boolean">false</isEditor></item><item><isOwner xsi:type="xsd:boolean">false</isOwner><isSubscriber xsi:type="xsd:boolean">true</isSubscriber><email xsi:type="xsd:string">rstanton@illinois.edu</email><isEditor xsi:type="xsd:boolean">false</isEditor><gecos xsi:type="xsd:string">true</gecos></item><item><isSubscriber xsi:type="xsd:boolean">true</isSubscriber><isOwner xsi:type="xsd:boolean">false</isOwner><email xsi:type="xsd:string">aosar@illinois.edu</email><isEditor xsi:type="xsd:boolean">false</isEditor><gecos xsi:type="xsd:string">true</gecos></item><item><isSubscriber xsi:type="xsd:boolean">true</isSubscriber><isOwner xsi:type="xsd:boolean">false</isOwner><email xsi:type="xsd:string">scrumteamb@illinois.edu</email><isEditor xsi:type="xsd:boolean">false</isEditor><gecos xsi:type="xsd:string" /></item><item><isEditor xsi:type="xsd:boolean">false</isEditor><gecos xsi:type="xsd:string">true</gecos><isOwner xsi:type="xsd:boolean">false</isOwner><isSubscriber xsi:type="xsd:boolean">true</isSubscriber><email xsi:type="xsd:string">pbale4@illinois.edu</email></item><item><gecos xsi:type="xsd:string">true</gecos><isEditor xsi:type="xsd:boolean">false</isEditor><email xsi:type="xsd:string">pbaleyx@illinois.edu</email><isOwner xsi:type="xsd:boolean">false</isOwner><isSubscriber xsi:type="xsd:boolean">true</isSubscriber></item><item><isEditor xsi:type="xsd:boolean">false</isEditor><gecos xsi:type="xsd:string">Prasanna</gecos><isOwner xsi:type="xsd:boolean">true</isOwner><isSubscriber xsi:type="xsd:boolean">false</isSubscriber><email xsi:type="xsd:string">pbale@illinois.edu</email></item><item><gecos xsi:type="xsd:string">true</gecos><isEditor xsi:type="xsd:boolean">false</isEditor><email xsi:type="xsd:string">xyz123@gmail.com</email><isOwner xsi:type="xsd:boolean">false</isOwner><isSubscriber xsi:type="xsd:boolean">true</isSubscriber></item></return></fullReviewResponse></soap:Body></soap:Envelope>
+<?xml version="1.0" encoding="UTF-8"?>
+<soap:Envelope
+  soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+  xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+  xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <soap:Body>
+  	<fullReviewResponse xmlns="urn:sympasoap">
+  		<return soapenc:arrayType="xsd:anyType[8]" xsi:type="soapenc:Array">
+  			<item>
+  				<isOwner xsi:type="xsd:boolean">false</isOwner>
+  				<isSubscriber xsi:type="xsd:boolean">true</isSubscriber>
+  				<email xsi:type="xsd:string">xyz123@gmail.com</email>
+  				<isEditor xsi:type="xsd:boolean">false</isEditor>
+  				<gecos xsi:type="xsd:string">true</gecos>
+  			</item>
+  			<item>
+  				<isEditor xsi:type="xsd:boolean">false</isEditor>
+  				<gecos xsi:type="xsd:string" />
+  				<isSubscriber xsi:type="xsd:boolean">true</isSubscriber>
+  				<isOwner xsi:type="xsd:boolean">false</isOwner>
+  				<email xsi:type="xsd:string">scrumteamb@illinois.edu</email>
+  			</item>
+  			<item>
+  				<isSubscriber xsi:type="xsd:boolean">true</isSubscriber>
+  				<isOwner xsi:type="xsd:boolean">false</isOwner>
+  				<email xsi:type="xsd:string">pbale4@illinois.edu</email>
+  				<isEditor xsi:type="xsd:boolean">false</isEditor>
+  				<gecos xsi:type="xsd:string">true</gecos>
+  			</item>
+  				
+  			<item>
+  				<email xsi:type="xsd:string">pbale@illinois.edu</email>
+  				<isOwner xsi:type="xsd:boolean">true</isOwner>
+  				<isSubscriber xsi:type="xsd:boolean">false</isSubscriber>
+  				<gecos xsi:type="xsd:string">Prasanna</gecos>
+  				<isEditor xsi:type="xsd:boolean">false</isEditor>
+  			</item>
+  			<item>
+  				<isOwner xsi:type="xsd:boolean">false</isOwner>
+  				<isSubscriber xsi:type="xsd:boolean">true</isSubscriber>
+  				<email xsi:type="xsd:string">pbaleyx@illinois.edu</email>
+  				<isEditor xsi:type="xsd:boolean">false</isEditor>
+  				<gecos xsi:type="xsd:string">true</gecos>
+  			</item>
+  			<item>
+  				<isSubscriber xsi:type="xsd:boolean">true</isSubscriber>
+  				<isOwner xsi:type="xsd:boolean">false</isOwner>
+  				<email xsi:type="xsd:string">rstanton@illinois.edu</email>
+  				<isEditor xsi:type="xsd:boolean">false</isEditor>
+  				<gecos xsi:type="xsd:string">true</gecos>
+  			</item>
+  			<item>
+  				<email xsi:type="xsd:string">aosar@illinois.edu</email>
+  				<isOwner xsi:type="xsd:boolean">false</isOwner>
+  				<isSubscriber xsi:type="xsd:boolean">true</isSubscriber>
+  				<gecos xsi:type="xsd:string">true</gecos>
+  				<isEditor xsi:type="xsd:boolean">false</isEditor>
+  			</item>
+  			<item>
+  				<isOwner xsi:type="xsd:boolean">false</isOwner>
+  				<isSubscriber xsi:type="xsd:boolean">true</isSubscriber>
+  				<email xsi:type="xsd:string">pbalex@illinois.edu</email>
+  				<isEditor xsi:type="xsd:boolean">false</isEditor>
+  				<gecos xsi:type="xsd:string">true</gecos>
+  			</item>
+  		</return>
+    </fullReviewResponse>
+  </soap:Body>
+</soap:Envelope>
 ```
 
