@@ -168,3 +168,70 @@ mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.
 
 * service - review, Name of the service
 * list - scrumTeamB, Name of the list
+
+#### fullReview
+```bash
+mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="service list type"
+```
+example usage:
+```bash
+mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="fullreview scrumTeamB subscriber"
+```
+
+* service - fullreview, Name of the service
+* list - scrumTeamB, Name of the list
+* type - permission type to enumerate through the list. values can be (subscriber, owner, editor)
+
+#### add
+```bash
+mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="service parameters"
+```
+example usage:
+```bash
+mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="add scrumTeamB,pbale@illinois.edu,true,true"
+```
+
+* service - add -  Name of the service 
+* service2-parameters for add - scrumTeamB,xxx@illinois.edu,true,true - Parameters passed to add a user to the list 
+
+#### del
+```bash
+mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="service parameters"
+```
+example usage:
+```bash
+mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="del scrumTeamB,pbale@illinois.edu,true"
+```
+
+* service - del -  Name of the service 
+* service2-parameters for del - scrumTeamB,xxx@illinois.edu,true - Parameters passed to del a user to the list 
+
+#### closeList
+```bash
+mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="service list"
+```
+example usage:
+```bash
+mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="closeList scrumTeamB"
+```
+
+* service - closeList -  Name of the service 
+* list - scrumTeamB, Name of the list to be closed. 
+
+#### complexList
+```bash
+mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="service list"
+```
+example usage:
+```bash
+mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="complexList"
+```
+
+* service - closeList -  Name of the service 
+
+#### which
+/* TODO */
+
+#### complexwhich
+/* TODO */
+
