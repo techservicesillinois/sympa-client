@@ -1,8 +1,12 @@
 package edu.illinois.techservices.sympa;
 
 import edu.illinois.techservices.sympa.SympaLoginClient;
+import jakarta.xml.soap.MessageFactory;
+import jakarta.xml.soap.SOAPMessage;
 import edu.illinois.techservices.sympa.Review;
 import java.util.List;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -96,7 +100,14 @@ public class SympaMain {
           break;
         }
         case "fullreview": {
-          // FullReview.fullreview(sessionCookie);
+          String listName = null;
+          String type = null;
+          if (args.length > 0) {
+            listName = args[1];
+            type = args[2];
+
+          }
+          FullReview.fullreview(sessionCookie, listName, type);
           break;
         }
         default:
