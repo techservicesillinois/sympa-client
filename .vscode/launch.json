@@ -1,0 +1,20 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+
+    {
+      "type": "java",
+      "name": "Current File",
+      "request": "launch",
+      "mainClass": "${file}"
+    },
+    {
+      "type": "java",
+      "name": "SympaMain which",
+      "request": "launch",
+      "mainClass": "edu.illinois.techservices.sympa.SympaMain",
+      "projectName": "sympa",
+      "args": "which scrumteamb"
+    }
+  ]
+}
