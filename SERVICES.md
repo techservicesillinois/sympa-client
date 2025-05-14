@@ -1,10 +1,10 @@
-# SOAP SERVICE USAGE
+# SOAP Service Usage
 
 Note: Almost all the service calls require session cookie to establish the connection to sympa service. Please see JavaSOAP.md on how to grab a session cookie.
 
 # Building SOAP Requests for Sympa Services
 
-## Service - SUBSCRIBE
+## Service - subscribe
 ### Initialize the MessageFactory and SOAPMessage:
 ```java
 MessageFactory messageFactory = MessageFactory.newInstance();
@@ -41,8 +41,7 @@ headers.addHeader("RequestMethod", "POST");
 // Save the changes to the SOAP message
 soapMessage.saveChanges();
 ```
-### Submit 'SUBSCRIBE' service request
-
+### Submit 'subscribe' service request
 ```java
 
 SOAPMessage response = null;
@@ -86,7 +85,7 @@ Successfull (200) response payload looks like this:
 </soap:Envelope>
 ```
 
-## Service - REVIEW
+## Service - review
 ### Initialize the MessageFactory and SOAPMessage:
 ```java
 MessageFactory messageFactory = MessageFactory.newInstance();
@@ -122,7 +121,7 @@ headers.addHeader("RequestMethod", "POST");
 
 soapMessage.saveChanges();
 ```
-### Submit 'REVIEW' service request
+### Submit 'review' service request
 
 ```java
 
@@ -180,7 +179,7 @@ response payload looks like this:
 </soap:Envelope>
 ```
 
-## Service - FULLREVIEW
+## Service - fullreview
 ### Initialize the MessageFactory and SOAPMessage:
 ```java
 MessageFactory messageFactory = MessageFactory.newInstance();
@@ -216,8 +215,7 @@ headers.addHeader("RequestMethod", "POST");
 
 soapMessage.saveChanges();
 ```
-### Submit 'FULLREVIEW' service request
-
+### Submit 'fullreview' service request
 ```java
 SOAPMessage response = null;
 SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
@@ -296,20 +294,6 @@ response payload looks like this:
   				<gecos xsi:type="xsd:string">true</gecos>
   			</item>
   			<item>
-  				<isSubscriber xsi:type="xsd:boolean">true</isSubscriber>
-  				<isOwner xsi:type="xsd:boolean">false</isOwner>
-  				<email xsi:type="xsd:string">abc@illinois.edu</email>
-  				<isEditor xsi:type="xsd:boolean">false</isEditor>
-  				<gecos xsi:type="xsd:string">true</gecos>
-  			</item>
-  			<item>
-  				<email xsi:type="xsd:string">a123@illinois.edu</email>
-  				<isOwner xsi:type="xsd:boolean">false</isOwner>
-  				<isSubscriber xsi:type="xsd:boolean">true</isSubscriber>
-  				<gecos xsi:type="xsd:string">true</gecos>
-  				<isEditor xsi:type="xsd:boolean">false</isEditor>
-  			</item>
-  			<item>
   				<isOwner xsi:type="xsd:boolean">false</isOwner>
   				<isSubscriber xsi:type="xsd:boolean">true</isSubscriber>
   				<email xsi:type="xsd:string">frt5@illinois.edu</email>
@@ -322,7 +306,7 @@ response payload looks like this:
 </soap:Envelope>
 ```
 
-## Service - AUTHENTICATEANDRUN
+## Service - authneticateAndRun
 ### Initialize the MessageFactory and SOAPMessage:
 ```java
 MessageFactory messageFactory = MessageFactory.newInstance();
@@ -377,8 +361,7 @@ headers.addHeader("RequestMethod", "POST");
 
 soapMessage.saveChanges();
 ```
-### Submit 'AUTHENTICATEANDRUN' service request
-
+### Submit 'authneticateAndRun' service request
 ```java
 SOAPMessage response = null;
 SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
@@ -434,7 +417,7 @@ response payload looks like this:
 ```
 
 
-## Service - getList
+## Service - lists
 ### Initialize the MessageFactory and SOAPMessage:
 ```java
 MessageFactory messageFactory = MessageFactory.newInstance();
@@ -467,8 +450,7 @@ headers.addHeader("RequestMethod", "POST");
 
 soapMessage.saveChanges();
 ```
-### Submit 'LISTS' service request
-
+### Submit 'lists' service request
 ```java
 SOAPMessage response = null;
 SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
@@ -530,7 +512,7 @@ response payload looks like this:
 </soap:Envelope>
 ```
 
-## Service - CREATELIST
+## Service - createlist
 ### Initialize the MessageFactory and SOAPMessage:
 ```java
 MessageFactory messageFactory = MessageFactory.newInstance();
@@ -563,8 +545,7 @@ headers.addHeader("RequestMethod", "POST");
 
 soapMessage.saveChanges();
 ```
-### Submit 'CREATELIST' service request
-
+### Submit 'createlist' service request
 ```java
 SOAPMessage response = null;
 SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
