@@ -200,6 +200,7 @@ public class SympaClient {
     }
   }
 
+
   /**
    * Print the contents of soap message to the console.
    * 
