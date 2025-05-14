@@ -219,6 +219,66 @@ public class SympaClient {
   }
 
   /**
+   * Recursively fetch the first SOAPElement that matches the given node name.
+   *
+   * @param parent      Parent SOAPElement
+   * @param childName   Node name to search for
+   * @return            First matching SOAPElement or null
+   */
+  public static SOAPElement getChildElementByName(SOAPElement parent, String childName) {
+    Iterator<?> children = parent.getChildElements();
+    while (children.hasNext()) {
+      Object next = children.next();
+      if (next instanceof SOAPElement) {
+        SOAPElement child = (SOAPElement) next;
+        if (child.getNodeName().equals(childName)) {
+          System.out.println("[DEBUG] Found element name: " + child.getNodeName());
+          // TODO: Use callback here to handle different parsing logic and
+          // consolidate code from getFirstChildElementValueByName
+          // (this is redundant code)
+          return child;
+        }
+        else {
+          System.out.println("[DEBUG] No child node match for: '" + childName + "'. Found: '" + child.getNodeName() + "'. Continuing search.");
+          // Recursive search
+          return getChildElementByName(child, childName);
+        }
+      }
+    }
+
+    System.out.println("[WARN] Element not found with name: " + childName);
+    return null;
+  }
+
+  /**
+   * Recursively fetch the text value of the first descendant element with the given
+   * node name.
+   *
+   * @param parent    Parent SOAPElement
+   * @param childName Node name to search for
+   * @return          String value or null
+   */
+  public static String getFirstChildElementValueByName(SOAPElement parent, String childName) {
+    Iterator<?> children = parent.getChildElements();
+    while (children.hasNext()) {
+      Object next = children.next();
+      if (next instanceof SOAPElement) {
+        SOAPElement child = (SOAPElement) next;
+        if (child.getNodeName().equals(childName)) {
+          System.out.println("[DEBUG] Found element name: " + child.getNodeName());
+          return child.getValue();
+        } else {
+          System.out.println("[DEBUG] No child node match for: '" + childName + "'. Found: '" + child.getNodeName() + "'. Continuing search.");
+          // Recursively search this child's children
+          return getFirstChildElementValueByName(child, childName);
+        }
+      }
+    }
+    System.out.println("[WARN] No element found with name: " + childName);
+    return null;
+  }
+
+  /**
    * Retrieve the session cookie from the sympa response returned from the server.
    * 
    * @param soapMessage
@@ -230,21 +290,9 @@ public class SympaClient {
     }
     String sessionCookie = null;
     SOAPBody responseBody = soapMessage.getSOAPBody();
-    Iterator<?> iterator = responseBody.getChildElements();
-    while (iterator.hasNext()) {
-      SOAPElement element = (SOAPElement) iterator.next();
-      if (element.hasAttributes()) {
-        Iterator<?> iterator1 = element.getChildElements();
-        if (iterator1.hasNext()) {
-          SOAPElement element1 = (SOAPElement) iterator1.next();
-          System.out.println("Element: " + element1.getNodeName() + "======  value: " + element1.getValue());
-          if (element1.getValue() != null) {
-            sessionCookie = element1.getValue();
-            break;
-          }
-        }
-      }
-    }
+
+    sessionCookie = getFirstChildElementValueByName(responseBody, "result");
+    System.out.println("[DEBUG] Session cookie: " + sessionCookie);
     return sessionCookie;
   }
 
