@@ -25,7 +25,7 @@ SOAPBody soapBody = envelope.getBody();
 ### Initialize/set SOAP envelope elements:
 ```java
 // Set the API call for `which`
-SOAPElement soapElement = soapBody.addChildElement("which", "ns", "urn:sympasoap");
+SOAPElement soapElement = soapBody.addChildElement("subscribe", "ns", "urn:sympasoap");
 
 // Add list naem to the SOAP request
 soapElement.addChildElement("list", "ns")
@@ -41,7 +41,7 @@ headers.addHeader("RequestMethod", "POST");
 // Save the changes to the SOAP message
 soapMessage.saveChanges();
 ```
-### Submit 'WHICH' service request
+### Submit 'SUBSCRIBE' service request
 
 ```java
 
@@ -276,43 +276,43 @@ response payload looks like this:
   			<item>
   				<isSubscriber xsi:type="xsd:boolean">true</isSubscriber>
   				<isOwner xsi:type="xsd:boolean">false</isOwner>
-  				<email xsi:type="xsd:string">pbale4@illinois.edu</email>
+  				<email xsi:type="xsd:string">were4@illinois.edu</email>
   				<isEditor xsi:type="xsd:boolean">false</isEditor>
   				<gecos xsi:type="xsd:string">true</gecos>
   			</item>
   				
   			<item>
-  				<email xsi:type="xsd:string">pbale@illinois.edu</email>
+  				<email xsi:type="xsd:string">zzz@illinois.edu</email>
   				<isOwner xsi:type="xsd:boolean">true</isOwner>
   				<isSubscriber xsi:type="xsd:boolean">false</isSubscriber>
-  				<gecos xsi:type="xsd:string">Prasanna</gecos>
-  				<isEditor xsi:type="xsd:boolean">false</isEditor>
-  			</item>
-  			<item>
-  				<isOwner xsi:type="xsd:boolean">false</isOwner>
-  				<isSubscriber xsi:type="xsd:boolean">true</isSubscriber>
-  				<email xsi:type="xsd:string">pbaleyx@illinois.edu</email>
-  				<isEditor xsi:type="xsd:boolean">false</isEditor>
-  				<gecos xsi:type="xsd:string">true</gecos>
-  			</item>
-  			<item>
-  				<isSubscriber xsi:type="xsd:boolean">true</isSubscriber>
-  				<isOwner xsi:type="xsd:boolean">false</isOwner>
-  				<email xsi:type="xsd:string">rstanton@illinois.edu</email>
-  				<isEditor xsi:type="xsd:boolean">false</isEditor>
-  				<gecos xsi:type="xsd:string">true</gecos>
-  			</item>
-  			<item>
-  				<email xsi:type="xsd:string">aosar@illinois.edu</email>
-  				<isOwner xsi:type="xsd:boolean">false</isOwner>
-  				<isSubscriber xsi:type="xsd:boolean">true</isSubscriber>
   				<gecos xsi:type="xsd:string">true</gecos>
   				<isEditor xsi:type="xsd:boolean">false</isEditor>
   			</item>
   			<item>
   				<isOwner xsi:type="xsd:boolean">false</isOwner>
   				<isSubscriber xsi:type="xsd:boolean">true</isSubscriber>
-  				<email xsi:type="xsd:string">pbalex@illinois.edu</email>
+  				<email xsi:type="xsd:string">xnj@illinois.edu</email>
+  				<isEditor xsi:type="xsd:boolean">false</isEditor>
+  				<gecos xsi:type="xsd:string">true</gecos>
+  			</item>
+  			<item>
+  				<isSubscriber xsi:type="xsd:boolean">true</isSubscriber>
+  				<isOwner xsi:type="xsd:boolean">false</isOwner>
+  				<email xsi:type="xsd:string">abc@illinois.edu</email>
+  				<isEditor xsi:type="xsd:boolean">false</isEditor>
+  				<gecos xsi:type="xsd:string">true</gecos>
+  			</item>
+  			<item>
+  				<email xsi:type="xsd:string">a123@illinois.edu</email>
+  				<isOwner xsi:type="xsd:boolean">false</isOwner>
+  				<isSubscriber xsi:type="xsd:boolean">true</isSubscriber>
+  				<gecos xsi:type="xsd:string">true</gecos>
+  				<isEditor xsi:type="xsd:boolean">false</isEditor>
+  			</item>
+  			<item>
+  				<isOwner xsi:type="xsd:boolean">false</isOwner>
+  				<isSubscriber xsi:type="xsd:boolean">true</isSubscriber>
+  				<email xsi:type="xsd:string">frt5@illinois.edu</email>
   				<isEditor xsi:type="xsd:boolean">false</isEditor>
   				<gecos xsi:type="xsd:string">true</gecos>
   			</item>
@@ -342,10 +342,10 @@ SOAPBody soapBody = envelope.getBody();
 ```
 ### Initialize/set SOAP envelope elements:
 ```java
-// Set the API call for `review`
+// Set the API call for `authenticateAndRun`
 SOAPElement soapElement = soapBody.addChildElement("authenticateAndRun", "ns", "urn:sympasoap");
 soapElement.addChildElement("email")
-          .addTextNode(email)
+          .addTextNode("xyz@illinois.edu")
           .addAttribute(new QName("xsi:type"), "xsd:string");
 
 soapElement.addChildElement("cookie")
@@ -353,14 +353,14 @@ soapElement.addChildElement("cookie")
           .addAttribute(new QName("xsi:type"), "xsd:string");
 
 soapElement.addChildElement("service")
-          .addTextNode(service)
+          .addTextNode("add")  //Can be add/del
           .addAttribute(new QName("xsi:type"), "xsd:string");
 
 // Parameters to perform specific service like (add, del)
 SOAPElement items = soapElement.addChildElement("parameters", "ns");
 items.addAttribute(new QName("xsi:type"), "SOAP-ENC:Array");
 items.addAttribute(new QName("SOAP-ENC:arrayType"), "xsd:string[" + parameters.size() + "]");
-
+parameters = {"scrumTeamB","abc@illinois.edu",true,true}
 for (String param : parameters) {
   SOAPElement item = items.addChildElement("item");
   item.addTextNode(param);
@@ -509,16 +509,20 @@ response payload looks like this:
   	<listsResponse xmlns="urn:sympasoap">
       <listInfo soapenc:arrayType="xsd:string[11]" xsi:type="soapenc:Array">
         <item xsi:type="xsd:string">
-          homepage=https://lists-dev.techservices.illinois.edu/lists/info/samplelist1;listAddress=samplelist1@lists-dev.techservices.illinois.edu;subject=samplelist1
+          homepage=https://lists-dev.techservices.illinois.edu/lists/info/samplelist1;
+          listAddress=samplelist1@lists-dev.techservices.illinois.edu;subject=samplelist1
         </item>
         <item xsi:type="xsd:string">
-          homepage=https://lists-dev.techservices.illinois.edu/lists/info/samplelist2;listAddress=samplelist2@lists-dev.techservices.illinois.edu;subject=samplelist2
+          homepage=https://lists-dev.techservices.illinois.edu/lists/info/samplelist2;
+          listAddress=samplelist2@lists-dev.techservices.illinois.edu;subject=samplelist2
         </item>
         <item xsi:type="xsd:string">
-          homepage=https://lists-dev.techservices.illinois.edu/lists/info/samplelist3;listAddress=samplelist3@lists-dev.techservices.illinois.edu;subject=samplelist3
+          homepage=https://lists-dev.techservices.illinois.edu/lists/info/samplelist3;
+          listAddress=samplelist3@lists-dev.techservices.illinois.edu;subject=samplelist3
         </item>
         <item xsi:type="xsd:string">
-          homepage=https://lists-dev.techservices.illinois.edu/lists/info/samplelist4;listAddress=samplelist4@lists-dev.techservices.illinois.edu;subject=samplelist4
+          homepage=https://lists-dev.techservices.illinois.edu/lists/info/samplelist4;
+          listAddress=samplelist4@lists-dev.techservices.illinois.edu;subject=samplelist4
         </item>
       </listInfo>
     </listsResponse>
