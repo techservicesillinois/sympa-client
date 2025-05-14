@@ -136,7 +136,7 @@ public class SympaMain {
           }
         }
         case "getComplexLists": {
-          SympaClient.getComplexLists(sessionCookie);
+          SympaListOps.getComplexLists(sessionCookie);
           break;
         }
         case "closeList": {
