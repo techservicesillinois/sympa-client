@@ -596,3 +596,271 @@ response payload looks like this:
 </soap:Envelope>
 ```
 
+## Service - add
+### Initialize the MessageFactory and SOAPMessage:
+```java
+MessageFactory messageFactory = MessageFactory.newInstance();
+SOAPMessage soapMessage = messageFactory.createMessage();
+SOAPPart soapPart = soapMessage.getSOAPPart();
+
+SOAPEnvelope envelope = soapPart.getEnvelope();
+envelope.addNamespaceDeclaration("ns", "urn:sympasoap");
+envelope.addNamespaceDeclaration("soapenc", "http://schema.xmlsoap.org/soap/encoding/");
+envelope.addNamespaceDeclaration("soap", "http://schemas.xmlsoap.org/wsdl/soap/");
+envelope.addNamespaceDeclaration("xsd", "http://www.w3.org/2001/XMLSchema");
+envelope.addNamespaceDeclaration("xsi", "http://www.w3.org/2001/XMLSchema-instance");
+envelope.addNamespaceDeclaration("targetNamespace", "https://lists-dev.techservices.illinois.edu/lists/wsdl");
+envelope.setEncodingStyle("http://schemas.xmlsoap.org/soap/encoding/");
+
+SOAPBody soapBody = envelope.getBody();
+```
+### Initialize/set SOAP envelope elements:
+```java
+// Set the API call for `add`
+SOAPElement soapElement = soapBody.addChildElement("add", "ns", "urn:sympasoap");
+
+//Add required headers          
+MimeHeaders headers = soapMessage.getMimeHeaders();
+
+headers.addHeader("Authorization", encodedAuth);
+headers.addHeader("Content-Type", "text/xml"); 
+headers.addHeader("SOAPAction", "urn:sympasoap#add"); 
+headers.addHeader("RequestMethod", "POST");
+
+soapMessage.saveChanges();
+```
+### Submit 'add' service request
+```java
+SOAPMessage response = null;
+SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
+SOAPConnection soapConnection = soapConnectionFactory.createConnection();
+response = soapConnection.call(soapMessage, "https://lists-dev.techservices.illinois.edu/sympasoap");
+soapConnection.close();
+```
+This should build a request that looks like this:
+
+```xml
+<SOAP-ENV:Envelope
+  xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+  xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+  xmlns:ns="urn:sympasoap" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+  xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+  xmlns:targetNamespace="https://lists-dev.techservices.illinois.edu/lists/wsdl"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+    <SOAP-ENV:Header/>
+    <SOAP-ENV:Body>
+      <ns:add>
+        <ns:list xsi:type="xsd:string">scrumTeamB</ns:list>
+        <ns:email xsi:type="xsd:string">test242@illinois.edu</ns:email>
+        <ns:gecos xsi:type="xsd:string">true</ns:gecos>
+        <ns:quiet xsi:type="xsd:boolean">true</ns:quiet>
+      </ns:add>
+  </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
+```
+
+response payload looks like this:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<soap:Envelope
+  soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+  xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+  xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <soap:Body>
+  	<addResponse xmlns="urn:sympasoap">
+      <result xsi:type="xsd:boolean">true</result>
+    </addResponse>
+  </soap:Body>
+</soap:Envelope>
+```
+
+## Service - del
+### Initialize the MessageFactory and SOAPMessage:
+```java
+MessageFactory messageFactory = MessageFactory.newInstance();
+SOAPMessage soapMessage = messageFactory.createMessage();
+SOAPPart soapPart = soapMessage.getSOAPPart();
+
+SOAPEnvelope envelope = soapPart.getEnvelope();
+envelope.addNamespaceDeclaration("ns", "urn:sympasoap");
+envelope.addNamespaceDeclaration("soapenc", "http://schema.xmlsoap.org/soap/encoding/");
+envelope.addNamespaceDeclaration("soap", "http://schemas.xmlsoap.org/wsdl/soap/");
+envelope.addNamespaceDeclaration("xsd", "http://www.w3.org/2001/XMLSchema");
+envelope.addNamespaceDeclaration("xsi", "http://www.w3.org/2001/XMLSchema-instance");
+envelope.addNamespaceDeclaration("targetNamespace", "https://lists-dev.techservices.illinois.edu/lists/wsdl");
+envelope.setEncodingStyle("http://schemas.xmlsoap.org/soap/encoding/");
+
+SOAPBody soapBody = envelope.getBody();
+```
+### Initialize/set SOAP envelope elements:
+```java
+// Set the API call for `del`
+SOAPElement soapElement = soapBody.addChildElement("del", "ns", "urn:sympasoap");
+
+//Add required headers          
+MimeHeaders headers = soapMessage.getMimeHeaders();
+
+headers.addHeader("Authorization", encodedAuth);
+headers.addHeader("Content-Type", "text/xml"); 
+headers.addHeader("SOAPAction", "urn:sympasoap#del"); 
+headers.addHeader("RequestMethod", "POST");
+
+soapMessage.saveChanges();
+```
+### Submit 'del' service request
+```java
+SOAPMessage response = null;
+SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
+SOAPConnection soapConnection = soapConnectionFactory.createConnection();
+response = soapConnection.call(soapMessage, "https://lists-dev.techservices.illinois.edu/sympasoap");
+soapConnection.close();
+```
+This should build a request that looks like this:
+
+```xml
+<SOAP-ENV:Envelope
+  xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+  xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+  xmlns:ns="urn:sympasoap" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+  xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+  xmlns:targetNamespace="https://lists-dev.techservices.illinois.edu/lists/wsdl"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+    <SOAP-ENV:Header/>
+    <SOAP-ENV:Body>
+      <ns:del>
+        <ns:list xsi:type="xsd:string">scrumTeamB</ns:list>
+        <ns:email xsi:type="xsd:string">test242@illinois.edu</ns:email>
+        <ns:quiet xsi:type="xsd:boolean">true</ns:quiet>
+      </ns:del>
+  </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
+```
+
+response payload looks like this:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<soap:Envelope
+  soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+  xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+  xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <soap:Body>
+  	<delResponse xmlns="urn:sympasoap">
+      <result xsi:type="xsd:boolean">true</result>
+    </delResponse>
+  </soap:Body>
+</soap:Envelope>
+```
+
+## Service - complexList
+### Initialize the MessageFactory and SOAPMessage:
+```java
+MessageFactory messageFactory = MessageFactory.newInstance();
+SOAPMessage soapMessage = messageFactory.createMessage();
+SOAPPart soapPart = soapMessage.getSOAPPart();
+
+SOAPEnvelope envelope = soapPart.getEnvelope();
+envelope.addNamespaceDeclaration("ns", "urn:sympasoap");
+envelope.addNamespaceDeclaration("soapenc", "http://schema.xmlsoap.org/soap/encoding/");
+envelope.addNamespaceDeclaration("soap", "http://schemas.xmlsoap.org/wsdl/soap/");
+envelope.addNamespaceDeclaration("xsd", "http://www.w3.org/2001/XMLSchema");
+envelope.addNamespaceDeclaration("xsi", "http://www.w3.org/2001/XMLSchema-instance");
+envelope.addNamespaceDeclaration("targetNamespace", "https://lists-dev.techservices.illinois.edu/lists/wsdl");
+envelope.setEncodingStyle("http://schemas.xmlsoap.org/soap/encoding/");
+
+SOAPBody soapBody = envelope.getBody();
+```
+### Initialize/set SOAP envelope elements:
+```java
+// Set the API call for `complexList`
+SOAPElement soapElement = soapBody.addChildElement("complexList", "ns", "urn:sympasoap");
+
+//Add required headers          
+MimeHeaders headers = soapMessage.getMimeHeaders();
+
+headers.addHeader("Authorization", encodedAuth);
+headers.addHeader("Content-Type", "text/xml"); 
+headers.addHeader("SOAPAction", "urn:sympasoap#complexList"); 
+headers.addHeader("RequestMethod", "POST");
+
+soapMessage.saveChanges();
+```
+### Submit 'complexList' service request
+```java
+SOAPMessage response = null;
+SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
+SOAPConnection soapConnection = soapConnectionFactory.createConnection();
+response = soapConnection.call(soapMessage, "https://lists-dev.techservices.illinois.edu/sympasoap");
+soapConnection.close();
+```
+This should build a request that looks like this:
+
+```xml
+<SOAP-ENV:Envelope
+  xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+  xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+  xmlns:ns="urn:sympasoap" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+  xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+  xmlns:targetNamespace="https://lists-dev.techservices.illinois.edu/lists/wsdl"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+    <SOAP-ENV:Header/>
+    <SOAP-ENV:Body>
+      <ns:complexLists/>
+  </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
+```
+
+response payload looks like this:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<soap:Envelope
+  soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+  xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+  xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <soap:Body>
+  	<complexListsResponse xmlns="urn:sympasoap">
+      <listInfo soapenc:arrayType="xsd:anyType[12]" xsi:type="soapenc:Array">
+        <item>
+          <listAddress xsi:type="xsd:string">sampleList1@lists-dev.techservices.illinois.edu</listAddress>
+          <subject xsi:type="xsd:string">sampleList1</subject>
+          <homepage xsi:type="xsd:string">https://lists-dev.techservices.illinois.edu/lists/info/sampleList1</homepage>
+        </item>
+        <item>
+          <homepage xsi:type="xsd:string">https://lists-dev.techservices.illinois.edu/lists/info/sampleList2</homepage>
+          <subject xsi:type="xsd:string">sampleList2</subject>
+          <listAddress xsi:type="xsd:string">sampleList2@lists-dev.techservices.illinois.edu</listAddress>
+        </item>
+        <item>
+          <listAddress xsi:type="xsd:string">sampleList3@lists-dev.techservices.illinois.edu</listAddress>
+          <subject xsi:type="xsd:string">sampleList3</subject>
+          <homepage xsi:type="xsd:string">https://lists-dev.techservices.illinois.edu/lists/info/sampleList3</homepage>
+        </item>
+        <item>
+          <subject xsi:type="xsd:string">sampleList4</subject>
+          <listAddress xsi:type="xsd:string">sampleList4@lists-dev.techservices.illinois.edu</listAddress>
+          <homepage xsi:type="xsd:string">https://lists-dev.techservices.illinois.edu/lists/info/sampleList4</homepage>
+        </item>
+      </listInfo>
+    </complexListsResponse>
+  </soap:Body>
+</soap:Envelope>
+```
+
+
+
+
+
