@@ -159,11 +159,21 @@ public class SympaMain {
           Which.which(listName);
           break;
         }
+        case "complexWhich": {
+          if (args.length != 2) {
+            System.out.println("Please provide a list name to check");
+            System.exit(0);
+          }
+          String listName = args[1];
+          Which.complexWhich(listName);
+          break;
+        }
         default:
           System.out.println("Invalid API call. Please provide a valid function call.");
           System.out.println("Example args: getList, createList, getInfo");
           System.out.println("Example Usage: -Dexec.args=\"getList\"");
           System.out.println("Use space-separated arguments for calls with parameters.");
+          System.out.println("Received args: " + Arrays.toString(args));
           System.exit(0);
       }
     }
