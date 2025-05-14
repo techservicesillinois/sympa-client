@@ -1,5 +1,8 @@
 package edu.illinois.techservices.sympa;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 import javax.xml.namespace.QName;
 import jakarta.xml.soap.*;
 import edu.illinois.techservices.sympa.SympaClient;
@@ -8,7 +11,7 @@ public class Which {
   private static String sympaSoapUrl = SympaClient.sympaSoapUrl;
   private static String cookie = SympaClient.sessionCookie;
 
-  public static String which(String listName) {
+  public static String which() {
     try {
       SOAPMessage soapMessage = SympaClient.createMessageFactoryInstance();
       SOAPPart soapPart = soapMessage.getSOAPPart();
@@ -20,37 +23,27 @@ public class Which {
       headers.addHeader("Cookie", "sympa_session=" + cookie);
 
       SOAPBody soapBody = envelope.getBody();
-
-      SOAPElement soapElement = soapBody.addChildElement("which", "ns", "urn:sympasoap");
-
-      soapElement.addChildElement("list", "ns")
-          .addTextNode(listName)
-          .addAttribute(new QName("xsi:type"), "xsd:string");
-
+      soapBody.addChildElement("which", "ns", "urn:sympasoap");
       soapMessage.saveChanges();
 
       // System.out.println("\n  Calling Which ");
-      SympaClient.callSympaAPI(soapMessage);
+      SOAPMessage resMsg = SympaClient.callSympaAPI(soapMessage);
 
       System.out.println("\n  Which Response : ");
-      SympaClient.printSOAPMessage(soapMessage);
-
-      String listValue = SympaClient.getFirstChildElementValueByName(
-        soapMessage.getSOAPBody(),
-        "ns:list"
+      SympaClient.printSOAPMessage(resMsg);
+      String resAsStr = SympaClient.getFirstChildElementValueByName(
+        resMsg.getSOAPBody(),
+        "item"
       );
-      System.out.println("== Printing res value (which.ns:list): ==");
-      System.out.println(listValue);
-
-      return listValue;
-
+      System.out.println("Parsed response:\n" + resAsStr);
+      return resAsStr;
     } catch (Exception e) {
       e.printStackTrace();
       return null;
     }
   }
 
-  public static String complexWhich(String listName) {
+  public static Map<String, Object> complexWhich() {
     try {
       SOAPMessage soapMessage = SympaClient.createMessageFactoryInstance();
       SOAPPart soapPart = soapMessage.getSOAPPart();
@@ -58,36 +51,65 @@ public class Which {
 
       MimeHeaders headers = soapMessage.getMimeHeaders();
       headers.addHeader("Content-Type", "text/xml");
-      headers.addHeader("SOAPAction", "urn:sympasoap#complexwhich");
+      headers.addHeader("SOAPAction", "urn:sympasoap#complexWhich");
       headers.addHeader("Cookie", "sympa_session=" + cookie);
 
       SOAPBody soapBody = envelope.getBody();
-
-      SOAPElement soapElement = soapBody.addChildElement("complexwhich", "ns", "urn:sympasoap");
-
-      soapElement.addChildElement("list", "ns")
-          .addTextNode(listName)
-          .addAttribute(new QName("xsi:type"), "xsd:string");
-
+      soapBody.addChildElement("complexWhich", "ns", "urn:sympasoap");
       soapMessage.saveChanges();
 
       // System.out.println("\n  Calling Complex Which ");
-      SympaClient.callSympaAPI(soapMessage);
+      SOAPMessage resMsg = SympaClient.callSympaAPI(soapMessage);
 
       System.out.println("\n  Complex Which Response : ");
-      SympaClient.printSOAPMessage(soapMessage);
+      SympaClient.printSOAPMessage(resMsg);
 
-      String listValue = SympaClient.getFirstChildElementValueByName(
-        soapMessage.getSOAPBody(),
-        "ns:list"
+      // Option 1: Print as json string (rename this function)
+      // ArrayList<String> listItems = SympaClient.getElementListAsString(
+      //   resMsg.getSOAPBody(),
+      //   "return",
+      //   "item"
+      // );
+      // if (listItems.size() == 0) {
+      //   System.out.println("[WARN] No items found in which response");
+      //   return null;
+      //     stem.oSystem.out.println(listItems.get(0));
+
+      // // Which returns a single item as semicolon-separated values
+      // return listItems.get(0);
+
+      // Option 2: Get json object and cast from there
+      Map<String, Object> itemsJson = SympaClient.getElementListAsJson(
+        resMsg.getSOAPBody(),
+        "return",
+        "item"
       );
-      System.out.println("== Printing res value (complexwhich.ns:list): ==");
-      System.out.println(listValue);
 
-      return listValue;
+      if (itemsJson.size() == 0) {
+        System.out.println("[WARN] No items found in which response");
+        return null;
+      }
+      System.out.println(itemsJson.get("isSubscriber"));
+
+      // String isSub = ((Map<String, Object>)itemsJson.get("item")).get("isSubscriber").toString();
+      // System.out.println("isSub: " + isSub);
+      System.out.println("Parsed response: \n" + itemsJson.toString() + "\n");
+      return itemsJson;
+
     } catch (Exception e) {
       e.printStackTrace();
       return null;
     }
+  }
+
+  public static void example() {
+    Map<String, Object> itemsJson = complexWhich();
+    System.out.println("Response as JSON: " + itemsJson.toString());
+
+    // Example fetch subscriber and owner status
+    String isSub = itemsJson.get("isSubscriber").toString();
+    System.out.println("isSubscriber: " + isSub);
+    String isOwner = itemsJson.get("isOwner").toString();
+    System.out.println("isOwner: " + isOwner);
   }
 }

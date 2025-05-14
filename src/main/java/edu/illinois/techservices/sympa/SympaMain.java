@@ -151,21 +151,15 @@ public class SympaMain {
           }
         }
         case "which": {
-          if (args.length != 2) {
-            System.out.println("Please provide a list name to check");
-            System.exit(0);
-          }
-          String listName = args[1];
-          Which.which(listName);
+          Which.which();
           break;
         }
         case "complexWhich": {
-          if (args.length != 2) {
-            System.out.println("Please provide a list name to check");
-            System.exit(0);
-          }
-          String listName = args[1];
-          Which.complexWhich(listName);
+          Which.complexWhich();
+          break;
+        }
+        case "whichExample": {
+          Which.example();
           break;
         }
         default:
