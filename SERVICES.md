@@ -24,7 +24,7 @@ SOAPBody soapBody = envelope.getBody();
 ```
 ### Initialize/set SOAP envelope elements:
 ```java
-// Set the API call for `which`
+// Set the API call for `subscribe`
 SOAPElement soapElement = soapBody.addChildElement("subscribe", "ns", "urn:sympasoap");
 
 // Add list naem to the SOAP request
