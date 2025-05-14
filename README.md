@@ -157,6 +157,18 @@ mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.
 ```
 * service - getUserEmailByCookie, Name of the service
 
+#### subscribe
+```bash
+mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="service list"
+```
+example usage:
+```bash
+mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="subscribe scrumTeamB"
+```
+
+* service - subscribe, Name of the service
+* list - scrumTeamB, Name of the list to be subscribed to  
+
 #### review
 ```bash
 mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="service list"
@@ -230,8 +242,20 @@ mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.
 * service - closeList -  Name of the service 
 
 #### which
-/* TODO */
+```bash
+mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="service"
+```
+example usage:
+```bash
+mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="which"
+```
 
 #### complexwhich
-/* TODO */
+```bash
+mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="service"
+```
+example usage:
+```bash
+mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="complexWhich"
+```
 
