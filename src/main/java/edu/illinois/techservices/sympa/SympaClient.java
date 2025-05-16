@@ -66,13 +66,13 @@ public class SympaClient {
 
       SOAPMessage soapResponse = callSympaAPI(soapMessage);
 
-      System.out.println("\n Login Response: \n");
+      System.out.println("\n[DEBUG] Login Response: \n");
       printSOAPMessage(soapResponse);
 
       sessionCookie = grabSessionCookie(soapResponse);
 
     } catch (Exception e) {
-      System.out.println("\n THE ERROR...\n");
+      System.out.println("\n[ERROR] Main call failed. See stack trace for details.");
       e.printStackTrace();
     }
     return sessionCookie;
@@ -243,13 +243,13 @@ public class SympaClient {
       }
       SOAPElement child = (SOAPElement) next;
       if (child.getNodeName().equals(childName)) {
-        System.out.println("[DEBUG] Found element name: " + child.getNodeName());
+        // System.out.println("[DEBUG] Found element name: " + child.getNodeName());
         if (callback != null) callback.apply(child);
         return child;
       }
       else if (child.getNodeName().equals("soap:Fault")) {
         String faultCode = getFirstChildElementValueByName(child, "faultcode");
-        System.out.println("[DEBUG] child " + child.getNodeName());
+        // System.out.println("[DEBUG] child " + child.getNodeName());
         String faultString = getFirstChildElementValueByName(child, "faultstring");
         System.out.println("[ERROR] SOAP fault\n\t Fault code: " + faultCode + "\n\t Fault string: " + faultString);
         return null;
@@ -260,13 +260,13 @@ public class SympaClient {
       //   return getElementByName(child, childName, callback);
       // }
       else if (child.getChildElements().hasNext()) {
-        System.out.println("[DEBUG] No child node match for: '" + childName + "'. Found: '" + child.getNodeName() + "'. Continuing search nested (children).");
+        // System.out.println("[DEBUG] No child node match for: '" + childName + "'. Found: '" + child.getNodeName() + "'. Continuing search nested (children).");
           // Recursive search on nested elements
         SOAPElement found = getElementByName(child, childName, callback);
         if (found != null) return found;
       }
       else {
-        System.out.println("[DEBUG] No child node match for: '" + childName + "'. Found: '" + child.getNodeName() + "'. Continuing search laterally (siblings).");
+        // System.out.println("[DEBUG] No child node match for: '" + childName + "'. Found: '" + child.getNodeName() + "'. Continuing search laterally (siblings).");
         // this is in a loop so its going to continue searching through the siblings
       }
     }

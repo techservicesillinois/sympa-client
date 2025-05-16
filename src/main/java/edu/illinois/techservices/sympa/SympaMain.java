@@ -18,7 +18,7 @@ public class SympaMain {
     String input = null;
     try {
       input = args[0];
-      System.out.println("input: " + input);
+      System.out.println("[DEBUG] input: " + input);
     } catch (ArrayIndexOutOfBoundsException e) {
       System.out.println("[ERROR] Please provide an argument for function call.");
       System.out.println("  Example args: getList, createList, getInfo");

@@ -29,13 +29,14 @@ public class Which {
       // System.out.println("\n  Calling Which ");
       SOAPMessage resMsg = SympaClient.callSympaAPI(soapMessage);
 
-      System.out.println("\n  Which Response : ");
+      System.out.println("\n[DEBUG] Which Response : ");
       SympaClient.printSOAPMessage(resMsg);
+      System.out.println("\n");
       String resAsStr = SympaClient.getFirstChildElementValueByName(
         resMsg.getSOAPBody(),
         "item"
       );
-      System.out.println("Parsed response:\n" + resAsStr);
+      System.out.println("[DEBUG] Parsed response:\n" + resAsStr);
       return resAsStr;
     } catch (Exception e) {
       e.printStackTrace();
@@ -61,7 +62,7 @@ public class Which {
       // System.out.println("\n  Calling Complex Which ");
       SOAPMessage resMsg = SympaClient.callSympaAPI(soapMessage);
 
-      System.out.println("\n  Complex Which Response : ");
+      System.out.println("\n[DEBUG] Complex Which Response : ");
       SympaClient.printSOAPMessage(resMsg);
 
       // Option 1: Print as json string (rename this function)
@@ -93,7 +94,7 @@ public class Which {
 
       // String isSub = ((Map<String, Object>)itemsJson.get("item")).get("isSubscriber").toString();
       // System.out.println("isSub: " + isSub);
-      System.out.println("Parsed response: \n" + itemsJson.toString() + "\n");
+      System.out.println("[DEBUG] Parsed response: \n" + itemsJson.toString() + "\n");
       return itemsJson;
 
     } catch (Exception e) {
@@ -104,7 +105,7 @@ public class Which {
 
   public static void example() {
     Map<String, Object> itemsJson = complexWhich();
-    System.out.println("Response as JSON: " + itemsJson.toString());
+    System.out.println("[DEBUG] Response as JSON: \n" + itemsJson.toString());
 
     // Example fetch subscriber and owner status
     String isSub = itemsJson.get("isSubscriber").toString();
