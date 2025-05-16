@@ -220,17 +220,19 @@ public class SympaClient {
 
   // overload wrapper for optional callback
   public static SOAPElement getChildElementByName(SOAPElement parent, String childName) {
-    return getElementByName(parent, childName, null);
+    return getFirstElementByName(parent, childName, null);
   }
 
   /**
    * Recursively fetch the first SOAPElement that matches the given node name.
+   * Meant for SOAP response parsing.
+   * Searches nested elements before siblings.
    *
    * @param parent      Parent SOAPElement
    * @param childName   Node name to search for
    * @return            First matching SOAPElement or null
    */
-  public static SOAPElement getElementByName(SOAPElement parent, String childName, Function<SOAPElement, Void> callback) {
+  public static SOAPElement getFirstElementByName(SOAPElement parent, String childName, Function<SOAPElement, Void> callback) {
     if (parent == null) {
       System.out.println("[WARN] Parent SOAPElement is null. Cannot search for child element.");
       return null;
@@ -247,6 +249,7 @@ public class SympaClient {
         if (callback != null) callback.apply(child);
         return child;
       }
+      // Log SOAP faults and stop searching
       else if (child.getNodeName().equals("soap:Fault")) {
         String faultCode = getFirstChildElementValueByName(child, "faultcode");
         // System.out.println("[DEBUG] child " + child.getNodeName());
@@ -261,65 +264,39 @@ public class SympaClient {
       // }
       else if (child.getChildElements().hasNext()) {
         // System.out.println("[DEBUG] No child node match for: '" + childName + "'. Found: '" + child.getNodeName() + "'. Continuing search nested (children).");
-          // Recursive search on nested elements
-        SOAPElement found = getElementByName(child, childName, callback);
+        // Recursive search on nested elements
+        SOAPElement found = getFirstElementByName(child, childName, callback);
         if (found != null) return found;
       }
       else {
         // System.out.println("[DEBUG] No child node match for: '" + childName + "'. Found: '" + child.getNodeName() + "'. Continuing search laterally (siblings).");
-        // this is in a loop so its going to continue searching through the siblings
+        // this is in a while loop so its going to continue searching through the siblings
       }
     }
-
-    // Continue search depth-wise
 
     System.out.println("[WARN] Element not found with name: " + childName);
     return null;
   }
 
-  public static Object buildJsonFromXml(SOAPElement element) {
+  /**
+   * EXAMPLE Manual implementation.
+   * You can use org.json if you do not anticipate large response bodies
+   * and dont care about typing.
+   * 
+   * Builds a JSON object from a SOAPElement.
+   * Returns a value if element has no children.
+   * 
+   * Note: If you only want to return strings and have solid typing,
+   *   you can modify this function to call element.getValue() instead of 
+   *   getXmlTypedValue(element) (see below)
+   * 
+   * @param element Element to convert to JSON. Anticipates xml typing attributes on value-only elements.
+   * @return JSON-like Map, or string value if element has no children
+   */
+  public static Object buildTypedJsonFromXml(SOAPElement element) {
     if (element == null) {
-      System.out.println("[WARN] Element is null. Cannot build JSON object.");
+      System.out.println("[WARN] Cannot build JSON object from empty element.");
       return null;
-    }
-
-    if (!element.getChildElements().hasNext()) {
-      return element.getValue();
-    }
-
-    String xsiNil = element.getAttribute("xsi:nil");
-    if ("true".equals(xsiNil)) {
-      return null;
-    }
-
-    boolean hasElementChildren = false;
-    Iterator<?> childrenCheck = element.getChildElements();
-    while (childrenCheck.hasNext()) {
-      if (childrenCheck.next() instanceof SOAPElement) {
-        hasElementChildren = true;
-        break;
-      }
-    }
-
-    if (!hasElementChildren) {
-      String type = element.getAttribute("xsi:type");
-      String value = element.getValue();
-      if (type == null || type.isEmpty() || value == null) {
-        return value;
-      }
-      switch (type) {
-        case "xsd:boolean":
-          return Boolean.valueOf(value);
-        case "xsd:int":
-          try {
-            return Integer.valueOf(value);
-          } catch (NumberFormatException e) {
-            return value; // fallback to string if parsing fails
-          }
-        case "xsd:string":
-        default:
-          return value;
-      }
     }
 
     // Build nested object from child elements
@@ -328,15 +305,53 @@ public class SympaClient {
 
     while (children.hasNext()) {
       Object next = children.next();
+      // validate whether it's actually an element (saaj does not make distinction between elements and text nodes)
       if (next instanceof SOAPElement) {
         SOAPElement child = (SOAPElement) next;
         String nodeName = child.getNodeName();
-        Object childValue = buildJsonFromXml(child);
+        Object childValue = buildTypedJsonFromXml(child);
         jsonObj.put(nodeName, childValue);
+      } else if (element.getAttribute("xsi:type") != null) {
+        // NOTE: If you just want to return strings, replace this with element.getValue()
+        return getXmlTypedValue(element);
       }
     }
 
     return jsonObj;
+  }
+
+  // only parses booleans and integers if not strings
+  public static Object getXmlTypedValue(SOAPElement element) {
+    // validate element has a value
+    if (element == null || "true".equals(element.getAttribute("xsi:nil"))) {
+      return null;
+    }
+    // based on xsd
+    String type = element.getAttribute("xsi:type");
+    String value = element.getValue();
+    if (type == null || type.isEmpty() || value == null) {
+      return value;
+    }
+    /* 
+     *  Example manual xml type casting.
+     *  Can be extended to support more types.
+     *  There are probably libraries out there that also look at
+     *  the WSDL but the ones we tried were not compatible with the
+     *  version of SOAP sympa uses
+     */
+    switch (type) {
+      case "xsd:boolean":
+        return Boolean.valueOf(value);
+      case "xsd:int":
+        try {
+          return Integer.valueOf(value);
+        } catch (NumberFormatException e) {
+          return value;
+        }
+      case "xsd:string":
+      default:
+        return value;
+    }
   }
 
   public static String buildJsonStringFromXml(SOAPElement element) {
@@ -363,17 +378,17 @@ public class SympaClient {
   public static Map<String, Object> getElementListAsJson(SOAPElement masterElement, String listParentName, String listItemNames) {
     Map<String, Object> listItems = new HashMap<>();
     Function<SOAPElement, Void> callback = (SOAPElement child) -> {
-      listItems.put(child.getNodeName(), buildJsonFromXml(child));
+      listItems.put(child.getNodeName(), buildTypedJsonFromXml(child));
       return null;
     };
 
     // getElementByName(masterElement, listItemNames, callback);
-    SOAPElement listParent = getElementByName(masterElement, listParentName, null);
+    SOAPElement listParent = getFirstElementByName(masterElement, listParentName, null);
     if (listParent == null) {
       System.out.println("[WARN] List parent element not found with name: " + listParentName);
       return null;
     }
-    getElementByName(listParent, listItemNames, callback);
+    getFirstElementByName(listParent, listItemNames, callback);
 
     try {
       Object item = listItems.get(listItemNames);
@@ -412,12 +427,12 @@ public class SympaClient {
     };
 
     // Ensures that we are getting the correct list from the specified parent element name
-    SOAPElement listParent = getElementByName(masterElement, listParentName, null);
+    SOAPElement listParent = getFirstElementByName(masterElement, listParentName, null);
     if (listParent == null) {
       System.out.println("[WARN] List parent element not found with name: " + listParentName);
       return null;
     }
-    getElementByName(listParent, listItemNames, callback);
+    getFirstElementByName(listParent, listItemNames, callback);
 
     // This could be called if we wanted implicit getListByItemName without specifying a parent
     // getChildElementByName(masterElement, listItemNames, callback);
@@ -445,7 +460,7 @@ public class SympaClient {
       // }
       return null;
     };
-    getElementByName(masterElement, listItemNames, callback);
+    getFirstElementByName(masterElement, listItemNames, callback);
     return listItems;
   }
     
@@ -466,7 +481,7 @@ public class SympaClient {
       return null;
     };
 
-    getElementByName(parent, childName, callback);
+    getFirstElementByName(parent, childName, callback);
 
     return value[0];
   }
