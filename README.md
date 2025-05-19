@@ -83,29 +83,29 @@ Or add these libraries to pom file.
 ### Using Maven:
 ```bash
 mvn clean install
-mvn exec:java -Dexec.mainClass="edu.illinois.techservices.sympa.SympaMain -Dexec.args=parameters"
+mvn -q exec:java -Dexec.args=parameters"
 ```
 
 ### mvn executable command with params for each sympa service API Calls:
 
 #### getList
 ```bash
-mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="service"
+mvn -q exec:java -Dexec.args="service"
 ```
 example usage:
 ```bash
-mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="getList"
+mvn -q exec:java -Dexec.args="getList"
 ```
 
 * service - getList, name of the service
 
 #### createList (All parameters are mandatory)
 ```bash
-mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="service list subject template description topics"
+mvn -q exec:java -Dexec.args="service list subject template description topics"
 ```
 example usage:
 ```bash
-mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="createList scrumTeamB scrumTeamB 
+mvn -q exec:java -Dexec.args="createList scrumTeamB scrumTeamB 
 discussion_list description template"
 ```
 
@@ -118,11 +118,11 @@ discussion_list description template"
 
 #### add/del with authenticateAndRun
 ```bash
-mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="service1 service2 service2-parameters"
+mvn -q exec:java -Dexec.args="service1 service2 service2-parameters"
 ```
 example usage:
 ```bash
-mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="authenticateAndRun add scrumTeamB,pbale@illinois.edu,true,true"
+mvn -q exec:java -Dexec.args="authenticateAndRun add scrumTeamB,pbale@illinois.edu,true,true"
 ```
 
 * service1 - authenticateAndRun - Name of the service
@@ -132,11 +132,11 @@ mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.
 
 #### add/del with authenticateRemoteAppAndRun
 ```bash
-mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="service1 appName appPwd vars service2 service2-parameters"
+mvn -q exec:java -Dexec.args="service1 appName appPwd vars service2 service2-parameters"
 ```
 example usage:
 ```bash
-mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="authenticateAndRun appName appPwd USER_EMAIL=xxx@illinois.edu del scrumTeamB,pbale@illinois.edu,true"
+mvn -q exec:java -Dexec.args="authenticateAndRun appName appPwd USER_EMAIL=xxx@illinois.edu del scrumTeamB,pbale@illinois.edu,true"
 ```
 
 * service1 - authenticateRemoteAppAndRun, Name of the service
@@ -149,21 +149,21 @@ mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.
 
 #### getUserEmailByCookie
 ```bash
-mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="service"
+mvn -q exec:java -Dexec.args="service"
 ```
 example usage:
 ```bash
-mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="getUserEmailByCookie"
+mvn -q exec:java -Dexec.args="getUserEmailByCookie"
 ```
 * service - getUserEmailByCookie, Name of the service
 
 #### subscribe
 ```bash
-mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="service list"
+mvn -q exec:java -Dexec.args="service list"
 ```
 example usage:
 ```bash
-mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="subscribe scrumTeamB"
+mvn -q exec:java -Dexec.args="subscribe scrumTeamB"
 ```
 
 * service - subscribe, Name of the service
@@ -171,11 +171,11 @@ mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.
 
 #### review
 ```bash
-mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="service list"
+mvn -q exec:java -Dexec.args="service list"
 ```
 example usage:
 ```bash
-mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="review scrumTeamB"
+mvn -q exec:java -Dexec.args="review scrumTeamB"
 ```
 
 * service - review, Name of the service
@@ -183,11 +183,11 @@ mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.
 
 #### fullReview
 ```bash
-mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="service list type"
+mvn -q exec:java -Dexec.args="service list type"
 ```
 example usage:
 ```bash
-mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="fullreview scrumTeamB subscriber"
+mvn -q exec:java -Dexec.args="fullreview scrumTeamB subscriber"
 ```
 
 * service - fullreview, Name of the service
@@ -196,35 +196,40 @@ mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.
 
 #### add
 ```bash
-mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="service parameters"
+mvn -q exec:java -Dexec.args="service list user gecos quiet"
 ```
 example usage:
 ```bash
-mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="add scrumTeamB,pbale@illinois.edu,true,true"
+mvn -q exec:java -Dexec.args="add scrumTeamB pbale@illinois.edu true true"
 ```
 
 * service - add -  Name of the service 
-* service2-parameters for add - scrumTeamB,xxx@illinois.edu,true,true - Parameters passed to add a user to the list 
+* list - list name to which the user is added
+* user - user email to be added to list
+* gecos - a boolean
+* quiet - boolean
 
 #### del
 ```bash
-mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="service parameters"
+mvn -q exec:java -Dexec.args="service parameters"
 ```
 example usage:
 ```bash
-mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="del scrumTeamB,pbale@illinois.edu,true"
+mvn -q exec:java -Dexec.args="del scrumTeamB pbale@illinois.edu true"
 ```
 
 * service - del -  Name of the service 
-* service2-parameters for del - scrumTeamB,xxx@illinois.edu,true - Parameters passed to del a user to the list 
+* list - list name from which the user to delete
+* user - user email to be deleted from the list
+* gecos - a boolean
 
 #### closeList
 ```bash
-mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="service list"
+mvn -q exec:java -Dexec.args="service list"
 ```
 example usage:
 ```bash
-mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="closeList scrumTeamB"
+mvn -q exec:java -Dexec.args="closeList scrumTeamB"
 ```
 
 * service - closeList -  Name of the service 
@@ -232,30 +237,30 @@ mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.
 
 #### complexList
 ```bash
-mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="service list"
+mvn -q exec:java -Dexec.args="service list"
 ```
 example usage:
 ```bash
-mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="complexList"
+mvn -q exec:java -Dexec.args="complexList"
 ```
 
 * service - closeList -  Name of the service 
 
 #### which
 ```bash
-mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="service"
+mvn -q exec:java-Dexec.args="service"
 ```
 example usage:
 ```bash
-mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="which"
+mvn -q exec:java -Dexec.args="which"
 ```
 
 #### complexwhich
 ```bash
-mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="service"
+mvn -q exec:java -Dexec.args="service"
 ```
 example usage:
 ```bash
-mvn exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.SympaMain -Dexec.args="complexWhich"
+mvn -q exec:java -Dexec.args="complexWhich"
 ```
 
