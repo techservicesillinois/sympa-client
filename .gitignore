@@ -19,8 +19,8 @@ buildNumber.properties
 .DS_Store
 src/.DS_Store
 src/main/java/edu/illinois/techservices/.DS_Store
-src/main/logs
-src/main/logs/*.log
+logs/
+logs/*.log
 
 .env
 settings.json
