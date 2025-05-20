@@ -88,6 +88,18 @@ mvn -q exec:java -Dexec.args=parameters"
 
 ### mvn executable command with params for each sympa service API Calls:
 
+#### info
+```bash
+mvn -q exec:java -Dexec.args="service listName"
+```
+example usage:
+```bash
+mvn -q exec:java -Dexec.args="info xxx"
+```
+
+* service - info, name of the service
+* listName - name of the list
+
 #### getList
 ```bash
 mvn -q exec:java -Dexec.args="service"
