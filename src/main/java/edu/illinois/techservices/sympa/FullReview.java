@@ -7,10 +7,11 @@ import java.util.List;
 import java.util.ArrayList;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class FullReview {
-
-  private static String sympaSoapUrl = "https://lists-dev.techservices.illinois.edu/sympasoap";
+  private static final Logger logger = LoggerFactory.getLogger(Review.class);
 
   public static void fullreview(String cookie, String listName, String type) {
     try {
@@ -27,25 +28,27 @@ public class FullReview {
 
       SOAPElement soapElement = soapBody.addChildElement("fullReview", "ns", "urn:sympasoap");
 
-      System.out.println(listName);
-
       soapElement.addChildElement("list", "ns")
           .addTextNode(listName)
           .addAttribute(new QName("xsi:type"), "xsd:string");
 
       soapMessage.saveChanges();
       SympaClient.printSOAPMessage(soapMessage);
-      // Create a SOAP connection
-      SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
-      SOAPConnection soapConnection = soapConnectionFactory.createConnection();
 
       // Send the SOAP message to the endpoint
-      SOAPMessage fullreview = soapConnection.call(soapMessage, sympaSoapUrl);
-      System.out.println("\n Full Review Response : ");
-      SympaClient.printSOAPMessage(fullreview);
+      SOAPMessage fullreview = SympaClient.callSympaAPI(soapMessage);
+      logger.debug("\n Full Review Response : {}", SympaClient.printSOAPMessage(fullreview));
 
       emailList = permissionPrint(fullreview, type);
-      System.out.println("List of " + type + ": " + emailList);
+
+      if (emailList.size() > 0) {
+        logger.debug("permission type = {}", type);
+        for (String email : emailList) {
+          System.out.println(email);
+        }
+      } else {
+        System.out.println("\n \n No " + type + " for the list " + listName);
+      }
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -96,7 +99,8 @@ public class FullReview {
         for (int j = 0; j < fields.getLength(); j++) {
           Node field = fields.item(j);
           String fieldValue = field.getTextContent() != null ? field.getTextContent().trim() : "";
-          System.out.println("Field Name: " + field.getLocalName() + "; fieldValue: " + fieldValue);
+          logger.debug("Field Name: " + field.getLocalName() + "; fieldValue: " +
+              fieldValue);
 
           if (field.getNodeType() == Node.ELEMENT_NODE) {
             if ("email".equalsIgnoreCase(field.getLocalName())) {
