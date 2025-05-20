@@ -1,13 +1,22 @@
 package edu.illinois.techservices.sympa;
 
 import javax.xml.namespace.QName;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+
 import java.io.*;
 import java.util.*;
 
 import jakarta.xml.soap.*;
 import io.github.cdimascio.dotenv.Dotenv;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SympaClient {
+  private static final Logger logger = LoggerFactory.getLogger(SympaClient.class);
 
   private static String sympaSoapUrl = loadEnvVar("SYMPA_URL");
   private static String sessionCookie = null;
@@ -32,7 +41,7 @@ public class SympaClient {
    */
   public static String loginSympa() {
     if (email == null || email.isEmpty() || password == null || password.isEmpty()) {
-      System.out.println(
+      logger.error(
           "[ERROR] Email or password is not set. Please configure environment variables for SYMPA_EMAIL and SYMPA_PASSWORD");
       throw new IllegalArgumentException(
           "Email or password is not set. Please configure environment variables for SYMPA_EMAIL and SYMPA_PASSWORD");
@@ -65,13 +74,12 @@ public class SympaClient {
 
       SOAPMessage soapResponse = callSympaAPI(soapMessage);
 
-      System.out.println("\n Login Response: \n");
-      printSOAPMessage(soapResponse);
+      logger.debug("session cookie: {}", printSOAPMessage(soapResponse));
 
       sessionCookie = grabSessionCookie(soapResponse);
 
     } catch (Exception e) {
-      System.out.println("\n THE ERROR...\n");
+      logger.error("\n THE ERROR...\n");
       e.printStackTrace();
     }
     return sessionCookie;
@@ -82,7 +90,7 @@ public class SympaClient {
    * 
    * @param cookie
    */
-  public static void getInfo(String cookie) {
+  public static void getInfo(String cookie, String listName) {
     try {
 
       SOAPMessage soapMessage = createMessageFactoryInstance();
@@ -99,11 +107,15 @@ public class SympaClient {
 
       SOAPElement soapElement = soapBody.addChildElement("info", "ns", "urn:sympasoap");
 
+      soapElement.addChildElement("listName")
+          .addTextNode(listName)
+          .addAttribute(new QName("xsi:type"), "xsd:string");
+
       soapMessage.saveChanges();
 
       // Send the SOAP message to the endpoint
       SOAPMessage info = callSympaAPI(soapMessage);
-      printSOAPMessage(info);
+      printFormattedSOAPMessage(info);
 
     } catch (Exception e) {
       e.printStackTrace();
@@ -134,12 +146,11 @@ public class SympaClient {
 
       soapMessage.saveChanges();
 
-      System.out.println("\n  Soap Call for Lists ");
+      logger.debug("\n  Get all the lists. ");
 
       SOAPMessage lists = callSympaAPI(soapMessage);
 
-      System.out.println("\n Lists Response : ");
-      printSOAPMessage(lists);
+      printFormattedSOAPMessage(lists);
 
     } catch (Exception e) {
       e.printStackTrace();
@@ -192,14 +203,14 @@ public class SympaClient {
       // Send the SOAP message to the endpoint
       SOAPMessage createlist = callSympaAPI(soapMessage);
 
-      System.out.println("\n createList Response : ");
-      printSOAPMessage(createlist);
+      logger.debug("\n createList Response : ");
+
+      printFormattedSOAPMessage(createlist);
 
     } catch (Exception e) {
 
     }
   }
-
 
   /**
    * Print the contents of soap message to the console.
@@ -207,11 +218,11 @@ public class SympaClient {
    * @param message
    * @throws Exception
    */
-  public static void printSOAPMessage(SOAPMessage message) throws Exception {
+  public static String printSOAPMessage(SOAPMessage message) throws Exception {
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     message.writeTo(out);
-    System.out.println(new String(out.toByteArray()));
 
+    return new String(out.toByteArray());
   }
 
   /**
@@ -229,7 +240,7 @@ public class SympaClient {
         Iterator<?> iterator1 = element.getChildElements();
         if (iterator1.hasNext()) {
           SOAPElement element1 = (SOAPElement) iterator1.next();
-          System.out.println("Element: " + element1.getNodeName() + "======  value: " + element1.getValue());
+          logger.debug("Element: {} and value: {}", element1.getNodeName(), element1.getValue());
           if (element1.getValue() != null) {
             sessionCookie = element1.getValue();
             break;
@@ -296,5 +307,28 @@ public class SympaClient {
     MessageFactory messageFactory = MessageFactory.newInstance();
 
     return messageFactory.createMessage();
+  }
+
+  /**
+   * To pretty print or to show formatted XML output on console.
+   * 
+   * @param message
+   */
+  public static void printFormattedSOAPMessage(SOAPMessage message) {
+    try {
+      TransformerFactory transformerFactory = TransformerFactory.newInstance();
+      transformerFactory.setAttribute("indent-number", 2);
+
+      Transformer transformer = transformerFactory.newTransformer();
+      transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+
+      Source sourceContent = message.getSOAPPart().getContent();
+      StreamResult result = new StreamResult(System.out);
+      System.out.println("\n");
+      transformer.transform(sourceContent, result);
+      System.out.println("\n");
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 }
