@@ -7,8 +7,12 @@ import java.util.*;
 
 import jakarta.xml.soap.*;
 import edu.illinois.techservices.sympa.SympaClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SympaLoginClient {
+  private static final Logger logger = LoggerFactory.getLogger(SympaLoginClient.class);
+
   static String email = System.getenv("SYMPA_EMAIL");
   static String password = System.getenv("SYMPA_PASSWORD");
   private static String sessionCookie = null;
@@ -77,20 +81,20 @@ public class SympaLoginClient {
       headers.addHeader("RequestMethod", "POST");
       soapMessage.saveChanges();
 
-      System.out.println("\n  SOAP AuthenticateAndRun Request for service " + service + ": \n");
+      logger.debug("\n  SOAP AuthenticateAndRun Request for service {}", service);
 
-      SympaClient.printSOAPMessage(soapMessage);
-      System.out.println("\n");
+      logger.debug(SympaClient.printSOAPMessage(soapMessage));
+      logger.debug("\n");
 
-      System.out.println("\n SoapConnection.call() : \n");
+      logger.debug("\n SoapConnection.call() : \n");
 
       SOAPMessage soapResponse = SympaClient.callSympaAPI(soapMessage);
 
-      System.out.println("\n AuthenticateAndRun Response: \n");
-      SympaClient.printSOAPMessage(soapResponse);
+      logger.debug("\n AuthenticateAndRun Response: \n");
+      SympaClient.printFormattedSOAPMessage(soapResponse);
 
     } catch (Exception e) {
-      System.out.println("\n Something is wrong...\n");
+      logger.error("\n Something is wrong...\n");
       e.printStackTrace();
     }
   }
@@ -116,7 +120,7 @@ public class SympaLoginClient {
 
       SOAPElement soapElement = soapBody.addChildElement("authenticateRemoteAppAndRun", "ns", "urn:sympasoap");
 
-      System.out.println("Base64 Encoded Password: " + encodedPassword);
+      logger.debug("Base64 Encoded Password: " + encodedPassword);
 
       soapElement.addChildElement("appname")
           .addTextNode(arguments[1])
@@ -158,18 +162,18 @@ public class SympaLoginClient {
       headers.addHeader("RequestMethod", "POST");
       soapMessage.saveChanges();
 
-      SympaClient.printSOAPMessage(soapMessage);
-      System.out.println("\n");
+      logger.debug(SympaClient.printSOAPMessage(soapMessage));
+      logger.debug("\n");
 
-      System.out.println("\n SoapConnection.call() : \n");
+      logger.debug("\n SoapConnection.call() : \n");
 
       SOAPMessage soapResponse = SympaClient.callSympaAPI(soapMessage);
 
-      System.out.println("\n AuthenticateAndRun Response: \n");
-      SympaClient.printSOAPMessage(soapResponse);
+      logger.debug("\n AuthenticateRemoteAndRun Response: \n");
+      SympaClient.printFormattedSOAPMessage(soapResponse);
 
     } catch (Exception e) {
-      System.out.println("\n THE ERROR...\n");
+      logger.error("\n THE ERROR...\n");
       e.printStackTrace();
     }
   }
@@ -211,18 +215,16 @@ public class SympaLoginClient {
 
       soapMessage.saveChanges();
 
-      SympaClient.printSOAPMessage(soapMessage);
-      System.out.println("\n");
+      logger.debug(SympaClient.printSOAPMessage(soapMessage));
 
       System.out.println("\n SoapConnection.call() : \n");
 
       SOAPMessage soapResponse = SympaClient.callSympaAPI(soapMessage);
 
-      System.out.println("\n getUserEmailByCookie Response: \n");
-      SympaClient.printSOAPMessage(soapResponse);
+      SympaClient.printFormattedSOAPMessage(soapResponse);
 
     } catch (Exception e) {
-      System.out.println("\n THE ERROR...\n");
+      logger.error("\n THE ERROR...\n");
       e.printStackTrace();
     }
   }

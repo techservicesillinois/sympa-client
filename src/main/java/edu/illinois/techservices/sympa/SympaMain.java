@@ -10,24 +10,30 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SympaMain {
+  private static final Logger logger = LoggerFactory.getLogger(SympaMain.class);
 
   public static void main(String[] args) {
+    logger.info("Application started. Starting Sympa Main with arguments:");
+
     String sessionCookie = null;
     String input = null;
     try {
       input = args[0];
-      System.out.println("input: " + input);
+      logger.info("Sympa service to be called: {}", input);
     } catch (ArrayIndexOutOfBoundsException e) {
       System.out.println("[ERROR] Please provide an argument for function call.");
       System.out.println("  Example args: getList, createList, getInfo");
       System.out.println("  Example Usage: -Dexec.args=\"getList\"");
       throw new IllegalArgumentException("[ERROR] Please provide an argument for function call. See logs for details.");
     }
+    logger.debug("Grab session cookie... ");
     // TODO: Validate call before logging in (use enum or something similar?)
     sessionCookie = SympaClient.loginSympa();
-
+    logger.debug("sessionCookie = {}", sessionCookie);
     if (sessionCookie != null) {
       switch (input) {
         case "getList": {
@@ -45,8 +51,8 @@ public class SympaMain {
           }
 
         }
-        case "getInfo": {
-          SympaClient.getInfo(sessionCookie);
+        case "info": {
+          SympaClient.getInfo(sessionCookie, args[1]);
           break;
         }
         case "authenticateAndRun": {
@@ -58,9 +64,9 @@ public class SympaMain {
             service = args[1];
             parameters = args[2];
             serviceParameters.addAll(Arrays.asList(parameters.split(",")));
-            System.out.println("service: " + service);
-            System.out.println("serviceParameters: " + serviceParameters.size());
-            System.out.println("serviceParameters: " + serviceParameters);
+            logger.debug("service = {}", service);
+            logger.debug("serviceParameters: ", serviceParameters.size());
+            logger.debug("serviceParameters: ", serviceParameters);
 
             SympaLoginClient.authenticateAndRun(sessionCookie, service, serviceParameters);
             break;
@@ -111,9 +117,7 @@ public class SympaMain {
           FullReview.fullreview(sessionCookie, listName, type);
           break;
         }
-        case "add":
-        {
-          System.out.println("in add case");
+        case "add": {
           if (args.length >= 5) {
             SympaListOps.add(sessionCookie, args);
             break;
@@ -123,13 +127,11 @@ public class SympaMain {
             System.exit(0);
           }
         }
-        case "del":
-        {
-          if (args.length >= 4){
+        case "del": {
+          if (args.length >= 4) {
             SympaListOps.del(sessionCookie, args);
             break;
-          }
-          else {
+          } else {
             System.out
                 .println("Please Provide all parameters required to perform del");
             System.exit(0);
@@ -140,11 +142,10 @@ public class SympaMain {
           break;
         }
         case "closeList": {
-          if (args.length >= 1){
+          if (args.length >= 1) {
             SympaListOps.closeList(sessionCookie, args);
             break;
-          }
-          else {
+          } else {
             System.out
                 .println("Please Provide all parameters required to perform closeList");
             System.exit(0);

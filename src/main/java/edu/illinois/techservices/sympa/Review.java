@@ -5,8 +5,11 @@ import java.io.*;
 
 import jakarta.xml.soap.*;
 import edu.illinois.techservices.sympa.SympaClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Review {
+  private static final Logger logger = LoggerFactory.getLogger(Review.class);
 
   public static void review(String cookie, String listName) {
     try {
@@ -27,11 +30,11 @@ public class Review {
           .addAttribute(new QName("xsi:type"), "xsd:string");
 
       soapMessage.saveChanges();
-      SympaClient.printSOAPMessage(soapMessage);
+      logger.debug(SympaClient.printSOAPMessage(soapMessage));
 
       SOAPMessage review = SympaClient.callSympaAPI(soapMessage);
-      System.out.println("\n Review Response : ");
-      SympaClient.printSOAPMessage(review);
+
+      SympaClient.printFormattedSOAPMessage(review);
 
     } catch (Exception e) {
       e.printStackTrace();
