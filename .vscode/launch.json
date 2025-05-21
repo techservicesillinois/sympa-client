@@ -14,7 +14,23 @@
       "request": "launch",
       "mainClass": "edu.illinois.techservices.sympa.SympaMain",
       "projectName": "sympa",
-      "args": "which scrumteamb"
+      "args": "which"
+    },
+    {
+      "type": "java",
+      "name": "SympaMain complexWhich",
+      "request": "launch",
+      "mainClass": "edu.illinois.techservices.sympa.SympaMain",
+      "projectName": "sympa",
+      "args": "complexWhich"
+    },
+    {
+      "type": "java",
+      "name": "SympaMain fullreview",
+      "request": "launch",
+      "mainClass": "edu.illinois.techservices.sympa.SympaMain",
+      "projectName": "sympa",
+      "args": "fullreview scrumteamb subscriber"
     }
   ]
 }

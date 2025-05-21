@@ -1,6 +1,7 @@
 package edu.illinois.techservices.sympa;
 
-import java.util.ArrayList;
+// import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.xml.namespace.QName;
@@ -66,36 +67,34 @@ public class Which {
       SympaClient.printSOAPMessage(resMsg);
 
       // Option 1: Print as json string (rename this function)
-      // ArrayList<String> listItems = SympaClient.getElementListAsString(
+      // List<String> itemsList = SympaClient.getElementListAsJsonStringList(
       //   resMsg.getSOAPBody(),
       //   "return",
       //   "item"
       // );
-      // if (listItems.size() == 0) {
-      //   System.out.println("[WARN] No items found in which response");
-      //   return null;
-      //     stem.oSystem.out.println(listItems.get(0));
 
       // // Which returns a single item as semicolon-separated values
       // return listItems.get(0);
 
       // Option 2: Get json object and cast from there
-      Map<String, Object> itemsJson = SympaClient.getElementListAsJson(
+      List<Map<String, Object>> itemsList = SympaClient.getElementListAsMapList(
         resMsg.getSOAPBody(),
         "return",
         "item"
       );
 
-      if (itemsJson.size() == 0) {
-        System.out.println("[WARN] No items found in which response");
+      if (itemsList.size() == 0) {
+        System.out.println("[WARN] No items found in 'which' response");
+        return null;
+      } else if (itemsList.size() > 1) {
+        System.out.println("[WARN] Unexpected: More than one item found in 'which' response");
         return null;
       }
-      System.out.println(itemsJson.get("isSubscriber"));
 
-      // String isSub = ((Map<String, Object>)itemsJson.get("item")).get("isSubscriber").toString();
-      // System.out.println("isSub: " + isSub);
-      System.out.println("[DEBUG] Parsed response: \n" + itemsJson.toString() + "\n");
-      return itemsJson;
+      // There should only be one item in the list (self)
+      Map<String, Object> itemJson = itemsList.get(0);
+      System.out.println("[DEBUG] Parsed response: \n" + itemJson.toString() + "\n");
+      return itemJson;
 
     } catch (Exception e) {
       e.printStackTrace();
@@ -105,7 +104,7 @@ public class Which {
 
   public static void example() {
     Map<String, Object> itemsJson = complexWhich();
-    System.out.println("[DEBUG] Response as JSON: \n" + itemsJson.toString());
+    System.out.println("[DEBUG] Response as JSON-style Map: \n" + itemsJson.toString());
 
     // Example fetch subscriber and owner status
     String isSub = itemsJson.get("isSubscriber").toString();
