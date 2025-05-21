@@ -2,7 +2,7 @@ package edu.illinois.techservices.sympa;
 
 import javax.xml.namespace.QName;
 
-import jakarta.xml.soap.*;
+import javax.xml.soap.*;
 import java.util.List;
 import java.util.ArrayList;
 import org.w3c.dom.Node;

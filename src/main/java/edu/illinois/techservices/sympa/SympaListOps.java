@@ -1,7 +1,7 @@
 package edu.illinois.techservices.sympa;
 
 import javax.xml.namespace.QName;
-import jakarta.xml.soap.*;
+import javax.xml.soap.*;
 
 public class SympaListOps {
 

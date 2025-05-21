@@ -3,8 +3,8 @@ package edu.illinois.techservices.sympa;
 import javax.xml.namespace.QName;
 import java.io.*;
 import java.util.*;
+import javax.xml.soap.*;
 
-import jakarta.xml.soap.*;
 import io.github.cdimascio.dotenv.Dotenv;
 
 public class SympaClient {

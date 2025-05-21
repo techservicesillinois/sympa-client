@@ -3,7 +3,7 @@ package edu.illinois.techservices.sympa;
 import javax.xml.namespace.QName;
 import java.io.*;
 
-import jakarta.xml.soap.*;
+import javax.xml.soap.*;
 import edu.illinois.techservices.sympa.SympaClient;
 
 public class Subscribe {

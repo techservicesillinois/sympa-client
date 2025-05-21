@@ -5,7 +5,7 @@ import javax.xml.namespace.QName;
 import java.io.*;
 import java.util.*;
 
-import jakarta.xml.soap.*;
+import javax.xml.soap.*;
 import edu.illinois.techservices.sympa.SympaClient;
 
 public class SympaLoginClient {

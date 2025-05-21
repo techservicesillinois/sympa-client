@@ -2,8 +2,7 @@ package edu.illinois.techservices.sympa;
 
 import edu.illinois.techservices.sympa.SympaListOps;
 import edu.illinois.techservices.sympa.SympaLoginClient;
-import jakarta.xml.soap.MessageFactory;
-import jakarta.xml.soap.SOAPMessage;
+import javax.xml.soap.*;
 import edu.illinois.techservices.sympa.Review;
 import java.util.List;
 import java.io.ByteArrayInputStream;
