@@ -144,7 +144,7 @@ public class GetListsFromSympaDemo implements Runnable {
     }
 
     /**
-     * Calls Sympa API to get a list of all mailing lists.
+     * Demonstrates a call to the Sympa API to get a list of all mailing lists.
      * 
      * <P>
      * This method should be called <STRONG>AFTER</STRONG> {@link #login()}. The
