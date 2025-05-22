@@ -30,6 +30,7 @@ public class SympaMain {
       System.out.println("  Example Usage: -Dexec.args=\"getList\"");
       throw new IllegalArgumentException("[ERROR] Please provide an argument for function call. See logs for details.");
     }
+
     logger.debug("Grab session cookie... ");
     // TODO: Validate call before logging in (use enum or something similar?)
     sessionCookie = SympaClient.loginSympa();
@@ -46,7 +47,7 @@ public class SympaMain {
             break;
           } else {
             System.out
-                .println("Please Provide all parameters required to perform createList");
+                .println("Please provide all required parameters to perform createList");
             System.exit(0);
           }
 
@@ -56,25 +57,36 @@ public class SympaMain {
           break;
         }
         case "authenticateAndRun": {
-          String service = null;
-          List<String> serviceParameters = new ArrayList<>();
 
-          if (args.length == 3) {
-            String parameters = null;
-            service = args[1];
-            parameters = args[2];
-            serviceParameters.addAll(Arrays.asList(parameters.split(",")));
-            logger.debug("service = {}", service);
-            logger.debug("serviceParameters: ", serviceParameters.size());
-            logger.debug("serviceParameters: ", serviceParameters);
+          /*
+           * AuthenticateAndRun api = new AuthenticateAndRun();
+           * api.Run();
+           * break;
+           */
 
-            SympaLoginClient.authenticateAndRun(sessionCookie, service, serviceParameters);
-            break;
-          } else {
-            System.out
-                .println("Please Provide service(for example: add/del) and parameters required to perform add/del");
-            System.exit(0);
-          }
+          /*
+           * String service = null;
+           * List<String> serviceParameters = new ArrayList<>();
+           * 
+           * if (args.length == 3) {
+           * String parameters = null;
+           * service = args[1];
+           * parameters = args[2];
+           * serviceParameters.addAll(Arrays.asList(parameters.split(",")));
+           * logger.debug("service = {}", service);
+           * logger.debug("serviceParameters: ", serviceParameters.size());
+           * logger.debug("serviceParameters: ", serviceParameters);
+           * 
+           * SympaLoginClient.authenticateAndRun(sessionCookie, service,
+           * serviceParameters);
+           * break;
+           * } else {
+           * System.out
+           * .println("Please Provide service(for example: add/del) and parameters required to perform add/del"
+           * );
+           * System.exit(0);
+           * }
+           */
         }
         case "authenticateRemoteAppAndRun": {
           if (args.length > 5) {
