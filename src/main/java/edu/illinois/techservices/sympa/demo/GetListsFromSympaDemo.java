@@ -35,7 +35,7 @@ import jakarta.xml.soap.SOAPPart;
  */
 public class GetListsFromSympaDemo implements Runnable {
 
-    public static final String DEFAULT_SYMPA_URL = "http://localhost:8080";
+    public static final String DEFAULT_SYMPA_URL = "http://localhost:8080/sympasoap";
 
     public static final String DEFAULT_SYMPA_EMAIL = "sympaemail";
 
@@ -59,7 +59,9 @@ public class GetListsFromSympaDemo implements Runnable {
      * verify the credentials and sympa server url have been set to some value, a
      * login will be attempted, and the call to getLists will be executed. If
      * getLists is successful, the SOAPMessage for this class will be set and can be
-     * read from a call to {@link #getSympaResponse()}.
+     * read from a call to {@link #getSympaResponse()}. If there's a fault, calling
+     * the same {@link #getSympaResponse()} will make the SOAPMessage available for
+     * additional processing.
      */
     @Override
     public void run() {
@@ -127,10 +129,9 @@ public class GetListsFromSympaDemo implements Runnable {
             // Send requst and expect a response.
             SOAPMessage smLoginResponse = scLogin.call(smLogin, sympaUrl);
 
-            // Get the session cookie that verifies authentication on functional calls.
+            // Get the session cookie that verifies authentication on subsequent functional
+            // calls or capture a SOAP fault.
             SOAPBody sbLoginResponse = smLoginResponse.getSOAPBody();
-
-            // Grab Session Cookie from ResponseBody
             if (sbLoginResponse.hasFault()) {
                 sympaResponse = smLoginResponse;
             } else {
@@ -143,10 +144,12 @@ public class GetListsFromSympaDemo implements Runnable {
     }
 
     /**
-     * Returns Sympa Lists.
+     * Calls Sympa API to get a list of all mailing lists.
      * 
      * <P>
-     * This method should be called <STRONG>AFTER</STRONG> {@link #login()}.
+     * This method should be called <STRONG>AFTER</STRONG> {@link #login()}. The
+     * method {@link #getSympaResponse()} can be called to get the SOAP message that
+     * was returned for additional processing after this method completes.
      */
     private void getLists() {
         try {
@@ -163,10 +166,10 @@ public class GetListsFromSympaDemo implements Runnable {
             SOAPElement unused = sbGetLists.addChildElement("lists", "ns", "urn:sympasoap");
 
             // Set MIME headers
-            MimeHeaders headers = smGetLists.getMimeHeaders();
-            headers.addHeader("Content-Type", "text/xml"); // application/soap+xml
-            headers.addHeader("SOAPAction", "urn:sympasoap#lists");
-            headers.addHeader("Cookie", "sympa_session=" + sessionCookie);
+            MimeHeaders mhGetLists = smGetLists.getMimeHeaders();
+            mhGetLists.addHeader("Content-Type", "text/xml"); // application/soap+xml
+            mhGetLists.addHeader("SOAPAction", "urn:sympasoap#lists");
+            mhGetLists.addHeader("Cookie", "sympa_session=" + sessionCookie);
 
             smGetLists.saveChanges();
 
@@ -174,7 +177,8 @@ public class GetListsFromSympaDemo implements Runnable {
             SOAPConnectionFactory scfGetLists = SOAPConnectionFactory.newInstance();
             SOAPConnection scGetLists = scfGetLists.createConnection();
 
-            // Send requst and expect a response.
+            // Send requst and expect a response. This could be a SOAP fault if the server
+            // returns one. Most of the time, expect the payload to be the mailing lists.
             sympaResponse = scGetLists.call(smGetLists, sympaUrl);
 
         } catch (SOAPException e) {
@@ -183,7 +187,7 @@ public class GetListsFromSympaDemo implements Runnable {
     }
 
     /**
-     * Adds Sympa-specific namespace declarations to the SOAP envelope.
+     * Adds Sympa and SOAP specific namespace declarations to the SOAP envelope.
      * 
      * @param senv the SOAPEnvelope.
      * @throws SOAPException if a SOAPException is thrown.
@@ -202,9 +206,9 @@ public class GetListsFromSympaDemo implements Runnable {
 
     /**
      * Checks if username and password is non null and non empty. If empty, throw an
-     * IllegalStateException with a message to add them to the code and recompile.
+     * IllegalStateException with a helpful message.
      * 
-     * @throws IllegalStateException if credentials not set.
+     * @throws IllegalStateException if credentials are not set.
      */
     private void checkCredentialsSet() {
         if (Objects.isNull(sympaEmail) || sympaEmail.isEmpty()) {
@@ -217,11 +221,13 @@ public class GetListsFromSympaDemo implements Runnable {
 
     /**
      * Checks if the sympa url is non null and non empty. If empty, throw an
-     * IllegalStateException with a message to add it to the code and recompile.
+     * IllegalStateException with a helpful message.
+     * 
+     * @throws IllegalStateException if Sympa server url not set.
      */
     private void checkSympaUrlSet() {
         if (Objects.isNull(sympaUrl) || sympaUrl.isEmpty()) {
-            throw new IllegalStateException("Sympa Url not set! Use -Dsympa.url system property.");
+            throw new IllegalStateException("Sympa url not set! Use -Dsympa.url system property.");
         }
     }
 
@@ -240,7 +246,7 @@ public class GetListsFromSympaDemo implements Runnable {
      * Instantiate and run this demo program. Print the Sympa response if
      * successful, stack trace and error message otherwise.
      * 
-     * @param args No command line arguments are specified.
+     * @param args This program doesn't take any command line arguments.
      */
     public static void main(String[] args) {
         GetListsFromSympaDemo app = new GetListsFromSympaDemo();
