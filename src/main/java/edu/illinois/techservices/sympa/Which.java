@@ -63,17 +63,6 @@ public class Which {
       System.out.println("\n[DEBUG] Complex Which Response: ");
       SympaClient.printSOAPMessage(resMsg);
 
-      // Option 1: Print as json string (rename this function)
-      // List<String> itemsList = SympaClient.getElementListAsJsonStringList(
-      //   resMsg.getSOAPBody(),
-      //   "return",
-      //   "item"
-      // );
-
-      // // Which returns a single item as semicolon-separated values
-      // return listItems.get(0);
-
-      // Option 2: Get json object and cast from there
       List<Map<String, Object>> itemsList = XmlParser.getElementListAsMapList(
         resMsg.getSOAPBody(),
         "return",

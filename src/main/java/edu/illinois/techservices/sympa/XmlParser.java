@@ -72,11 +72,6 @@ public final class XmlParser {
         System.out.println("[ERROR] SOAP fault\n\t Fault code: " + faultCode + "\n\t Fault string: " + faultString);
         return null;
       }
-      // else if (children.hasNext()) {
-      //   // System.out.println("[DEBUG] child " + child.getNodeName());
-      //   System.out.println("[DEBUG] No child node match for: '" + childName + "'. Found: '" + child.getNodeName() + "'. Has next element.Continuing search laterally.");
-      //   return getElementByName(child, childName, callback);
-      // }
       else if (child.getChildElements().hasNext()) {
         // System.out.println("[DEBUG] No child node match for: '" + childName + "'. Found: '" + child.getNodeName() + "'. Continuing search nested (children).");
         // Recursive search on nested elements
@@ -84,9 +79,10 @@ public final class XmlParser {
         if (nestedElements != null) {
           matchingElements.addAll(nestedElements);
         }
-        // if (found != null) return found;
       }
       else {
+        // TODO: Implement prasannas logger stuff so we can set the log level and not
+        // have to comment/uncomment lines like this
         // System.out.println("[DEBUG] No child node match for: '" + childName + "'. Found: '" + child.getNodeName() + "'. Continuing search laterally (siblings).");
         // this is in a while loop so its going to continue searching through the siblings
       }
@@ -165,8 +161,6 @@ public final class XmlParser {
     }
     return listItemsMap;
   }
-
-  
 
   // Overload, if expecting string return
   public static String getFirstChildElementValueByName(SOAPElement masterElement, String childName) {
