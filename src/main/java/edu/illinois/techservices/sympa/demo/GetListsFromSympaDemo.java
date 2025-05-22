@@ -32,6 +32,12 @@ import jakarta.xml.soap.SOAPPart;
  * <DT><CODE>sympa.password</CODE>
  * <DD>Sympa SOAP server password.
  * <DL>
+ * 
+ * <P>
+ * <STRONG>NOTE:</STRONG> we acknowledge using a system property for a password
+ * is very poor security practice, however this is a demonstration program and
+ * should never be deployed to a production environment where security is
+ * valued.
  */
 public class GetListsFromSympaDemo implements Runnable {
 
