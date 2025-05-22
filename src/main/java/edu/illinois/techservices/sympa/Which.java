@@ -9,9 +9,6 @@ import jakarta.xml.soap.*;
 import edu.illinois.techservices.sympa.SympaClient;
 
 public class Which {
-  private static String sympaSoapUrl = SympaClient.sympaSoapUrl;
-  private static String cookie = SympaClient.sessionCookie;
-
   public static String which() {
     try {
       SOAPMessage soapMessage = SympaClient.createMessageFactoryInstance();
@@ -21,7 +18,7 @@ public class Which {
       MimeHeaders headers = soapMessage.getMimeHeaders();
       headers.addHeader("Content-Type", "text/xml");
       headers.addHeader("SOAPAction", "urn:sympasoap#which");
-      headers.addHeader("Cookie", "sympa_session=" + cookie);
+      headers.addHeader("Cookie", "sympa_session=" + SympaClient.sessionCookie);
 
       SOAPBody soapBody = envelope.getBody();
       soapBody.addChildElement("which", "ns", "urn:sympasoap");
@@ -30,10 +27,10 @@ public class Which {
       // System.out.println("\n  Calling Which ");
       SOAPMessage resMsg = SympaClient.callSympaAPI(soapMessage);
 
-      System.out.println("\n[DEBUG] Which Response : ");
+      System.out.println("\n[DEBUG] Which Response: ");
       SympaClient.printSOAPMessage(resMsg);
       System.out.println("\n");
-      String resAsStr = SympaClient.getFirstChildElementValueByName(
+      String resAsStr = XmlParser.getFirstChildElementValueByName(
         resMsg.getSOAPBody(),
         "item"
       );
@@ -54,7 +51,7 @@ public class Which {
       MimeHeaders headers = soapMessage.getMimeHeaders();
       headers.addHeader("Content-Type", "text/xml");
       headers.addHeader("SOAPAction", "urn:sympasoap#complexWhich");
-      headers.addHeader("Cookie", "sympa_session=" + cookie);
+      headers.addHeader("Cookie", "sympa_session=" + SympaClient.sessionCookie);
 
       SOAPBody soapBody = envelope.getBody();
       soapBody.addChildElement("complexWhich", "ns", "urn:sympasoap");
@@ -63,7 +60,7 @@ public class Which {
       // System.out.println("\n  Calling Complex Which ");
       SOAPMessage resMsg = SympaClient.callSympaAPI(soapMessage);
 
-      System.out.println("\n[DEBUG] Complex Which Response : ");
+      System.out.println("\n[DEBUG] Complex Which Response: ");
       SympaClient.printSOAPMessage(resMsg);
 
       // Option 1: Print as json string (rename this function)
@@ -77,7 +74,7 @@ public class Which {
       // return listItems.get(0);
 
       // Option 2: Get json object and cast from there
-      List<Map<String, Object>> itemsList = SympaClient.getElementListAsMapList(
+      List<Map<String, Object>> itemsList = XmlParser.getElementListAsMapList(
         resMsg.getSOAPBody(),
         "return",
         "item"

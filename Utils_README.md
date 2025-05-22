@@ -9,7 +9,7 @@ Args: `masterElement`, `listParentName`, `listItemNames`
 Returns: List of json-like maps (`List<Map<String, Object>>`)
 ```java
 // Get json-like map list
-List<Map<String, Object>> itemsJson = SympaClient.getElementListAsMapList(
+List<Map<String, Object>> itemsJson = XmlParser.getElementListAsMapList(
   fullreview.getSOAPBody(),
   "return",
   "item"
@@ -27,7 +27,7 @@ Args: `masterElement`, `listParentName`, `listItemNames`
 Returns: List of json-like strings (`List<String>`)
 ```java
 // Get json-like string list
-List<String> jsonStringList = SympaClient.getElementListAsJsonStringList(
+List<String> jsonStringList = XmlParser.getElementListAsJsonStringList(
   fullreview.getSOAPBody(),
   "return",
   "item"
@@ -44,7 +44,7 @@ Args: `masterElement`, `childName`
 Returns: String value
 ```java
 // Get untyped string value
-String email = SympaClient.getFirstChildElementValueByName(
+String email = XmlParser.getFirstChildElementValueByName(
   fullreview.getSOAPBody(),
   "email"
 );
@@ -57,7 +57,7 @@ Args: `masterElement`, `childName`
 Returns: Typed value (currently oneof: String, Boolean, Integer)
 ```java
 // Get typed value
-Object isSubscriber = SympaClient.getTypedFirstChildElementValueByName(
+Object isSubscriber = XmlParser.getTypedFirstChildElementValueByName(
   fullreview.getSOAPBody(),
   "isSubscriber"
 );
