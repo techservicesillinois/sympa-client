@@ -25,11 +25,8 @@ public class FullReviewBusinessCase {
     private String cookie;
     private static String sympaSoapUrl = "https://lists-dev.techservices.illinois.edu/sympasoap";
 
-    private String sympaEmail = "pbale@illinois.edu"; // Fill in and recompile.
-    private String sympaPassword = "Hasini2010";// { 'f', 'i', 'l', 'l', ' ',
-    // 'i', 'n', ' ',
-    // 'a', 'n', 'd', ' ',
-    // 'r', 'e', 'c', 'o', 'm', 'p', 'i', 'l', 'e' }; // Fill in and recompile.
+    private String sympaEmail = "changeme"; // Fill in and recompile.
+    private String sympaPassword = "changeme";
     private String permissionType;
     private String listName;
 
@@ -91,7 +88,7 @@ public class FullReviewBusinessCase {
             SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
             SOAPConnection soapConnection = soapConnectionFactory.createConnection();
 
-            // Send the SOAP message to the endpoint
+            // Make Sympa API call for 'login' by sending the SOAP message to the endpoint.
             SOAPMessage soapResponse = soapConnection.call(soapMessage, sympaSoapUrl);
             soapConnection.close();
 
