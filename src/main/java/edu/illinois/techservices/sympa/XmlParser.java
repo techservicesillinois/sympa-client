@@ -57,7 +57,6 @@ public final class XmlParser {
       SOAPElement child = (SOAPElement) next;
       if (child.getNodeName().equals(childName)) {
         // System.out.println("[DEBUG] Found element name: " + child.getNodeName());
-        // if (callback != null) callback.apply(child);
         // return child;
         matchingElements.add(child);
         if (returnFirstMatch) {
@@ -104,6 +103,7 @@ public final class XmlParser {
     return getElementsByName(parent, childName, false);
   }
 
+  // === Data Extraction ===
   // === Get elements as.... string, list of maps, list of strings ===
 
   /**
