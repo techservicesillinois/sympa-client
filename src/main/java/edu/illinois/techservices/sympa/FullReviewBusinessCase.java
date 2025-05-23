@@ -379,7 +379,6 @@ public class FullReviewBusinessCase implements Runnable {
      *             2. permissionType - subscriber, editor or owner
      */
     public static void main(String[] args) {
-
         if (args.length !=2) {
             System.err.println(
                     "Usage: mvn -q exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.FullReviewBusinessCase -Dexec:args=<listName> <permissionType>");
