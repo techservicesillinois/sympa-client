@@ -130,11 +130,19 @@ discussion_list description template"
 
 #### add/del with authenticateAndRun
 ```bash
-mvn -q exec:java -Dexec.args="service1 service2 service2-parameters"
+mvn -q exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.AuthenticateAndRun 
+                  -Dsympa.email=${SYMPA_EMAIL} 
+                  -Dsympa.password=${SYMPA_PASSWORD} 
+                  -Dsympa.url=${SYMPA_URL} 
+                  -Dexec.args="service1 service2 service2-parameters"
 ```
 example usage:
 ```bash
-mvn -q exec:java -Dexec.args="authenticateAndRun add scrumTeamB,pbale@illinois.edu,true,true"
+mvn -q exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.AuthenticateAndRun 
+                  -Dsympa.email=${SYMPA_EMAIL} 
+                  -Dsympa.password=${SYMPA_PASSWORD} 
+                  -Dsympa.url=${SYMPA_URL}
+                  -Dexec.args="authenticateAndRun add scrumTeamB,pbale@illinois.edu,true,true"
 ```
 
 * service1 - authenticateAndRun - Name of the service
