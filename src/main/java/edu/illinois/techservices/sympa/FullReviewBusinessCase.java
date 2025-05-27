@@ -374,7 +374,9 @@ public class FullReviewBusinessCase implements Runnable {
      * Instantiate and run this demo program. Print the Sympa response if
      * successful, stack trace and error message otherwise.
      * 
-     * @param args This program doesn't take any command line arguments.
+     * @param args This program takes two command line arguments
+     *             1. listName - name of the list
+     *             2. permissionType - subscriber, editor or owner
      */
     public static void main(String[] args) {
         FullReviewBusinessCase fullReview = new FullReviewBusinessCase(args);
