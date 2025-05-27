@@ -83,45 +83,66 @@ Or add these libraries to pom file.
 ### Using Maven:
 ```bash
 mvn clean install
-mvn -q exec:java -Dexec.args=parameters"
+mvn -q exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.javaclass
+                  -Dsympa.email=${SYMPA_EMAIL} 
+                  -Dsympa.password=${SYMPA_PASSWORD} 
+                  -Dsympa.url=${SYMPA_URL} 
+                  -Dexec.args=parameters"
 ```
 
 ### mvn executable command with params for each sympa service API Calls:
 
 #### info
 ```bash
-mvn -q exec:java -Dexec.args="service listName"
+mvn -q exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.Info 
+                  -Dsympa.email=${SYMPA_EMAIL} 
+                  -Dsympa.password=${SYMPA_PASSWORD} 
+                  -Dsympa.url=${SYMPA_URL} 
+                  -Dexec.args="listName"
 ```
 example usage:
 ```bash
-mvn -q exec:java -Dexec.args="info xxx"
+mvn -q exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.info 
+                  -Dsympa.email=xxx@email.com 
+                  -Dsympa.password=changeme 
+                  -Dsympa.url=changeme 
+                  -Dexec.args="xxx"
 ```
 
-* service - info, name of the service
 * listName - name of the list
 
 #### getList
 ```bash
-mvn -q exec:java -Dexec.args="service"
+mvn -q exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.GetList 
+                  -Dsympa.email=${SYMPA_EMAIL} 
+                  -Dsympa.password=${SYMPA_PASSWORD} 
+                  -Dsympa.url=${SYMPA_URL} 
 ```
-example usage:
+example usage: 
 ```bash
-mvn -q exec:java -Dexec.args="getList"
+mvn -q exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.GetList
+                  -Dsympa.email=${SYMPA_EMAIL} 
+                  -Dsympa.password=${SYMPA_PASSWORD} 
+                  -Dsympa.url=${SYMPA_URL}  
 ```
-
-* service - getList, name of the service
 
 #### createList (All parameters are mandatory)
 ```bash
-mvn -q exec:java -Dexec.args="service list subject template description topics"
+mvn -q exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.CreateList
+                  -Dsympa.email=${SYMPA_EMAIL} 
+                  -Dsympa.password=${SYMPA_PASSWORD} 
+                  -Dsympa.url=${SYMPA_URL}
+                  -Dexec.args="listName subject template description topics"
 ```
 example usage:
 ```bash
-mvn -q exec:java -Dexec.args="createList scrumTeamB scrumTeamB 
-discussion_list description template"
+mvn -q exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.CreateList
+                  -Dsympa.email=xxx@email.com 
+                  -Dsympa.password=changeme 
+                  -Dsympa.url=changeme
+                  -Dexec.args="scrumTeamB scrumTeamB discussion_list description template"
 ```
 
-* service - createList, Name of the service
 * list - scrumTeamB, Name of the mailing list to create
 * subject - scrumTeamB - subject name of the list
 * template - discussion_list, the subject of the list 
@@ -134,96 +155,136 @@ mvn -q exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.AuthenticateAn
                   -Dsympa.email=${SYMPA_EMAIL} 
                   -Dsympa.password=${SYMPA_PASSWORD} 
                   -Dsympa.url=${SYMPA_URL} 
-                  -Dexec.args="service1 service2 service2-parameters"
+                  -Dexec.args="service service-parameters"
 ```
 example usage:
 ```bash
 mvn -q exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.AuthenticateAndRun 
-                  -Dsympa.email=${SYMPA_EMAIL} 
-                  -Dsympa.password=${SYMPA_PASSWORD} 
-                  -Dsympa.url=${SYMPA_URL}
-                  -Dexec.args="authenticateAndRun add scrumTeamB,pbale@illinois.edu,true,true"
+                  -Dsympa.email=xxx@email.com 
+                  -Dsympa.password=changeme 
+                  -Dsympa.url=changeme
+                  -Dexec.args="add scrumTeamB,pbale@illinois.edu,true,true"
 ```
 
-* service1 - authenticateAndRun - Name of the service
-* service2 - add/del -  Name of the service 
-* service2-parameters for add - scrumTeamB,xxx@illinois.edu,true,true - Parameters passed to add a user to the list 
-* service2-parameters for del - scrumTeamB,xxx@illinois.edu,true - Parameters passed to del a user to the list 
+* service - add/del -  Name of the service 
+* service-parameters for add - scrumTeamB,xxx@illinois.edu,true,true - Parameters passed to add a user to the list 
+* service-parameters for del - scrumTeamB,xxx@illinois.edu,true - Parameters passed to del a user to the list 
 
 #### add/del with authenticateRemoteAppAndRun
 ```bash
-mvn -q exec:java -Dexec.args="service1 appName appPwd vars service2 service2-parameters"
+mvn -q exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.AuthenticateRemoteAppAndRun 
+                  -Dsympa.email=${SYMPA_EMAIL} 
+                  -Dsympa.password=${SYMPA_PASSWORD} 
+                  -Dsympa.url=${SYMPA_URL} 
+                  -Dexec.args="appName appPwd vars service service-parameters"
 ```
 example usage:
 ```bash
-mvn -q exec:java -Dexec.args="authenticateAndRun appName appPwd USER_EMAIL=xxx@illinois.edu del scrumTeamB,pbale@illinois.edu,true"
+mvn -q exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.AuthenticateRemoteAppAndRun 
+                  -Dsympa.email=xxx@email.com 
+                  -Dsympa.password=changeme 
+                  -Dsympa.url=changeme
+                  -Dexec.args="appName appPwd USER_EMAIL=xxx@illinois.edu 
+                  del scrumTeamB,xxx@illinois.edu,true"
 ```
 
-* service1 - authenticateRemoteAppAndRun, Name of the service
 * appName - Name of the remote application from which user is authenticating
 * appPwd - application md5 password
 * vars (USER_EMAIL=xxx@illinois.edu) - A comma separated list of variables that can be set by the remote application, If you list USER_EMAIL in this parameter, then the remote application can act as a user. Any other variable such as remote_host can be listed.
-* service2 - del, Name of the service
-* service2-parameters for add - scrumTeamB,xxx@illinois.edu,true,true - Parameters passed to delete a user to the list 
-* service2-parameters for del - scrumTeamB,xxx@illinois.edu,true - Parameters passed to delete a user to the list 
+* service - del, Name of the service
+* service-parameters for add - scrumTeamB,xxx@illinois.edu,true,true - Parameters passed to delete a user to the list 
+* service-parameters for del - scrumTeamB,xxx@illinois.edu,true - Parameters passed to delete a user to the list 
 
 #### getUserEmailByCookie
 ```bash
-mvn -q exec:java -Dexec.args="service"
+mvn -q exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.GetUserEmailByCookie
+                  -Dsympa.email=${SYMPA_EMAIL} 
+                  -Dsympa.password=${SYMPA_PASSWORD} 
+                  -Dsympa.url=${SYMPA_URL} 
 ```
 example usage:
 ```bash
-mvn -q exec:java -Dexec.args="getUserEmailByCookie"
+mvn -q exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.GetUserEmailByCookie 
+                  -Dsympa.email=xxx@email.com 
+                  -Dsympa.password=changeme 
+                  -Dsympa.url=changeme
 ```
-* service - getUserEmailByCookie, Name of the service
 
 #### subscribe
 ```bash
-mvn -q exec:java -Dexec.args="service list"
+mvn -q exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.Subscribe
+                  -Dsympa.email=${SYMPA_EMAIL} 
+                  -Dsympa.password=${SYMPA_PASSWORD} 
+                  -Dsympa.url=${SYMPA_URL}
+                  -Dexec.args="list"
 ```
 example usage:
 ```bash
-mvn -q exec:java -Dexec.args="subscribe scrumTeamB"
+mvn -q exec:java  -Dexec.mainClass=edu.illinois.techservices.sympa.Subscribe
+                  -Dsympa.email=xxx@email.com 
+                  -Dsympa.password=changeme 
+                  -Dsympa.url=changeme
+                  -Dexec.args="scrumTeamB"
 ```
 
-* service - subscribe, Name of the service
 * list - scrumTeamB, Name of the list to be subscribed to  
 
 #### review
 ```bash
-mvn -q exec:java -Dexec.args="service list"
+mvn -q exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.Review
+                  -Dsympa.email=${SYMPA_EMAIL} 
+                  -Dsympa.password=${SYMPA_PASSWORD} 
+                  -Dsympa.url=${SYMPA_URL}
+                  -Dexec.args="list"
 ```
 example usage:
 ```bash
-mvn -q exec:java -Dexec.args="review scrumTeamB"
+mvn -q exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.Review
+                  -Dsympa.email=xxx@email.com 
+                  -Dsympa.password=changeme 
+                  -Dsympa.url=changeme
+                  -Dexec.args="scrumTeamB"
 ```
 
-* service - review, Name of the service
 * list - scrumTeamB, Name of the list
 
 #### fullReview
 ```bash
-mvn -q exec:java -Dexec.args="service list type"
+mvn -q exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.FullReviewBusinessCase
+                  -Dsympa.email=${SYMPA_EMAIL} 
+                  -Dsympa.password=${SYMPA_PASSWORD} 
+                  -Dsympa.url=${SYMPA_URL}
+                  -Dexec.args="list type"
 ```
 example usage:
 ```bash
-mvn -q exec:java -Dexec.args="fullreview scrumTeamB subscriber"
+mvn -q exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.FullReviewBusinessCase
+                  -Dsympa.email=xxx@email.com 
+                  -Dsympa.password=changeme 
+                  -Dsympa.url=changeme  
+                  -Dexec.args="scrumTeamB subscriber"
 ```
 
-* service - fullreview, Name of the service
 * list - scrumTeamB, Name of the list
 * type - permission type to enumerate through the list. values can be (subscriber, owner, editor)
 
 #### add
 ```bash
-mvn -q exec:java -Dexec.args="service list user gecos quiet"
+mvn -q exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.AddUserToList
+                  -Dsympa.email=${SYMPA_EMAIL} 
+                  -Dsympa.password=${SYMPA_PASSWORD} 
+                  -Dsympa.url=${SYMPA_URL}
+                  -Dexec.args="list user gecos quiet"
 ```
 example usage:
 ```bash
-mvn -q exec:java -Dexec.args="add scrumTeamB pbale@illinois.edu true true"
+mvn -q exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.AddUserToList
+                  -Dsympa.email=xxx@email.com 
+                  -Dsympa.password=changeme 
+                  -Dsympa.url=changeme
+                  -Dexec.args="scrumTeamB pbale@illinois.edu true true"
 ```
 
-* service - add -  Name of the service 
 * list - list name to which the user is added
 * user - user email to be added to list
 * gecos - a boolean
@@ -231,56 +292,111 @@ mvn -q exec:java -Dexec.args="add scrumTeamB pbale@illinois.edu true true"
 
 #### del
 ```bash
-mvn -q exec:java -Dexec.args="service parameters"
+mvn -q exec:java  -Dexec.mainClass=edu.illinois.techservices.sympa.DelUserFromList
+                  -Dsympa.email=${SYMPA_EMAIL} 
+                  -Dsympa.password=${SYMPA_PASSWORD} 
+                  -Dsympa.url=${SYMPA_URL}
+                  -Dexec.args="parameters"
 ```
 example usage:
 ```bash
-mvn -q exec:java -Dexec.args="del scrumTeamB pbale@illinois.edu true"
+mvn -q exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.DelUserFromList
+                  -Dsympa.email=xxx@email.com 
+                  -Dsympa.password=changeme 
+                  -Dsympa.url=changeme
+                  -Dexec.args="scrumTeamB pbale@illinois.edu true"
 ```
 
-* service - del -  Name of the service 
 * list - list name from which the user to delete
 * user - user email to be deleted from the list
 * gecos - a boolean
 
 #### closeList
 ```bash
-mvn -q exec:java -Dexec.args="service list"
+mvn -q exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.CloseList 
+                  -Dsympa.email=${SYMPA_EMAIL} 
+                  -Dsympa.password=${SYMPA_PASSWORD} 
+                  -Dsympa.url=${SYMPA_URL}
+                  -Dexec.args="list"
 ```
 example usage:
 ```bash
-mvn -q exec:java -Dexec.args="closeList scrumTeamB"
+mvn -q exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.CloseList 
+                  -Dsympa.email=xxx@email.com 
+                  -Dsympa.password=changeme 
+                  -Dsympa.url=changeme
+                  -Dexec.args="scrumTeamB"
 ```
 
-* service - closeList -  Name of the service 
 * list - scrumTeamB, Name of the list to be closed. 
 
 #### complexList
 ```bash
-mvn -q exec:java -Dexec.args="service list"
+mvn -q exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.ComplexList
+                  -Dsympa.email=${SYMPA_EMAIL} 
+                  -Dsympa.password=${SYMPA_PASSWORD} 
+                  -Dsympa.url=${SYMPA_URL}
+                  -Dexec.args="list"
 ```
 example usage:
 ```bash
-mvn -q exec:java -Dexec.args="complexList"
+mvn -q exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.ComplexList
+                  -Dsympa.email=xxx@email.com 
+                  -Dsympa.password=changeme 
+                  -Dsympa.url=changeme
+                  -Dexec.args="listName"
 ```
-
-* service - closeList -  Name of the service 
 
 #### which
 ```bash
-mvn -q exec:java-Dexec.args="service"
+mvn -q exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.Which
+                  -Dsympa.email=${SYMPA_EMAIL} 
+                  -Dsympa.password=${SYMPA_PASSWORD} 
+                  -Dsympa.url=${SYMPA_URL}
 ```
 example usage:
 ```bash
-mvn -q exec:java -Dexec.args="which"
+mvn -q exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.Which
+                  -Dsympa.email=xxx@email.com 
+                  -Dsympa.password=changeme 
+                  -Dsympa.url=changeme
 ```
 
 #### complexwhich
 ```bash
-mvn -q exec:java -Dexec.args="service"
+mvn -q exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.ComlexWhich
+                  -Dsympa.email=${SYMPA_EMAIL} 
+                  -Dsympa.password=${SYMPA_PASSWORD} 
+                  -Dsympa.url=${SYMPA_URL}
 ```
 example usage:
 ```bash
-mvn -q exec:java -Dexec.args="complexWhich"
+mvn -q exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.ComplexWhich
+                  -Dsympa.email=xxx@email.com 
+                  -Dsympa.password=changeme 
+                  -Dsympa.url=changeme
 ```
 
+
+#### AmI
+```bash
+mvn -q exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.AmI
+                  -Dsympa.email=${SYMPA_EMAIL} 
+                  -Dsympa.password=${SYMPA_PASSWORD} 
+                  -Dsympa.url=${SYMPA_URL}
+                  -Dexec.args="list function user"
+
+```
+example usage:
+```bash
+mvn -q exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.AmI
+                  -Dsympa.email=xxx@email.com 
+                  -Dsympa.password=changeme 
+                  -Dsympa.url=changeme
+                  -Dexec.args="scrumTeamB subscriber xxx@email.edu"
+
+```
+
+* list - scrumTeamB, Name of the list to be closed. 
+* function - subscriber/owner/editor 
+* user - user email 
