@@ -66,12 +66,13 @@ public class Delete implements Runnable {
      * This constructor validates the inputs:
      * <ul>
      * <li>{@code listName} must not be {@code null} or blank</li>
-     * <li>{@code permissionType} must not be {@code null} or blank</li>
+     * <li>{@code email} must not be {@code null} or blank</li>
+     * <li>{@code quiet} is optional</li>
      * </ul>
      * 
      * @param args length must be the user's name; must not be {@code null} or blank
-     * @throws IllegalArgumentException if {@code listName} is null/blank or
-     *                                  {@code permissionType} is negative
+     * @throws IllegalArgumentException if {@code listName} or {@code email} or
+     *                                     {@code quiet} is not an accepted Boolean value
      */
     public Delete(String[] args) {
 
@@ -214,7 +215,6 @@ public class Delete implements Runnable {
 
             // Create SOAP request body.
             SOAPBody sbDeleteMember = senvDeleteMember.getBody();
-            @SuppressWarnings("seDeleteMember")
             SOAPElement seDeleteMember = sbDeleteMember.addChildElement("del", "ns", "urn:sympasoap");
             seDeleteMember.addChildElement("list", "ns")
                 .addTextNode(listName)

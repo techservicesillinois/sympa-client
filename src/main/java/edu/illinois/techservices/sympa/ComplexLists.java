@@ -57,22 +57,6 @@ public class ComplexLists implements Runnable {
     private SOAPMessage sympaResponse;
 
     /**
-     * <p>
-     * This constructor validates the inputs:
-     * <ul>
-     * <li>{@code listName} must not be {@code null} or blank</li>
-     * <li>{@code permissionType} must not be {@code null} or blank</li>
-     * </ul>
-     * 
-     * @param args length must be the user's name; must not be {@code null} or blank
-     * @throws IllegalArgumentException if {@code listName} is null/blank or
-     *                                  {@code permissionType} is negative
-     */
-    public ComplexLists(String[] args) {
-
-    }
-
-    /**
      * Run the demo.
      * 
      * <P>
@@ -184,7 +168,6 @@ public class ComplexLists implements Runnable {
 
             // Create SOAP request body.
             SOAPBody sbComplexLists = senvComplexLists.getBody();
-            @SuppressWarnings("seComplexLists")
             SOAPElement seComplexLists = sbComplexLists.addChildElement("complexLists", "ns", "urn:sympasoap");
             
             MimeHeaders headers = smComplexLists.getMimeHeaders();

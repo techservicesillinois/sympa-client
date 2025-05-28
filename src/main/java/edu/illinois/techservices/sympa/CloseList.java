@@ -63,12 +63,10 @@ public class CloseList implements Runnable {
      * This constructor validates the inputs:
      * <ul>
      * <li>{@code listName} must not be {@code null} or blank</li>
-     * <li>{@code permissionType} must not be {@code null} or blank</li>
      * </ul>
      * 
      * @param args length must be the user's name; must not be {@code null} or blank
-     * @throws IllegalArgumentException if {@code listName} is null/blank or
-     *                                  {@code permissionType} is negative
+     * @throws IllegalArgumentException if {@code listName} is null/blank
      */
     public CloseList(String[] args) {
 
@@ -191,7 +189,6 @@ public class CloseList implements Runnable {
 
             // Create SOAP request body.
             SOAPBody sbCloseList = senvCloseList.getBody();
-            @SuppressWarnings("seCloseList")
             SOAPElement seCloseList = sbCloseList.addChildElement("del", "ns", "urn:sympasoap");
             seCloseList.addChildElement("list", "ns")
                 .addTextNode(listName)

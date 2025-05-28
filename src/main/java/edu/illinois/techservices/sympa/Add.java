@@ -66,12 +66,15 @@ public class Add implements Runnable {
      * This constructor validates the inputs:
      * <ul>
      * <li>{@code listName} must not be {@code null} or blank</li>
-     * <li>{@code permissionType} must not be {@code null} or blank</li>
+     * <li>{@code email} must not be {@code null} or blank</li>
+     * <li>{@code userDescription} must not be {@code null} or blank</li>
+     * <li>{@code quiet} is optional</li>
      * </ul>
      * 
      * @param args length must be the user's name; must not be {@code null} or blank
-     * @throws IllegalArgumentException if {@code listName} is null/blank or
-     *                                  {@code permissionType} is negative
+     * @throws IllegalArgumentException if {@code listName} or {@code email} 
+     *                                  or {@code userDescription} is null/blank or
+     *                                  {@code quiet} is not an accepted Boolean value
      */
     public Add(String[] args) {
 
@@ -218,7 +221,6 @@ public class Add implements Runnable {
 
             // Create SOAP request body.
             SOAPBody sbAddMember = senvAddMember.getBody();
-            @SuppressWarnings("seAddMember")
             SOAPElement seAddMember = sbAddMember.addChildElement("add", "ns", "urn:sympasoap");
             seAddMember.addChildElement("list", "ns")
                 .addTextNode(listName)
