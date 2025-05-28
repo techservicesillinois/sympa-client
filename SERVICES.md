@@ -27,7 +27,7 @@ SOAPBody soapBody = envelope.getBody();
 // Set the API call for `subscribe`
 SOAPElement soapElement = soapBody.addChildElement("subscribe", "ns", "urn:sympasoap");
 
-// Add list naem to the SOAP request
+// Add list name to the SOAP request
 soapElement.addChildElement("list", "ns")
                     .addTextNode(listName)
                     .addAttribute(new QName("xsi:type"), "xsd:string");

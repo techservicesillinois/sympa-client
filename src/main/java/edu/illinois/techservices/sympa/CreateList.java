@@ -354,6 +354,7 @@ public class CreateList implements Runnable {
         if (args.length != 5) {
             System.err.println(
                     "Usage: mvn -q exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.CreateList -Dexec:args=<listName> <subject> <template> <description> <topic>");
+                    System.exit(0);
         }
 
         CreateList app = new CreateList(args);

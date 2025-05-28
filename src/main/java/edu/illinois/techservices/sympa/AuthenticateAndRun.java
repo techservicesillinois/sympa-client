@@ -350,6 +350,7 @@ public class AuthenticateAndRun implements Runnable {
         if (args.length != 2) {
             System.err.println(
                     "Usage: mvn -q exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.AuthenticateAndRun -Dexec:args=<service> <listName>,<email>,<quotes>,<gechos>");
+            System.exit(0);
         }
 
         AuthenticateAndRun app = new AuthenticateAndRun(args);

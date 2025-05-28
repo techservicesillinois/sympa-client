@@ -332,6 +332,7 @@ public class AmI implements Runnable {
         if (args.length != 3) {
             System.err.println(
                     "Usage: mvn -q exec:java -Dexec.mainClass=edu.illinois.techservices.sympa.AmI -Dexec:args=<listName> <function> <user>");
+            System.exit(0);
         }
 
         AmI app = new AmI(args);
