@@ -20,6 +20,12 @@ import jakarta.xml.soap.SOAPPart;
 import jakarta.xml.soap.SOAPFault;
 
 import javax.xml.namespace.QName;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
 
 /**
  * 1. Demonstration of how to contact a Sympa server to tell if a given user is
@@ -333,10 +339,18 @@ public class AmI implements Runnable {
 
         // Print the Sympa response to System.out.
         try {
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            app.getSympaResponse().writeTo(out);
-            System.out.println(new String(out.toByteArray()));
-        } catch (SOAPException | IOException e) {
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            transformerFactory.setAttribute("indent-number", 2);
+
+            Transformer transformer = transformerFactory.newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+
+            Source sourceContent = app.getSympaResponse().getSOAPPart().getContent();
+            StreamResult result = new StreamResult(System.out);
+            System.out.println("\n");
+            transformer.transform(sourceContent, result);
+            System.out.println("\n");
+        } catch (SOAPException | TransformerException e) {
             e.printStackTrace();
         }
     }
