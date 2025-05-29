@@ -89,7 +89,7 @@ public class SympaMain {
           if (args.length > 0) {
             listName = args[1];
           }
-          Review.review(sessionCookie, listName);
+          //Review.review(sessionCookie, listName);
           break;
         }
         case "subscribe": {
@@ -97,7 +97,7 @@ public class SympaMain {
           if (args.length > 0) {
             listName = args[1];
           }
-          Subscribe.subscribe(sessionCookie, listName);
+          //Subscribe.subscribe(sessionCookie, listName);
           break;
         }
         case "fullreview": {
