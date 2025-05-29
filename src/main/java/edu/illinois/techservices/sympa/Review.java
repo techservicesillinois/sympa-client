@@ -5,8 +5,13 @@ import java.io.IOException;
 import java.util.Objects;
 
 import javax.xml.namespace.QName;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
 
-import edu.illinois.techservices.sympa.SympaClient;
 import jakarta.xml.soap.MessageFactory;
 import jakarta.xml.soap.MimeHeaders;
 import jakarta.xml.soap.SOAPBody;
@@ -18,6 +23,28 @@ import jakarta.xml.soap.SOAPException;
 import jakarta.xml.soap.SOAPMessage;
 import jakarta.xml.soap.SOAPPart;
 
+/**
+ * 1. Demonstrates the Sympa API call to return the permission types of the list.
+ * 
+ * <P>
+ * This demonstration uses the SAAJ API for accessing the SOAP server. These
+ * system properties may be set at the command line to override default values:
+ * 
+ * <DL>
+ * <DT><CODE>sympa.url</CODE>
+ * <DD>URL for the Sympa SOAP server.
+ * <DT><CODE>sympa.username</CODE>
+ * <DD>Sympa SOAP server username.
+ * <DT><CODE>sympa.password</CODE>
+ * <DD>Sympa SOAP server password.
+ * <DL>
+ * 
+ * <P>
+ * <STRONG>NOTE:</STRONG> we acknowledge using a system property for a password
+ * is very poor security practice, however this is a demonstration program and
+ * should never be deployed to a production environment where security is
+ * valued.
+ */
 public class Review implements Runnable {
 
     public static final String DEFAULT_SYMPA_URL = "http://localhost:8080/sympasoap";
@@ -158,9 +185,10 @@ public class Review implements Runnable {
      */
     private void getReview() {
     try {
-      SOAPMessage soapMessage = SympaClient.createMessageFactoryInstance();
+      SOAPMessage soapMessage = MessageFactory.newInstance().createMessage();
       SOAPPart soapPart = soapMessage.getSOAPPart();
-      SOAPEnvelope envelope = SympaClient.addNamespaceDeclaration(soapPart);
+      SOAPEnvelope envelope = soapPart.getEnvelope();
+      addSympaNamespaceDeclarations(envelope);
 
       MimeHeaders headers = soapMessage.getMimeHeaders();
       headers.addHeader("Content-Type", "text/xml");
@@ -177,9 +205,9 @@ public class Review implements Runnable {
           .addAttribute(new QName("xsi:type"), "xsd:string");
 
       soapMessage.saveChanges();
-      SympaClient.printSOAPMessage(soapMessage);
-
-      sympaResponse = SympaClient.callSympaAPI(soapMessage);
+      SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
+      SOAPConnection soapConnection = soapConnectionFactory.createConnection();
+      sympaResponse = soapConnection.call(soapMessage, sympaUrl);
 
     } catch (Exception e) {
       e.printStackTrace();
@@ -247,7 +275,7 @@ public class Review implements Runnable {
      * Instantiate and run this demo program. Print the Sympa response if
      * successful, stack trace and error message otherwise.
      * 
-     * @param args This program doesn't take any command line arguments.
+     * @param args This program takes the command line argument of the listname.
      */
     public static void main(String[] args) {
         if (args.length != 1) {
@@ -259,11 +287,20 @@ public class Review implements Runnable {
         app.run();
 
         // Print the Sympa response to System.out.
+          // Print the Sympa response to System.out.
         try {
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            app.getSympaResponse().writeTo(out);
-            System.out.println(new String(out.toByteArray()));
-        } catch (SOAPException | IOException e) {
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            transformerFactory.setAttribute("indent-number", 2);
+
+            Transformer transformer = transformerFactory.newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+
+            Source sourceContent = app.getSympaResponse().getSOAPPart().getContent();
+            StreamResult result = new StreamResult(System.out);
+            System.out.println("\n");
+            transformer.transform(sourceContent, result);
+            System.out.println("\n");
+        } catch (SOAPException | TransformerException e) {
             e.printStackTrace();
         }
     }
