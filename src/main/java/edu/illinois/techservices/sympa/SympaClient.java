@@ -9,10 +9,10 @@ import io.github.cdimascio.dotenv.Dotenv;
 
 public class SympaClient {
 
-  private static String sympaSoapUrl = loadEnvVar("SYMPA_URL");
+  private static String sympaSoapUrl = "https://lists-dev.techservices.illinois.edu/sympasoap";
   private static String sessionCookie = null;
-  static String email = loadEnvVar("SYMPA_EMAIL");
-  static String password = loadEnvVar("SYMPA_PASSWORD");
+  static String email = System.getenv("SYMPA_EMAIL");
+  static String password = System.getenv("SYMPA_PASSWORD");
 
   /**
    * Dynamically load environment variable from either system env or .env file
@@ -20,10 +20,11 @@ public class SympaClient {
    * @param key env var key
    * @return value
    */
+  /* 
   private static String loadEnvVar(String key) {
     return System.getenv(key) != null ? System.getenv(key) : Dotenv.load().get(key);
   }
-
+*/
   /**
    * Log in to sympa server and retrieve session cookie to pass it on to
    * subsequent request.
