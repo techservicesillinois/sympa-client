@@ -5,7 +5,7 @@ List of functions to connect to Sympa server and access the services provided by
 # Local setup
 
 ### Prerequisites
-- Java 11 or Java 17+
+- Java 8 or Java 11 or Java 17+
 - Maven
 
 ## Dependencies
@@ -24,6 +24,18 @@ Or add these libraries to pom file.
 | jaxws-rt                      | 4.0.2   | Engine to run web service. runtime + glue to binding (JAXB)           |
 | jaxb-runtime                  | 4.0.5   | Marshalling & unmarshalling Java<->Xml                                |                           
 
+## Java 8 Dependencies
+Download the listed libraries and Set classpath to required libraries to run as a standalone java program. 
+Or add these libraries to pom file.
+
+| Library                       | Version | Purpose                                                               |
+|-------------------------------|---------|-----------------------------------------------------------------------|
+| javax.xml.soap-api            | 1.4.0   | Manual SOAP message construction, for legacy SOAP services.           |
+| jaxws-api                     | 2.3.1   | WSDL-based client & server generation.                                |
+| jaxws-ri                      | 4.0.1   | Distribution bundle.                                                  |
+| jaxws-rt                      | 4.0.2   | Engine to run web service. runtime + glue to binding (JAXB)           |
+| FastInfoset                   | 1.2.18  | Specifies binary encoding format for the XML Information Set          |
+| jaxb-runtime                  | 4.0.5   | Marshalling & unmarshalling Java<->Xml                                |                           
 
 ### Maven Dependencies
 ```xml
@@ -79,6 +91,48 @@ Or add these libraries to pom file.
   </dependency>
 </dependencies>
 ```
+
+### Java 8 Maven Dependencies
+```xml
+<dependencies>
+  <dependency>
+    <groupId>javax.xml.soap</groupId>
+    <artifactId>javax.xml.soap-api</artifactId>
+    <version>1.4.0</version>
+  </dependency>
+  <dependency>
+    <groupId>javax.xml.ws</groupId>
+    <artifactId>jaxws-api</artifactId>
+    <version>2.3.1</version>
+  </dependency>
+  <dependency>
+    <groupId>com.sun.xml.ws</groupId>
+    <artifactId>jaxws-ri</artifactId>
+    <version>4.0.1</version>
+    <scope>runtime</scope>
+    <type>pom</type>
+  </dependency>
+  <dependency>
+    <groupId>com.sun.xml.ws</groupId>
+    <artifactId>jaxws-rt</artifactId>
+    <version>4.0.2</version>
+    <type>pom</type>
+  </dependency>
+  <dependency>
+    <groupId>com.sun.xml.fastinfoset</groupId>
+    <artifactId>FastInfoset</artifactId>
+    <version>1.2.18</version>
+  </dependency>
+  <dependency>
+    <groupId>org.glassfish.jaxb</groupId>
+    <artifactId>jaxb-runtime</artifactId>
+    <version>4.0.5</version>
+    <type>pom</type>
+  </dependency>
+</dependencies>
+```
+
+
 
 ### Using Maven:
 ```bash
